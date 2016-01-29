@@ -27,7 +27,7 @@
     <Space
         android:layout_width="351dp"
         android:layout_height="79dp"
-        android:id="@+id/" />
+        android:id="@+id/space1" />
 
     <Button
         android:layout_width="221dp"
