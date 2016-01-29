@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.OfflineResultSet;
+import com.android.chronicler.util.UserLocalStore;
+import com.android.chronicler.util.accDbLookup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +41,6 @@ import java.util.List;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -146,7 +143,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true; //email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -250,32 +247,62 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mUser;
         private final String mPassword;
+        /**
+         * For database lookup and saving local user info
+         */
+        private accDbLookup lookup;
+        private UserLocalStore store = null;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+
+        UserLoginTask(String username, String password) {
+            Log.i("LOGIN", "A UserLoginTask is created");
+            mUser = username;
             mPassword = password;
+            lookup = new accDbLookup();
+            store = new UserLocalStore(getApplicationContext());
+            store.clearUserData();
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            Log.i("LOGIN", "attempting to do something in the background...");
+            OfflineResultSet rs = lookup.searchUser(mUser);
 
-            try {
+            Log.i("LOGIN", "USER "+mUser);
+            Log.i("LOGIN", "PASSW "+mPassword);
+
+            if(rs != null) {
+                rs.first();
+                String userID = rs.getString("UserID");
+                String passw = rs.getString("Password");
+                Log.i("LOGIN", "Database PW " + passw);
+            } else {
+                Log.i("LOGIN", "User" + mUser + " doesn't exist");
+            }
+
+
+
+            //try {
                 // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            //    Thread.sleep(2000);
+            //} catch (InterruptedException e) {
+            //    return false;
+            //}
 
-            for (String credential : DUMMY_CREDENTIALS) {
+
+            /*for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+                if (pieces[0].equals(mUser)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    if(pieces[1].equals(mPassword)) {
+
+                    }
                 }
-            }
+            }*/
+
+            //store.storeUserData(mUser);
 
             // TODO: register the new account here.
             return true;
@@ -287,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                Log.i("LOGIN", "We did it, it was a match!");
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

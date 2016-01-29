@@ -1,5 +1,8 @@
 package com.android.chronicler.util;
 
+import android.util.Log;
+
+import java.io.File;
 import java.sql.*;
 
 import java.util.HashMap;
@@ -15,6 +18,10 @@ public class accDbLookup {
      */
 
     private final String URL;
+
+    public accDbLookup() {
+        this.URL = "userAccounts.sqlite";
+    }
 
     public accDbLookup(String dbUrl) {
         this.URL = dbUrl;
