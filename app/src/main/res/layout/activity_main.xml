@@ -41,7 +41,8 @@
         android:layout_height="wrap_content"
         android:text="Campaigns"
         android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="handleCampaignClick" />
 
     <Button
         android:layout_width="221dp"

@@ -1,9 +1,14 @@
 package com.android.chronicler;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.android.chronicler.ui.CampaignActivity;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -34,5 +39,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void handleCampaignClick(View view) {
+        Intent intent = new Intent(this, CampaignActivity.class);
+        startActivity(intent);
     }
 }
