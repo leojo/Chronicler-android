@@ -50,8 +50,8 @@ class Skill {
 	public void update() {
 		this.bonuses.put("Ranks", this.ranks);
 		if (this.baseSkill != null) this.bonuses.put("Ability Modifier", this.baseSkill.totalValue);
-
-		this.totalValue = this.bonuses.values().stream().reduce(0, (a, b) -> a + b);
+		//TODO: Fix update routine in Skill.java
+		//this.totalValue = this.bonuses.values().stream().reduce(0, (a, b) -> a + b);
 	}
 
 	public void setRanks(int ranks){

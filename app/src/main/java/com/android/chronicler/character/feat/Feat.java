@@ -1,7 +1,8 @@
 package com.android.chronicler.character.feat;
 
-import project.persistence.dbLookup.Lookup;
-import project.persistence.dbLookup.OfflineResultSet;
+
+import com.android.chronicler.util.OfflineResultSet;
+import com.android.chronicler.util.srdDbLookup;
 
 /**
  * Created by leo on 28.11.2015.
@@ -33,7 +34,7 @@ public class Feat {
             // creating a new feat
             id = featDetails;
         }
-        Lookup find = new Lookup();
+        srdDbLookup find = new srdDbLookup();
         OfflineResultSet feat = find.feat(id + "/exact");
         feat.first();
         this.id = feat.getString("id");

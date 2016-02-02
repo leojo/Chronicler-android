@@ -1,7 +1,8 @@
 package com.android.chronicler.character.item;
 
-import project.persistence.dbLookup.Lookup;
-import project.persistence.dbLookup.OfflineResultSet;
+
+import com.android.chronicler.util.OfflineResultSet;
+import com.android.chronicler.util.srdDbLookup;
 
 /**
  * Created by leo on 28.11.2015.
@@ -20,7 +21,7 @@ public class SpecialItem extends Item{
         String[] info = desc.split(":");
         String id = info[0];
 
-        Lookup find = new Lookup();
+        srdDbLookup find = new srdDbLookup();
         OfflineResultSet specialItem = find.specialItem(id + "/exact");
         specialItem.first();
 

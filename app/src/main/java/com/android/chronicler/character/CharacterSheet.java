@@ -7,6 +7,7 @@ import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.spell.SpellList;
 import com.android.chronicler.character.spell.SpellSlotArray;
 import com.android.chronicler.util.OfflineResultSet;
+import com.android.chronicler.util.srdDbLookup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +29,11 @@ public class CharacterSheet {
 	// since we need to use the bean anyway for html display reason, we
 	// shouldn't have a bunch of global variables that are basically just
 	// the variables of the bean anyway.
+	//TODO: Fix everything that regarding to the characterbean!!!
 	public CharacterBean bean;
 
 	// Lookup object for database stuff:
-	public Lookup find;
+	public srdDbLookup find;
 
 	// VARIABLES THAT ARE NOT COMMON WITH BEAN AND THEREFORE NEED TO BE UPDATED
 	// Note: These need special edit function in the system if they are to be edited.
@@ -62,7 +64,7 @@ public class CharacterSheet {
 
 
     public CharacterSheet(CharacterBean bean, boolean fresh) {
-		this.find = new Lookup();
+		this.find = new srdDbLookup();
 		if(fresh) initializeBean(bean);
 		else this.loadFromBean(bean);
     }

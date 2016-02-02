@@ -10,7 +10,7 @@ import com.android.chronicler.R;
 
 public class CharacterActivity extends ActionBarActivity {
 
-    private final CharacterSheet character;
+    private final CharacterSheet character = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
