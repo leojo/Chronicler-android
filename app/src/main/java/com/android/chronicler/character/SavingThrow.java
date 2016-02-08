@@ -1,9 +1,9 @@
 package com.android.chronicler.character;
 
 
+import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.character.enums.SavingThrowID;
-import com.android.chronicler.util.OfflineResultSet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class SavingThrow {
 	String name;
 	String shortName;
 	AbilityScore baseSkill;
-	Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
+	Map<String, Integer> bonuses; // Map<source, value> of bonuses to this save
 	public int totalValue;
 
 	public SavingThrow(CharacterSheet character, SavingThrowID id) {
@@ -49,14 +49,14 @@ public class SavingThrow {
 
 	public void update(CharacterSheet character) {
 		int BaseSave = 0;
-		for (int c : character.classLevels.keySet()) {
+		/*for (int c : character.classLevels.keySet()) {
 			// TODO: This probably needs optimizing, i.e. minimizing number of times the table is retrieved from db
 			OfflineResultSet advancement = character.find.advTableByClassID(c,character.classLevels.get(c));
 			advancement.first();
 			Integer ClassSave = Integer.valueOf(advancement.getString(this.shortName.toLowerCase() + "_save")); // Get the Save for this level
 
 			BaseSave += ClassSave;
-		}
+		}*/
 		this.bonuses.put("Base Save", BaseSave);
 		this.bonuses.put("Ability Modifier", this.baseSkill.modifier);
 

@@ -1,4 +1,4 @@
-package com.android.chronicler.character;
+package com.android.chronicler.character.ability;
 
 import com.android.chronicler.character.enums.AbilityID;
 
@@ -19,8 +19,8 @@ public class AbilityScore {
 	String shortName;
 
 	public Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
-	int totalValue;
-	int modifier;
+	public int totalValue;
+	public int modifier;
 
 	public AbilityScore(AbilityID id) {
 		// Setup name and shortname based on AbilityID

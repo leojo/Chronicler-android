@@ -8,15 +8,15 @@ import java.util.HashMap;
  *
  * Class that represents the collection of spell slots for a single character.
  */
-public class SpellSlotArray {
+public class SpellSlots {
     private final ArrayList<SpellSlot> spellSlots;
 
-    public SpellSlotArray(){
+    public SpellSlots(){
         this.spellSlots = new ArrayList<SpellSlot>();
     }
 
     // constructor to load from toString output
-    public SpellSlotArray(String s){
+    public SpellSlots(String s){
         this();
         for(String pair : s.split(";")){
             if(pair.length()==0) continue;

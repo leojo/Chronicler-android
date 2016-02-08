@@ -1,5 +1,7 @@
-package com.android.chronicler.character;
+package com.android.chronicler.character.skill;
 
+import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.util.OfflineResultSet;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +32,7 @@ class Skill {
 	public Skill(CharacterSheet character, OfflineResultSet skillInfo){
 		this.id = skillInfo.getInt("id");
 		this.name = skillInfo.getString("name");
-		if(character.abilityScores == null) character.resetAbilities();
+		//if(character.abilityScores == null) character.resetAbilities();
 		String skillName = skillInfo.getString("key_ability");
 		this.baseSkill = character.abilityScores.get(AbilityID.fromString(skillName));
 		this.trainedOnly = skillInfo.getBoolean("trained");
