@@ -17,6 +17,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -24,4 +29,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.android.support:design:22.+'
+    compile 'org.xerial:sqlite-jdbc:3.7.2'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
+
 }

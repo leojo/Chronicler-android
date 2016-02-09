@@ -42,6 +42,10 @@
             android:name=".ui.CharacterActivity"
             android:label="@string/title_activity_character" >
         </activity>
+        <activity
+            android:name=".ui.CampaignActivity"
+            android:label="@string/title_activity_campaign" >
+        </activity>
     </application>
 
 </manifest>
