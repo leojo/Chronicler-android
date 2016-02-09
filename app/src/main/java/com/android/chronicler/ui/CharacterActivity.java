@@ -1,13 +1,16 @@
 package com.android.chronicler.ui;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.chronicler.character.;
 import com.android.chronicler.R;
 
 public class CharacterActivity extends ActionBarActivity {
+
+    //private final CharacterSheet character = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
