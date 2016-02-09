@@ -1,8 +1,9 @@
 package com.android.chronicler.util;
 
-import android.util.Log;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
-import java.io.File;
 import java.sql.*;
 
 import java.util.HashMap;
@@ -11,21 +12,30 @@ import java.util.HashMap;
 /**
  * Created by andrea on 28.10.2015.
  */
-public class accDbLookup {
+public class accDbLookup extends SQLiteOpenHelper{
     /*
      * This class has utility functions used to access the account database,
      * e.g. to load character sheets or campaigns owned by each user
      */
 
-    private final String URL;
+    private String DB_PATH = "";
 
-    public accDbLookup() {
-        this.URL = "userAccounts.sqlite";
+    public accDbLookup(Context context, String DB_NAME) {
+        super(context, DB_NAME, null, 1);
+        if(android.os.Build.VERSION.SDK_INT >= 17){
+            DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        }
+        else
+        {
+            DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+        }
+
     }
 
-    public accDbLookup(String dbUrl) {
-        this.URL = dbUrl;
-    }
+    /*public accDbLookup(Context context, String dbUrl) {
+        super(context, dbUrl, null, 1);
+        this.DB_PATH = dbUrl;
+    }*/
 
     private Connection connect(String dbUrl){
         Connection c = null;
@@ -144,7 +154,7 @@ public class accDbLookup {
     // General search function, that query's the database with any select statement and gives back the resultset
     public OfflineResultSet searchRaw(String query){
         try{
-            Connection c = connect(this.URL);
+            Connection c = connect(this.DB_PATH);
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             if(!rs.next()){
@@ -167,7 +177,7 @@ public class accDbLookup {
     public int updateRaw(String query){
         int res = 0;
         try{
-            Connection c = connect(this.URL);
+            Connection c = connect(this.DB_PATH);
             Statement stmt = c.createStatement();
             res = stmt.executeUpdate(query);
             stmt.close();
@@ -180,4 +190,13 @@ public class accDbLookup {
         return res;
     }
 
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
 }

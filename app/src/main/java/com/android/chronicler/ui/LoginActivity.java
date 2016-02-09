@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataBaseHelper;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.UserLocalStore;
 import com.android.chronicler.util.accDbLookup;
@@ -260,7 +261,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.i("LOGIN", "A UserLoginTask is created");
             mUser = username;
             mPassword = password;
-            lookup = new accDbLookup();
+            //lookup = new accDbLookup(getApplicationContext(), "userAccounts.sqlite");
+            DataBaseHelper dbHelper = new DataBaseHelper(getApplicationContext());
+            dbHelper.openDataBase();
             store = new UserLocalStore(getApplicationContext());
             store.clearUserData();
         }
