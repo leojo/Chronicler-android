@@ -37,14 +37,14 @@ public class CampaignActivity extends AppCompatActivity {
         this.listView = (ListView) findViewById(R.id.CampaignListView);
         //SimpleAdapter adapter = new SimpleAdapter(this, )
         String[] from = new String[] {"campaign"};
-        int[] to = new int[] {R.id.text};
+        int[] to = new int[] {R.id.CampaignItem};
         List<HashMap<String, String>> fillMaps = new ArrayList<HashMap<String, String>>();
         for (int i = 0; i < 10; i++) {
             HashMap<String, String> m = new HashMap<>();
             m.put("campaign", "asdf" + i);
             fillMaps.add(m);
         }
-        SimpleAdapter adapter = new SimpleAdapter(this, fillMaps, R.layout.activity_campaign, from, to);
+        SimpleAdapter adapter = new SimpleAdapter(this, fillMaps, R.layout.fragment_campaign, from, to);
         //ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_campaign, new String[]{"asdf1", "asdf2", "asdf3"});
         this.listView.setAdapter(adapter);
     }
