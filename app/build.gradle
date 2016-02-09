@@ -32,5 +32,4 @@ dependencies {
     compile 'org.xerial:sqlite-jdbc:3.7.2'
     compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
-
 }
