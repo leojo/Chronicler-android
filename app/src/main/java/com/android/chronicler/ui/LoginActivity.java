@@ -28,13 +28,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
-import com.android.chronicler.util.DataBaseHelper;
+import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.UserLocalStore;
 import com.android.chronicler.util.accDbLookup;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 
 /**
@@ -137,10 +142,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            ChroniclerRestClient client = new ChroniclerRestClient();
+            RequestParams user_data = new RequestParams();
+            user_data.put("username", email);
+            user_data.put("password", password);
+            client.get("/login", user_data, new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("LOGIN", "SUCCESS!!! This is the response " + new String(response));
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    Log.i("LOGIN", "Failure: This is the response " + new String(errorResponse));
+                }
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+            });
+
+
+            /*mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);*/
         }
     }
+
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -262,8 +300,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mUser = username;
             mPassword = password;
             //lookup = new accDbLookup(getApplicationContext(), "userAccounts.sqlite");
-            DataBaseHelper dbHelper = new DataBaseHelper(getApplicationContext());
-            dbHelper.openDataBase();
+            // DO LOGIN STUFF HERE
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get("greeting", new AsyncHttpResponseHandler() {
+
+                @Override
+                public void onStart() {
+                    // called before request is started
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("LOGIN", "Success!! This is the response: "+response);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    Log.i("LOGIN", "Failure This is the response: "+errorResponse);
+                }
+
+                @Override
+                public void onRetry(int retryNo) {
+                    // called when request is retried
+                }
+            });
+
+
             store = new UserLocalStore(getApplicationContext());
             store.clearUserData();
         }
