@@ -18,22 +18,10 @@
             android:layout_alignEnd="@+id/CampaignListView" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="My Campaigns"
-            android:id="@+id/CampaignHeader"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:padding="10dp" />
-
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CampaignListView"
-            android:layout_below="@+id/CampaignHeader"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             tools:listitem="@android:layout/simple_list_item_2" />

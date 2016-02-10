@@ -61,6 +61,8 @@ public class CampaignActivity extends AppCompatActivity {
         });
         // --------------------------------------
         Intent intent = getIntent();
+
+        setTitle("My Campaigns");
     }
 
     @Override
