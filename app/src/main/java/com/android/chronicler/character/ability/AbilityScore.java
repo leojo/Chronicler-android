@@ -1,6 +1,7 @@
 package com.android.chronicler.character.ability;
 
 import com.android.chronicler.character.enums.AbilityID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +16,16 @@ import static com.android.chronicler.util.alUtils.sum;
  */
 
 public class AbilityScore {
-	String name;
-	String shortName;
+	private String name;
+	private String shortName;
 
-	public Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
-	public int totalValue;
-	public int modifier;
+	private Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
+	private int totalValue;
+	private int modifier;
 
-	public AbilityScore(AbilityID id) {
+	public AbilityScore(){ /*Empty constructor for JSON*/ }
+
+	public AbilityScore(AbilityID id){
 		// Setup name and shortname based on AbilityID
 		switch (id) {
 			case STR:
@@ -61,6 +64,7 @@ public class AbilityScore {
 		this.modifier = (this.totalValue / 2) - 5;
 	}
 
+	@JsonIgnore
 	public boolean setBonus(String key, int value){
 		boolean existingBonus = this.bonuses.containsKey(key);
 		this.bonuses.put(key,value);
@@ -94,5 +98,43 @@ public class AbilityScore {
 			return true;
 		}
 		return false;
+	}
+
+	public String getName() { return name; }
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public Map<String, Integer> getBonuses() {
+		return bonuses;
+	}
+
+	public void setBonuses(Map<String, Integer> bonuses) {
+		this.bonuses = bonuses;
+	}
+
+	public int getTotalValue() {
+		return totalValue;
+	}
+
+	public void setTotalValue(int totalValue) {
+		this.totalValue = totalValue;
+	}
+
+	public int getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(int modifier) {
+		this.modifier = modifier;
 	}
 }

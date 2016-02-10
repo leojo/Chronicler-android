@@ -1,10 +1,11 @@
 package com.android.chronicler.character.save;
 
 
-import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.ability.AbilityScore;
+import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.character.enums.SavingThrowID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,63 +18,62 @@ import java.util.Map;
  */
 
 public class SavingThrow {
-	String name;
-	String shortName;
-	AbilityScore baseSkill;
-	Map<String, Integer> bonuses; // Map<source, value> of bonuses to this save
-	public int totalValue;
+	private String name;
+	private String shortName;
+	private String abilityBonusName;
+	private AbilityScore baseSkill;
+	private AbilityID abilityID;
+	private Map<String, Integer> bonuses; // Map<source, value> of bonuses to this save
+	private int total;
+	@JsonIgnore
+	private String baseBonusName = "Class Bonus";
 
-	public SavingThrow(CharacterSheet character, SavingThrowID id) {
+	public SavingThrow() { /* Empty constructor for JSON */ }
+
+	public SavingThrow(AbilityScores abilityScores, SavingThrowID id) {
 		// id is the enum value
 		switch (id) {
 			case FORT:
 				this.name = "Fortitude";
 				this.shortName = "Fort";
-				this.baseSkill = character.abilityScores.get(AbilityID.CON);
+				this.abilityBonusName = "Constitution Modifier";
+				this.abilityID = AbilityID.CON;
 				break;
 			case REF:
 				this.name = "Reflex";
 				this.shortName = "Ref";
-				this.baseSkill = character.abilityScores.get(AbilityID.DEX);
+				this.abilityBonusName = "Dexterity Modifier";
+				this.abilityID = AbilityID.DEX;
 				break;
 			case WILL:
 				this.name = "Will";
 				this.shortName = "Will";
-				this.baseSkill = character.abilityScores.get(AbilityID.WIS);
+				this.abilityBonusName = "Wisdom Modifier";
+				this.abilityID = AbilityID.WIS;
 				break;
 		}
 
 		this.bonuses = new HashMap<>();
-		this.update(character);
+		this.bonuses.put(baseBonusName, 0);
+		this.bonuses.put(abilityBonusName, 0);
+		this.update(abilityScores);
 	}
 
 
-	public void update(CharacterSheet character) {
-		int BaseSave = 0;
-		/*for (int c : character.classLevels.keySet()) {
-			// TODO: This probably needs optimizing, i.e. minimizing number of times the table is retrieved from db
-			OfflineResultSet advancement = character.find.advTableByClassID(c,character.classLevels.get(c));
-			advancement.first();
-			Integer ClassSave = Integer.valueOf(advancement.getString(this.shortName.toLowerCase() + "_save")); // Get the Save for this level
-
-			BaseSave += ClassSave;
-		}*/
-		this.bonuses.put("Base Save", BaseSave);
-		this.bonuses.put("Ability Modifier", this.baseSkill.modifier);
-
-		this.totalValue = 0;
-		for (int v : this.bonuses.values()) {
-			this.totalValue += v;
-		}
+	public void update(AbilityScores abilityScores) {
+		// TODO: A function that updates the ability scores of the saving thows.
+		this.baseSkill = abilityScores.get(abilityID);
+		setBonus(abilityBonusName,baseSkill.getModifier());
 	}
 
 	public void recalculate(){
-		this.totalValue = 0;
+		this.total = 0;
 		for (int v : this.bonuses.values()) {
-			this.totalValue += v;
+			this.total += v;
 		}
 	}
 
+	@JsonIgnore
 	public boolean setBonus(String key, int value){
 		boolean existingBonus = this.bonuses.containsKey(key);
 		this.bonuses.put(key,value);
@@ -100,6 +100,11 @@ public class SavingThrow {
 		return validBonus;
 	}
 
+	@JsonIgnore
+	public boolean setBase(int value){
+		return setBonus(baseBonusName,value);
+	}
+
 	public boolean removeBonus(String key){
 		if(this.bonuses.containsKey(key)){
 			this.bonuses.remove(key);
@@ -107,6 +112,62 @@ public class SavingThrow {
 			return true;
 		}
 		return false;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public AbilityScore getBaseSkill() {
+		return baseSkill;
+	}
+
+	public void setBaseSkill(AbilityScore baseSkill) {
+		this.baseSkill = baseSkill;
+	}
+
+	public AbilityID getAbilityID() {
+		return abilityID;
+	}
+
+	public void setAbilityID(AbilityID abilityID) {
+		this.abilityID = abilityID;
+	}
+
+	public Map<String, Integer> getBonuses() {
+		return bonuses;
+	}
+
+	public void setBonuses(Map<String, Integer> bonuses) {
+		this.bonuses = bonuses;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public String getAbilityBonusName() {
+		return abilityBonusName;
+	}
+
+	public void setAbilityBonusName(String abilityBonusName) {
+		this.abilityBonusName = abilityBonusName;
 	}
 }
 

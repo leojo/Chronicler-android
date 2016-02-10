@@ -1,6 +1,8 @@
 package com.android.chronicler.character.ability;
 
 import com.android.chronicler.character.enums.AbilityID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashMap;
 
 /**
@@ -8,21 +10,28 @@ import java.util.HashMap;
  */
 public class AbilityScores {
 
-    private final HashMap<AbilityID, AbilityScore> abilityScores;
-    private final AbilityID[] keys = {AbilityID.STR, AbilityID.DEX, AbilityID.CON, AbilityID.INT, AbilityID.WIS, AbilityID.CHA};
+    private HashMap<AbilityID, AbilityScore> abilityScores;
 
     public AbilityScores(){
-        this.abilityScores = new HashMap<>();
+        abilityScores = new HashMap<>();
+        abilityScores.put(AbilityID.STR,new AbilityScore(AbilityID.STR));
+        abilityScores.put(AbilityID.DEX,new AbilityScore(AbilityID.DEX));
+        abilityScores.put(AbilityID.CON,new AbilityScore(AbilityID.CON));
+        abilityScores.put(AbilityID.INT,new AbilityScore(AbilityID.INT));
+        abilityScores.put(AbilityID.WIS,new AbilityScore(AbilityID.WIS));
+        abilityScores.put(AbilityID.CHA,new AbilityScore(AbilityID.CHA));
     }
 
     public AbilityScores(HashMap<AbilityID, AbilityScore> abilityScoreHashMap){
         this.abilityScores = abilityScoreHashMap;
     }
 
+    @JsonIgnore
     public AbilityScore get(AbilityID ID){
         return abilityScores.get(ID);
     }
 
+    @JsonIgnore
     public void setBonus(AbilityID ID, String bonusName, int bonus){
         AbilityScore a = abilityScores.get(ID);
         a.setBonus(bonusName, bonus);
@@ -43,6 +52,7 @@ public class AbilityScores {
         a.decrementBonus(bonusName);
     }
 
+    @JsonIgnore
     public void setBase(AbilityID ID, int value){
         abilityScores.get(ID).setBonus("Base Score", value);
     }
@@ -55,29 +65,45 @@ public class AbilityScores {
         abilityScores.get(ID).decrementBonus("Base Score");
     }
 
+    @JsonIgnore
     public int[] getAbilityScoreTotals(){
         int[] abScoresTotal = new int[6];
-        for(int i=0; i<keys.length; i++){
-            abScoresTotal[i] = abilityScores.get(keys[i]).totalValue;
+        int i = 0;
+        for(AbilityID id : AbilityID.values()){
+            abScoresTotal[i] = abilityScores.get(id).getTotalValue();
+            i++;
         }
         return abScoresTotal;
     }
 
-    public int[] getAbilityScoreMods(){
+    @JsonIgnore
+    public int[] getAbilityScoreMods() {
         int[] mods = new int[6];
-        for(int i=0; i<keys.length; i++){
-            mods[i] = abilityScores.get(keys[i]).modifier;
+        int i=0;
+        for (AbilityID id : AbilityID.values()) {
+            mods[i] = abilityScores.get(id).getModifier();
+            i++;
         }
         return mods;
     }
 
-    public HashMap<AbilityID,AbilityScore> getAbilityScores(){
+    public void update(){
+        for(AbilityID id : AbilityID.values()){
+            abilityScores.get(id).update();
+        }
+    }
+
+    public void update(AbilityID id){
+        abilityScores.get(id).update();
+    }
+
+    public HashMap<AbilityID, AbilityScore> getAbilityScores() {
         return abilityScores;
     }
 
-    public void update(){
-        for(int i=0; i<keys.length; i++){
-            abilityScores.get(keys[i]).update();
-        }
+    public void setAbilityScores(HashMap<AbilityID, AbilityScore> abilityScores) {
+        this.abilityScores = abilityScores;
     }
+
+
 }
