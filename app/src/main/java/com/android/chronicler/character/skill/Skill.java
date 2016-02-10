@@ -34,7 +34,7 @@ class Skill {
 		this.name = skillInfo.getString("name");
 		//if(character.abilityScores == null) character.resetAbilities();
 		String skillName = skillInfo.getString("key_ability");
-		this.baseSkill = character.abilityScores.get(AbilityID.fromString(skillName));
+		this.baseSkill = new AbilityScore(AbilityID.fromString(skillName));//character.getAbilityScores().get(AbilityID.fromString(skillName));
 		this.trainedOnly = skillInfo.getBoolean("trained");
 		this.armorPenalty = skillInfo.getBoolean("armor_check");
 
@@ -51,7 +51,7 @@ class Skill {
 
 	public void update() {
 		this.bonuses.put("Ranks", this.ranks);
-		if (this.baseSkill != null) this.bonuses.put("Ability Modifier", this.baseSkill.totalValue);
+		if (this.baseSkill != null) this.bonuses.put("Ability Modifier", this.baseSkill.getTotalValue());
 		//TODO: Fix update routine in Skill.java
 		//this.totalValue = this.bonuses.values().stream().reduce(0, (a, b) -> a + b);
 	}

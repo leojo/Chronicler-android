@@ -13,10 +13,13 @@ import com.android.chronicler.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by andrea on 28.1.2016.
  */
 public class CampaignActivity extends AppCompatActivity {
+
+    private ArrayAdapter<String> adapter;
 
 
     ListView campaignListView;
@@ -50,8 +53,8 @@ public class CampaignActivity extends AppCompatActivity {
         // Important: We can easily make use of some of the abstract adapter classes that android
         // has to offer to suit our needs if we need to do something more complicated than this.
         // ----------------------------------------------------------------------------------------
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
 
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW
@@ -66,11 +69,14 @@ public class CampaignActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                CONTENT.add("You just clicked item number "+position);
+
+                adapter.add("You just clicked item number "+position);
 
             }
         });
         // --------------------------------------
         Intent intent = getIntent();
     }
+
 }
+
