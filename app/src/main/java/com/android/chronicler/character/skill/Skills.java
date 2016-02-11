@@ -5,12 +5,18 @@ import android.util.Log;
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.util.ChroniclerRestClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -31,29 +37,34 @@ public class Skills {
         ChroniclerRestClient cli = new ChroniclerRestClient();
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
 
-
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 ObjectMapper mapper = new ObjectMapper();
                 String skillData = new String(responseBody);
                 Log.d("SKILLS_JSON","response size: "+responseBody.length);
                 try {
-                    TypeReference<HashMap<String,Skill>> typeRef = new TypeReference<HashMap<String, Skill>>() {};
-                    Log.d("SKILLS_JSON",skillData);
-                    skills = mapper.readValue(skillData, typeRef);
+                    JSONObject responseObject = new JSONObject(skillData);
+                    Iterator<String> keys = responseObject.keys();
+                    while(keys.hasNext()){
+                        String key = keys.next();
+                        String skillString = responseObject.getString(key);
+                        Log.d("SKILL_JSON", skillString);
+                        Skill s = mapper.readValue(skillString, Skill.class);
+                        skills.put(key,s);
+                    }
                     loaded = true;
                     update(finalAbilityScores);
-                } catch (IOException e) {
-                    Log.e("SKILLS", e.getMessage());
                 } catch (SkillsException e) {
                     Log.e("SKILLS", e.getMessage());
+                } catch (JSONException e) {
+                    Log.e("SKILLS", e.getMessage());
+                } catch (JsonMappingException e) {
+                    Log.e("SKILLS", e.getMessage());
+                } catch (JsonParseException e) {
+                    Log.e("SKILLS", e.getMessage());
+                } catch (IOException e) {
+                    Log.e("SKILLS", e.getMessage());
                 }
-
-            }
-
-            @Override
-            public void onPostProcessResponse() {
 
             }
 
@@ -62,23 +73,12 @@ public class Skills {
                 Log.i("SKILLS", "Failure fetching skill data: " + new String(responseBody));
             }
         });
-        long startTime = System.currentTimeMillis();
-        while(!loaded){
-            // Wait for stuff to load...
-            long waitTime = System.currentTimeMillis()-startTime;
-            if(waitTime > 5000){
-                Log.d("SKILLS_JSON","Timed out waiting for response!");
-                break; // T/O
-            }
-            if(waitTime%500==0) Log.d("SKILLS_JSON","Waiting...");
-
-        }
     }
 
     public void update(AbilityScores abilityScores) throws SkillsException{
         if(!loaded)throw new SkillsException();
         for(Skill s : skills.values()){
-            s.update(abilityScores);
+            if(!s.getName().equalsIgnoreCase("speak language")) s.update(abilityScores);
         }
         usable = true;
     }

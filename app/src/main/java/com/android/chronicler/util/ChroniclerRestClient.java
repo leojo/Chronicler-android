@@ -19,10 +19,6 @@ public class ChroniclerRestClient {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void get(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
-    }
-
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
