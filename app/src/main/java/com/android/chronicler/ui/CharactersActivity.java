@@ -7,18 +7,18 @@ import android.view.MenuItem;
 
 import com.android.chronicler.R;
 
-public class CampaignActivity extends ActionBarActivity {
+public class CharactersActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_campaigns);
+        setContentView(R.layout.activity_characters);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_campaigns, menu);
+        getMenuInflater().inflate(R.menu.menu_characters, menu);
         return true;
     }
 
