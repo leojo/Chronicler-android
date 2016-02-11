@@ -2,7 +2,10 @@ package com.android.chronicler.util;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.loopj.android.http.*;
+
+import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 
 /**
  * Created by andrea on 9.2.2016.
@@ -13,6 +16,10 @@ public class ChroniclerRestClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void get(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 

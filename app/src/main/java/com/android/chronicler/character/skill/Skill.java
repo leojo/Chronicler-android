@@ -1,10 +1,11 @@
 package com.android.chronicler.character.skill;
 
-import com.android.chronicler.character.CharacterSheet;
+import android.util.Log;
+
 import com.android.chronicler.character.ability.AbilityScore;
+import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
-import com.android.chronicler.util.OfflineResultSet;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -12,58 +13,74 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by BjornBjarnsteins on 10/28/15.
- *
- * Contains info on skills used by a character sheet. Currently not used.
+ * Created by Leo on 10.2.2016.
  *
  */
 
 class Skill {
-	String name;
-	AbilityScore baseSkill;
-	int id;
-	boolean trainedOnly;
-	boolean armorPenalty;
-	int ranks;
+	private String name;
+    private String description;
+    private String action;
+    private String try_again;
+    private String special;
+    private String synergy;
+    private AbilityID abilityID;
+	private boolean trainedOnly;
+	private boolean armorPenalty;
 
-	Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
-	int totalValue;
+    private int ranks;
+	private Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
+	private int totalValue;
 
-	public Skill(CharacterSheet character, OfflineResultSet skillInfo){
-		this.id = skillInfo.getInt("id");
-		this.name = skillInfo.getString("name");
-		//if(character.abilityScores == null) character.resetAbilities();
-		String skillName = skillInfo.getString("key_ability");
-		this.baseSkill = new AbilityScore(AbilityID.fromString(skillName));//character.getAbilityScores().get(AbilityID.fromString(skillName));
-		this.trainedOnly = skillInfo.getBoolean("trained");
-		this.armorPenalty = skillInfo.getBoolean("armor_check");
+    @JsonIgnore
+    private final static String modBonus = "Ability Modifier";
+
+    public Skill(){ /* Empty constructor for JSON */ }
+
+	public Skill(String name, AbilityScores abilityScores, AbilityID abilityID, boolean trainedOnly, boolean armorPenalty, String description, String synergy, String action, String try_again, String special){
+		this.name = name;
+        this.description = description;
+        this.synergy = synergy;
+        this.abilityID = abilityID;
+		this.trainedOnly = trainedOnly;
+		this.armorPenalty = armorPenalty;
+        this.action = action;
+        this.try_again = try_again;
+        this.special = special;
 
 		this.ranks = 0;
 		this.totalValue = 0;
 		this.bonuses = new HashMap<>();
-		this.update();
+		this.update(abilityScores);
 	}
 
-	public static Skill buildFromJSON(String JSONString) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.readValue(JSONString, Skill.class);
-	}
+    public void update(){
+        update(this.getBonuses().get(modBonus));
+    }
 
-	public void update() {
+    public void update(AbilityScores abilityScores){
+        if(abilityScores == null){
+            Log.d("SKILL", "abilityScores passed to update not initialized");
+            return;
+        }
+        if(abilityID == null){
+            Log.d("SKILL", "abilityID not initialized");
+        }
+        update(abilityScores.get(abilityID).getModifier());
+    }
+
+	public void update(int abilityModifier) {
 		this.bonuses.put("Ranks", this.ranks);
-		if (this.baseSkill != null) this.bonuses.put("Ability Modifier", this.baseSkill.getTotalValue());
-		//TODO: Fix update routine in Skill.java
-		//this.totalValue = this.bonuses.values().stream().reduce(0, (a, b) -> a + b);
-	}
-
-	public void setRanks(int ranks){
-		this.ranks = ranks;
+		this.bonuses.put(modBonus, abilityModifier);
+        this.totalValue = 0;
+        for(Integer value : bonuses.values()){ totalValue += value; }
 	}
 
 	public void incrementRanks(){
 		this.ranks++;
 	}
 
+    @JsonIgnore
 	public boolean setBonus(String key, int value){
 		boolean existingBonus = this.bonuses.containsKey(key);
 		this.bonuses.put(key,value);
@@ -99,18 +116,123 @@ class Skill {
 		return false;
 	}
 
-	public String toJSON() {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.writeValueAsString(this);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
+    //<editor-fold desc="Getters and Setters">
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return this.toJSON();
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public AbilityID getAbilityID() {
+        return abilityID;
+    }
+
+    public void setAbilityID(AbilityID abilityID) {
+        this.abilityID = abilityID;
+    }
+
+    public boolean isTrainedOnly() {
+        return trainedOnly;
+    }
+
+    public void setTrainedOnly(boolean trainedOnly) {
+        this.trainedOnly = trainedOnly;
+    }
+
+    public boolean isArmorPenalty() {
+        return armorPenalty;
+    }
+
+    public void setArmorPenalty(boolean armorPenalty) {
+        this.armorPenalty = armorPenalty;
+    }
+
+    public int getRanks() {
+        return ranks;
+    }
+
+    public void setRanks(int ranks) {
+        this.ranks = ranks;
+    }
+
+    public Map<String, Integer> getBonuses() {
+        return bonuses;
+    }
+
+    public void setBonuses(Map<String, Integer> bonuses) {
+        this.bonuses = bonuses;
+    }
+
+    public int getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(int totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSynergy() {
+        return synergy;
+    }
+
+    public void setSynergy(String synergy) {
+        this.synergy = synergy;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getTry_again() {
+        return try_again;
+    }
+
+    public void setTry_again(String try_again) {
+        this.try_again = try_again;
+    }
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
+    }
+    //</editor-fold>
+
+
+
+    public static Skill copy(Skill baseSkill) {
+        Skill newSkill =  new Skill();
+
+        newSkill.setName(baseSkill.getName());
+        newSkill.setDescription(baseSkill.getDescription());
+        newSkill.setAction(baseSkill.getAction());
+        newSkill.setTry_again(baseSkill.getTry_again());
+        newSkill.setSpecial(baseSkill.getSpecial());
+        newSkill.setSynergy(baseSkill.getSynergy());
+        newSkill.setAbilityID(baseSkill.getAbilityID());
+        newSkill.setTrainedOnly(baseSkill.isTrainedOnly());
+        newSkill.setArmorPenalty(baseSkill.isArmorPenalty());
+
+        newSkill.setBonuses(new HashMap<String, Integer>());
+        newSkill.setBonus(modBonus, baseSkill.getBonuses().get(modBonus));
+        newSkill.setRanks(0);
+
+        return newSkill;
+    }
 }
