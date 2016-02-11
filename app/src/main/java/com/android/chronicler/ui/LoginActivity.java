@@ -3,7 +3,6 @@ package com.android.chronicler.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -15,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             RequestParams user_data = new RequestParams();
             user_data.put("username", email);
             user_data.put("password", password);
-            client.get("/login", user_data, new AsyncHttpResponseHandler() {
+            client.post("/", user_data, new AsyncHttpResponseHandler() {
 
                 @Override
                 public void onStart() {
