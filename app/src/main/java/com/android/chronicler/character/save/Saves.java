@@ -5,12 +5,13 @@ import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.SavingThrowID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by leo on 8.2.2016.
  */
-public class Saves {
+public class Saves implements Serializable {
 
     private HashMap<SavingThrowID,SavingThrow> saves;
 

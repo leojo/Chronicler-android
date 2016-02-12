@@ -1,5 +1,6 @@
 package com.android.chronicler.character.spell;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  *
  * This class represents a single spell slot
  */
-public class SpellSlot {
+public class SpellSlot implements Serializable {
     private Spell spell;
     private boolean available = true;
     private final int level;

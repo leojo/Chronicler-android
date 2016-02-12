@@ -4,12 +4,14 @@ package com.android.chronicler.character.item;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.srdDbLookup;
 
+import java.io.Serializable;
+
 /**
  * Created by leo on 28.11.2015.
  *
  *
  */
-public class MundaneItem extends Item{
+public class MundaneItem extends Item implements Serializable {
     private final String family;
     private final String dmgSmall;
     private final String armorShieldBonus;
@@ -95,7 +97,7 @@ public class MundaneItem extends Item{
         return speed20;
     }
 
-    @Override
+
     public String getShortDescription() {
         String desc = "";
         switch (getFamily()) {
@@ -121,10 +123,5 @@ public class MundaneItem extends Item{
             default:
                 return "No description available for "+getFamily();
         }
-    }
-
-    @Override
-    public String toString() {
-        return getId() + ":" + getName() + ":" + isEquipped();
     }
 }

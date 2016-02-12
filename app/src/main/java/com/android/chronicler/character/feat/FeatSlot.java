@@ -1,11 +1,12 @@
 package com.android.chronicler.character.feat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by leo on 28.11.2015.
  */
-public class FeatSlot {
+public class FeatSlot  implements Serializable {
     private final String type;
     private Feat feat;
 

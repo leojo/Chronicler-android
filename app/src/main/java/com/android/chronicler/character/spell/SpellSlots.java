@@ -1,5 +1,6 @@
 package com.android.chronicler.character.spell;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
  *
  * Class that represents the collection of spell slots for a single character.
  */
-public class SpellSlots {
+public class SpellSlots  implements Serializable {
     private final ArrayList<SpellSlot> spellSlots;
 
     public SpellSlots(){

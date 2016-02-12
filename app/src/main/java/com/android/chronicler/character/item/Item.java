@@ -4,21 +4,22 @@ package com.android.chronicler.character.item;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.srdDbLookup;
 
+import java.io.Serializable;
+
 /**
  * Created by leo on 28.11.2015.
  *
  * A single item
  */
-public class Item {
-    private final String id;
+public class Item implements Serializable {
     private String name = "";
-    private final String category;
-    private final String subcategory;
-    private final String cost;
-    private final String weight;
-    private final String fullText;
-    private final String reference;
-    private final boolean special;
+    private String category;
+    private String subcategory;
+    private String cost;
+    private String weight;
+    private String fullText;
+    private String reference;
+    private boolean special;
     private boolean equipped = false;
 
     public Item(String desc, boolean special){
@@ -33,7 +34,6 @@ public class Item {
         else item = find.mundaneItem(id + "/exact");
 
         item.first();
-        this.id = item.getString("id");
         this.name = item.getString("name");
         this.category = item.getString("category");
         this.subcategory = item.getString("subcategory");
@@ -43,10 +43,7 @@ public class Item {
         this.reference = item.getString("reference");
     }
 
-    public String getId() {
-        return id;
-    }
-
+    //<editor-fold desc="Getters and Setters">
     public String getName() {
         return name;
     }
@@ -59,28 +56,56 @@ public class Item {
         return category;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getSubcategory() {
         return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     public String getCost() {
         return cost;
     }
 
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
     public String getWeight() {
         return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public String getFullText() {
         return fullText;
     }
 
+    public void setFullText(String fullText) {
+        this.fullText = fullText;
+    }
+
     public String getReference() {
         return reference;
     }
 
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public boolean isSpecial() {
         return special;
+    }
+
+    public void setSpecial(boolean special) {
+        this.special = special;
     }
 
     public boolean isEquipped() {
@@ -90,13 +115,5 @@ public class Item {
     public void setEquipped(boolean equipped) {
         this.equipped = equipped;
     }
-
-    public String getShortDescription(){
-        return "You should not be seeing this, it should be handled in subclasses (short description)";
-    }
-
-    @Override
-    public String toString() {
-        return "You should not be seeing this, it should be handled in subclasses (to string)";
-    }
+    //</editor-fold>
 }

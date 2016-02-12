@@ -1,5 +1,8 @@
 package com.android.chronicler.character.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,27 +10,10 @@ import java.util.ArrayList;
  *
  * Class to keep track of a single characters inventory
  */
-public class Inventory {
-    public ArrayList<Item> items = new ArrayList<Item>();
+public class Inventory implements Serializable {
+    private ArrayList<Item> items = new ArrayList<>();
 
-    public Inventory(String desc){
-        if(desc.equals("")) desc = "false:57:Greataxe:true;false:45:Battleaxe:false;false:37:Rusty old axe:false;false:101:Banded mal:true;true:1297:Amulet of Natural Armor +1:true;";
-        for(String itemInfo : desc.split(";")){
-            if(itemInfo.equals("")) continue;
-            boolean special = Boolean.parseBoolean(itemInfo.substring(0,itemInfo.indexOf(":")));
-            String itemDesc = itemInfo.substring(itemInfo.indexOf(":")+1);
-            if(special){
-                this.items.add(new SpecialItem(itemDesc));
-            }
-            else{
-                this.items.add(new MundaneItem(itemDesc));
-            }
-        }
-    }
-
-    public Inventory() {
-        this("");
-    }
+    public Inventory() { /* Empty constructor for JSON */ }
 
     public void add(Item item){
         items.add(item);
@@ -37,6 +23,7 @@ public class Inventory {
         return items.remove(item);
     }
 
+    @JsonIgnore
     public ArrayList<Item> getEquipped(){
         ArrayList<Item> equipped = new ArrayList<Item>();
         for(Item item : items){
@@ -45,6 +32,7 @@ public class Inventory {
         return equipped;
     }
 
+    @JsonIgnore
     public ArrayList<Item> getNotEquipped(){
         ArrayList<Item> notEquipped = new ArrayList<Item>();
         for(Item item : items){
@@ -53,12 +41,15 @@ public class Inventory {
         return notEquipped;
     }
 
-    @Override
-    public String toString() {
-        String s  = "";
-        for(Item item : items){
-            s += item.isSpecial()+":"+item.toString()+";";
-        }
-        return s;
+    //<editor-fold desc="Getters and Setters">
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    // </editor-fold>
 }

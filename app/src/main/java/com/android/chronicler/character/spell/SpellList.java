@@ -3,6 +3,7 @@ package com.android.chronicler.character.spell;
 import com.android.chronicler.util.srdDbLookup;
 import com.android.chronicler.util.OfflineResultSet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -11,7 +12,7 @@ import java.util.Collections;
  *
  * This class represents a list of spell slot.
  */
-public class SpellList {
+public class SpellList implements Serializable {
     private final ArrayList<Spell> spells;
 
     public SpellList(OfflineResultSet ors){

@@ -1,8 +1,11 @@
 package com.android.chronicler.character.ability;
 
+import android.util.Log;
+
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +18,7 @@ import static com.android.chronicler.util.alUtils.sum;
  *
  */
 
-public class AbilityScore {
+public class AbilityScore implements Serializable{
 	private String name;
 	private String shortName;
 
@@ -62,6 +65,8 @@ public class AbilityScore {
 	public void update() {
 		this.totalValue = sum(this.bonuses.values());
 		this.modifier = (this.totalValue / 2) - 5;
+        Log.d("ABILITY", "Updating " + shortName + ". Base score is "+bonuses.get("Base Score")+", total is now " + totalValue);
+
 	}
 
 	@JsonIgnore

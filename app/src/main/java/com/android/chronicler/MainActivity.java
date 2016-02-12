@@ -10,20 +10,24 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.chronicler.ui.CampaignsActivity;
+import com.android.chronicler.ui.CharacterActivity;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
+import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.UserLocalStore;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private UserLocalStore store;
+    private DataLoader loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         store = new UserLocalStore(getApplicationContext());
+        loader = new DataLoader();
         if(!store.userInSession()) {
             redirectToLogin();
             Log.i("LOGIN", "Seem to be logged in, this is the cookie: " + store.getUserCookie());
@@ -59,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openCharacters(View view) {
-        Intent intent = new Intent(this, CharactersActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, CharacterActivity.class);
+        loader.readySheetThenStart(this, intent);
     }
 
 
@@ -74,4 +78,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         store.clearSession();
     }
+
+
 }
