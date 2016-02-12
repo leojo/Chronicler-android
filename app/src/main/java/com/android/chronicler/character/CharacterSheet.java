@@ -1,6 +1,8 @@
 package com.android.chronicler.character;
 
 import com.android.chronicler.character.ability.AbilityScores;
+import com.android.chronicler.character.save.Saves;
+import com.android.chronicler.character.skill.Skills;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,10 +19,10 @@ public class CharacterSheet{
     // =====================
     /*private SpellSlots spellSlots = new SpellSlots();
     private FeatList feats = new FeatList();
-    private Inventory inventory = new Inventory();
+    private Inventory inventory = new Inventory();*/
     private Skills skills = new Skills();
-    private Saves saves = new Saves();*/
-    private AbilityScores abilityScores = new AbilityScores();
+    private Saves saves;
+    private AbilityScores abilityScores;
     private String name;
     private String race;
     private String characterClass;
@@ -38,6 +40,9 @@ public class CharacterSheet{
         this.characterClass = characterClass;
         this.name = name;
         this.race = race;
+        abilityScores = new AbilityScores();
+        saves = new Saves(abilityScores);
+        skills = new Skills(abilityScores);
     }
 
     public void initAbilityScores(int[] StartingAbilityScores){
@@ -110,38 +115,7 @@ public class CharacterSheet{
         return mapper.readValue(CharacterSheetJSON, CharacterSheet.class);
     }
 
-    public static void main(String[] args) {
-        logger.log(Level.INFO, "Debugging CharacterSheet save/load");
-        CharacterSheet cs = new CharacterSheet("Gunther", "Human", "Barista");
-        String JSON = "bob";
-        try {
-            System.out.println("Writing to JSON...");
-            JSON = cs.toJSON();
-        } catch (JsonProcessingException e) {
-            System.out.println("Error writing to JSON");
-            e.printStackTrace();
-            return;
-        }
-        CharacterSheet loaded;
-        try {
-            System.out.println("Loading character...");
-            loaded = CharacterSheet.fromJSON(JSON);
-        } catch (IOException e) {
-            System.out.println("Error loading from JSON");
-            e.printStackTrace();
-            return;
-        }
-        String JSON2 = "error";
-        try {
-            JSON2 = loaded.toJSON();
-        } catch (JsonProcessingException e) {
-            System.out.println("Error writing to JSON");
-            e.printStackTrace();
-        }
-        System.out.println(JSON);
-        System.out.println(JSON2);
-    }
-
+    //<editor-fold desc="Getters and Setters">
     /*public SpellSlots getSpellSlots() {
             return spellSlots;
         }
@@ -164,23 +138,24 @@ public class CharacterSheet{
 
         public void setInventory(Inventory inventory) {
             this.inventory = inventory;
-        }
-
-        public Skills getSkills() {
-            return skills;
-        }
-
-        public void setSkills(Skills skills) {
-            this.skills = skills;
-        }
-
-        public Saves getSaves() {
-            return saves;
-        }
-
-        public void setSaves(Saves saves) {
-            this.saves = saves;
         }*/
+
+    public Skills getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Skills skills) {
+        this.skills = skills;
+    }
+
+    public Saves getSaves() {
+        return saves;
+    }
+
+    public void setSaves(Saves saves) {
+        this.saves = saves;
+    }
+
     public AbilityScores getAbilityScores() {
         return abilityScores;
     }
@@ -220,4 +195,5 @@ public class CharacterSheet{
     public void setLevel(int level) {
         this.level = level;
     }
+    //</editor-fold>
 }

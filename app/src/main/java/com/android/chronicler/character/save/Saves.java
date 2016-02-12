@@ -34,6 +34,8 @@ public class Saves {
         }
     }
 
+    // Before: baseSaves should be an array containing the new base saves for [Fort, Ref, Will] in that order.
+    // After: the saves have the correct base bonus value.
     @JsonIgnore
     public boolean setBaseSaves(int[] baseSaves){
         if(baseSaves.length != 3) return false;
@@ -43,7 +45,21 @@ public class Saves {
         return true;
     }
 
-    /*@JsonIgnore
-    public*/
+    @JsonIgnore
+    public HashMap<String, Integer> getBonuses(SavingThrowID saveID){
+        return saves.get(saveID).getBonuses();
+    }
 
+    @JsonIgnore
+    public void setBonus(String bonusName, int value, SavingThrowID saveID){
+        saves.get(saveID).setBonus(bonusName, value);
+    }
+
+    public HashMap<SavingThrowID, SavingThrow> getSaves() {
+        return saves;
+    }
+
+    public void setSaves(HashMap<SavingThrowID, SavingThrow> saves) {
+        this.saves = saves;
+    }
 }

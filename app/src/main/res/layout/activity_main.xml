@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="Characters"
         android:id="@+id/button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="openCharacters"/>
 
     <Button
         android:layout_width="221dp"
@@ -42,7 +43,7 @@
         android:text="Campaigns"
         android:id="@+id/button2"
         android:layout_gravity="center_horizontal"
-        android:onClick="handleCampaignClick" />
+        android:onClick="openCampaigns" />
 
     <Button
         android:layout_width="221dp"
@@ -54,8 +55,9 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Logout"
         android:id="@+id/button4"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="logout"/>
 
 </LinearLayout>

@@ -7,10 +7,10 @@ import java.util.Collection;
  */
 public class alUtils {
     public static int sum(Collection<Integer> c){
-        Integer[] nums = (Integer[])c.toArray();
+        Object[] nums = c.toArray();
         int sum = 0;
-        for(Integer n : nums){
-            sum += n;
+        for(Object n : nums){
+            sum += (int) n;
         }
         return sum;
     }

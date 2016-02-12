@@ -23,7 +23,7 @@ public class SavingThrow {
 	private String abilityBonusName;
 	private AbilityScore baseSkill;
 	private AbilityID abilityID;
-	private Map<String, Integer> bonuses; // Map<source, value> of bonuses to this save
+	private HashMap<String, Integer> bonuses; // Map<source, value> of bonuses to this save
 	private int total;
 	@JsonIgnore
 	private String baseBonusName = "Class Bonus";
@@ -146,11 +146,11 @@ public class SavingThrow {
 		this.abilityID = abilityID;
 	}
 
-	public Map<String, Integer> getBonuses() {
+	public HashMap<String, Integer> getBonuses() {
 		return bonuses;
 	}
 
-	public void setBonuses(Map<String, Integer> bonuses) {
+	public void setBonuses(HashMap<String, Integer> bonuses) {
 		this.bonuses = bonuses;
 	}
 
