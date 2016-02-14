@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.ChroniclerRestClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +30,17 @@ public class CampaignsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_campaign);
+        setContentView(R.layout.activity_campaigns);
 
+        Intent intent = getIntent();
+        CONTENT = intent.getStringArrayListExtra("CampaignList");
         // ---------------------------------------
         // ADD SOMETHING TO CONTENT
         // ---------------------------------------
-        CONTENT = new ArrayList<>();
-        CONTENT.add("andrea");
-        CONTENT.add("leo");
-        CONTENT.add("bjorn");
+        //CONTENT = new ArrayList<>();
+        //CONTENT.add("andrea");
+        //CONTENT.add("leo");
+        //CONTENT.add("bjorn");
 
         // ---------------------------------------
         // GET THE CAMPAIGN LIST VIEW:
@@ -69,13 +72,17 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                adapter.add("You just clicked item number "+position);
+                openCampaign();
+                //adapter.add("You just clicked item number "+position);
 
             }
         });
         // --------------------------------------
-        Intent intent = getIntent();
+    }
+
+    public void openCampaign() {
+        Intent intent = new Intent(this, CampaignActivity.class);
+        startActivity(intent);
     }
 
 }

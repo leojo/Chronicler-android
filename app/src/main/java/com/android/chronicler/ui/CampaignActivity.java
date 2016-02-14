@@ -12,7 +12,7 @@ public class CampaignActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_campaigns);
+        setContentView(R.layout.activity_campaign);
     }
 
     @Override
