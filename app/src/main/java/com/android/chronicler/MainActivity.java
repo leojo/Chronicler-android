@@ -19,6 +19,7 @@ import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void openCampaigns(View view) {
         final Intent intent = new Intent(this, CampaignsActivity.class);
-        ChroniclerRestClient.get("/campaignData", null, new JsonHttpResponseHandler() {
+        UserLocalStore store = new UserLocalStore(getApplicationContext());
+        RequestParams user_data = new RequestParams("username", store.getUserData()[0]);
+        ChroniclerRestClient.get("/campaignData", user_data, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 //CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
