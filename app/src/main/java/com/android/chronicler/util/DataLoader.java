@@ -45,4 +45,20 @@ public class DataLoader {
         });
 
     }
+
+    public void readyCharlistThenStart(final Context context, final Intent intent) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("USERGET", new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+
+    }
 }

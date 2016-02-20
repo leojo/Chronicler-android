@@ -78,10 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void openCharacters(View view) {
         Intent intent = new Intent(this, CharactersActivity.class);
-        loader.readySheetThenStart(this, intent);
+        loader.readyCharlistThenStart(this, intent);
     }
 
 
+    //  SHOULD PUT THIS CODE IN DATALOADER class .... thats exactly what it was created for, see
+    // loader.readySheetThenStart(intent) above ^
     public void openCampaigns(View view) {
         final Intent intent = new Intent(this, CampaignsActivity.class);
         UserLocalStore store = new UserLocalStore(getApplicationContext());
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 //CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
                 ArrayList<String> responseContent = new ArrayList<>();
-                for (int i=0; i<responseBody.length();i++) {
+                for (int i = 0; i < responseBody.length(); i++) {
                     try {
                         responseContent.add(responseBody.getString(i));
                     } catch (JSONException e) {
