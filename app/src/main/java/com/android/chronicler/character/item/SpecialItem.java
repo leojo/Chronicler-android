@@ -4,10 +4,12 @@ package com.android.chronicler.character.item;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.srdDbLookup;
 
+import java.io.Serializable;
+
 /**
  * Created by leo on 28.11.2015.
  */
-public class SpecialItem extends Item{
+public class SpecialItem extends Item implements Serializable {
     private final String specialAbility;
     private final String aura;
     private final String casterLevel;
@@ -79,12 +81,5 @@ public class SpecialItem extends Item{
             desc = fullText.substring(descStart,descStop);
         }
         return desc;
-    }
-
-    @Override
-    public String toString(){
-        String s = getId() + ":" + getName() + ":" + isEquipped();
-        if(charges >= 0) s += ":" + charges;
-        return s;
     }
 }

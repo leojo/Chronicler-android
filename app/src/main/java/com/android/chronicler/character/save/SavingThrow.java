@@ -7,6 +7,7 @@ import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.character.enums.SavingThrowID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  *
  */
 
-public class SavingThrow {
+public class SavingThrow  implements Serializable {
 	private String name;
 	private String shortName;
 	private String abilityBonusName;

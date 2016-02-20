@@ -7,10 +7,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CharacterSheet{
+public class CharacterSheet implements Serializable{
     private static final Logger logger = Logger.getLogger(CharacterSheet.class.getName());
     //TODO: Implement this. Note! NO HASHMAPS IN THIS LAYER OF CODE! All hashmaps should be hidden inside a class! Function names are not final.
 
@@ -20,7 +21,7 @@ public class CharacterSheet{
     /*private SpellSlots spellSlots = new SpellSlots();
     private FeatList feats = new FeatList();
     private Inventory inventory = new Inventory();*/
-    private Skills skills = new Skills();
+    private Skills skills;
     private Saves saves;
     private AbilityScores abilityScores;
     private String name;
@@ -35,14 +36,15 @@ public class CharacterSheet{
     // =====================
     public CharacterSheet(){}
 
-    public CharacterSheet(String name, String race, String characterClass){
+    public CharacterSheet(String name, String race, String characterClass, String skillsJSON){
         level = 1;
         this.characterClass = characterClass;
         this.name = name;
         this.race = race;
+        this.skills = skills;
         abilityScores = new AbilityScores();
         saves = new Saves(abilityScores);
-        skills = new Skills(abilityScores);
+        skills = new Skills(abilityScores, skillsJSON);
     }
 
     public void initAbilityScores(int[] StartingAbilityScores){

@@ -4,12 +4,14 @@ package com.android.chronicler.character.feat;
 import com.android.chronicler.util.OfflineResultSet;
 import com.android.chronicler.util.srdDbLookup;
 
+import java.io.Serializable;
+
 /**
  * Created by leo on 28.11.2015.
  *
  * NOTE: This has yet to be connected to the front end
  */
-public class Feat {
+public class Feat  implements Serializable {
     private final String id;
     private String name;
     private final String type;

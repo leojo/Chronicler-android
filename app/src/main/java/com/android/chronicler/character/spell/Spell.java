@@ -3,10 +3,12 @@ package com.android.chronicler.character.spell;
 import com.android.chronicler.util.srdDbLookup;
 import com.android.chronicler.util.OfflineResultSet;
 
+import java.io.Serializable;
+
 /**
  * Created by leo on 25.11.2015.
  */
-public class Spell {
+public class Spell implements Serializable {
     // Git why you no find me?
     private final String id;
     private final String name;

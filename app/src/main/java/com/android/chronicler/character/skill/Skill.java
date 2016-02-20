@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  *
  */
 
-class Skill {
+public class Skill implements Serializable {
 	private String name;
     private String description;
     private String action;
@@ -59,13 +60,7 @@ class Skill {
     }
 
     public void update(AbilityScores abilityScores){
-        if(abilityScores == null){
-            Log.d("SKILL", "abilityScores passed to update not initialized");
-            return;
-        }
-        if(abilityID == null){
-            Log.d("SKILL", "abilityID not initialized");
-        }
+        Log.d("SKILL_JSON","Updating "+name+" with abilityID "+abilityID);
         update(abilityScores.get(abilityID).getModifier());
     }
 

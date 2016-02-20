@@ -2,17 +2,18 @@ package com.android.chronicler.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.chronicler.R;
 
-public class CampaignActivity extends ActionBarActivity {
+public class CampaignActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_campaigns);
+        setContentView(R.layout.activity_campaign);
     }
 
     @Override
