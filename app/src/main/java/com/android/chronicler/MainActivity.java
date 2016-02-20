@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.chronicler.ui.CampaignsActivity;
+import com.android.chronicler.ui.CharacterActivity;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
 import com.android.chronicler.util.UserLocalStore;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openCharacters(View view) {
-        Intent intent = new Intent(this, CharactersActivity.class);
+        Intent intent = new Intent(this, CharacterActivity.class);
         startActivity(intent);
     }
 

@@ -1,5 +1,7 @@
 package com.android.chronicler.character.skill;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.util.Log;
 
 import com.android.chronicler.character.ability.AbilityScores;
@@ -9,7 +11,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
@@ -31,13 +37,14 @@ public class Skills {
         ChroniclerRestClient cli = new ChroniclerRestClient();
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
 
-
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 ObjectMapper mapper = new ObjectMapper();
                 String skillData = new String(responseBody);
-                Log.d("SKILLS_JSON","response size: "+responseBody.length);
+
+                String[] responseArray = skillData.split(":");
+                for(String s : responseArray) Log.i("JSON", s);
+                /*Log.d("SKILLS_JSON","response size: "+responseBody.length);
                 try {
                     TypeReference<HashMap<String,Skill>> typeRef = new TypeReference<HashMap<String, Skill>>() {};
                     Log.d("SKILLS_JSON",skillData);
@@ -49,30 +56,15 @@ public class Skills {
                 } catch (SkillsException e) {
                     Log.e("SKILLS", e.getMessage());
                 }
-
+*/
             }
 
-            @Override
-            public void onPostProcessResponse() {
-
-            }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("SKILLS", "Failure fetching skill data: " + new String(responseBody));
             }
         });
-        long startTime = System.currentTimeMillis();
-        while(!loaded){
-            // Wait for stuff to load...
-            long waitTime = System.currentTimeMillis()-startTime;
-            if(waitTime > 5000){
-                Log.d("SKILLS_JSON","Timed out waiting for response!");
-                break; // T/O
-            }
-            if(waitTime%500==0) Log.d("SKILLS_JSON","Waiting...");
-
-        }
     }
 
     public void update(AbilityScores abilityScores) throws SkillsException{

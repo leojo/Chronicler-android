@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 
 /**
@@ -146,7 +147,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void performLogin(String username, String password) {
-        ChroniclerRestClient client = new ChroniclerRestClient();
+        ChroniclerRestClient client = new ChroniclerRestClient(this);
+
         RequestParams user_data = new RequestParams();
         user_data.put("username", username);
         user_data.put("password", password);
@@ -161,10 +163,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 // called when response HTTP status is "200 OK"
                 String loginDataJSON = new String(response);
+                String cookie = "";
                 for(Header h : headers) {
                     Log.i("LOGIN", h.toString());
-                    if(h.getName().equals("Set-Cookie")) handleSuccess(h.getValue());
+                    if(h.getName().equals("Set-Cookie") && h.getValue().contains("user")) {
+                        cookie = h.getValue().split(";")[0];
+                    }
                 }
+                handleSuccess(cookie);
             }
 
             @Override
@@ -183,6 +189,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void handleSuccess(String cookie) {
         // Store user data:
         // NOTE: We might want to use PersistentCookieStore for the cookie as recommended by async http client
+        Log.i("LOGIN_COOKIE", cookie);
         UserLocalStore store = new UserLocalStore(getApplicationContext());
         store.storeUserData(username, cookie);
 
