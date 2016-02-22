@@ -1,6 +1,7 @@
 package com.android.chronicler.ui;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.chronicler.R;
@@ -60,6 +62,14 @@ public class CampaignsActivity extends AppCompatActivity {
         // ----------------------------------------------------------------------------------------
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
+
+        // Set add button to footer
+        Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
+        ImageView addButtonView = new ImageView(this);
+        addButtonView.setPadding(20, 20, 20, 20);
+        addButtonView.setImageDrawable(addButtonDrawable);
+
+        campaignListView.addFooterView(addButtonView);
 
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW
