@@ -24,4 +24,5 @@
     <string name="title_activity_campaigns">CampaignsActivity</string>
     <string name="title_activity_characters">CharactersActivity</string>
     <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_new_campaign">NewCampaignActivity</string>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.android.chronicler.NewCampaignActivity;
 import com.android.chronicler.R;
 import com.android.chronicler.util.ChroniclerRestClient;
 
@@ -84,7 +85,11 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                openCampaign();
+                if (position == adapter.getCount()) {
+                    newCampaign();
+                } else {
+                    openCampaign();
+                }
                 //adapter.add("You just clicked item number "+position);
 
             }
@@ -94,6 +99,11 @@ public class CampaignsActivity extends AppCompatActivity {
 
     public void openCampaign() {
         Intent intent = new Intent(this, CampaignActivity.class);
+        startActivity(intent);
+    }
+
+    public void newCampaign() {
+        Intent intent = new Intent(this, NewCampaignActivity.class);
         startActivity(intent);
     }
 
