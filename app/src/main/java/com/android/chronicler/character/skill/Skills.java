@@ -1,5 +1,7 @@
 package com.android.chronicler.character.skill;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.util.Log;
 
 import com.android.chronicler.character.ability.AbilityScores;
@@ -11,10 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,8 +32,6 @@ public class Skills  implements Serializable {
 
     public Skills(AbilityScores abilityScores, String skillsJSON){
         skills = new HashMap<>();
-
-
         ObjectMapper mapper = new ObjectMapper();
         try {
         JSONObject responseObject = new JSONObject(skillsJSON);
@@ -56,7 +53,6 @@ public class Skills  implements Serializable {
         try {
             update(finalAbilityScores);
         } catch(Exception e) {e.printStackTrace();}
-
     }
 
     public void update(AbilityScores abilityScores) throws SkillsException{

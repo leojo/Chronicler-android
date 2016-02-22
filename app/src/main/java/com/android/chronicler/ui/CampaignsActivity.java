@@ -25,8 +25,6 @@ import java.util.List;
 public class CampaignsActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
-
-
     ListView campaignListView;
     public List<String> CONTENT;
 
@@ -84,6 +82,7 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
                 openCampaign();
                 //adapter.add("You just clicked item number "+position);
 
