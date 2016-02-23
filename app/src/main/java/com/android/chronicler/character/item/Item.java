@@ -1,8 +1,7 @@
 package com.android.chronicler.character.item;
 
 
-import com.android.chronicler.util.OfflineResultSet;
-import com.android.chronicler.util.srdDbLookup;
+import com.android.chronicler.character.enums.SizeCategory;
 
 import java.io.Serializable;
 
@@ -15,6 +14,7 @@ public class Item implements Serializable {
     private String name = "";
     private String cost;
     private String weight;
+    private SizeCategory size;
 
     //<editor-fold desc="Getters and Setters">
     public String getName() {

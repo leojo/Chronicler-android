@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class Inventory implements Serializable {
     private ArrayList<Item> items = new ArrayList<>();
 
-    public Inventory() { /* Empty constructor for JSON */ }
-
     public void add(Item item){
         items.add(item);
     }
@@ -27,7 +25,7 @@ public class Inventory implements Serializable {
     public ArrayList<Item> getEquipped(){
         ArrayList<Item> equipped = new ArrayList<Item>();
         for(Item item : items){
-            if(item instanceof Equipment) equipped.add(item);
+            if(item instanceof Equipment && ((Equipment) item).isEquipped()) equipped.add(item);
         }
         return equipped;
     }
@@ -36,7 +34,10 @@ public class Inventory implements Serializable {
     public ArrayList<Item> getNotEquipped(){
         ArrayList<Item> notEquipped = new ArrayList<Item>();
         for(Item item : items){
-            if(item instanceof Equipment) notEquipped.add(item);
+            if(!(item instanceof Equipment)) notEquipped.add(item);
+            else{
+                if(!((Equipment) item).isEquipped()) notEquipped.add(item);
+            }
         }
         return notEquipped;
     }

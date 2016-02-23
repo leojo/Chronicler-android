@@ -5,6 +5,7 @@ package com.android.chronicler.character.item;
  */
 public class Equipment extends Item{
     private boolean equipped;
+    private boolean masterwork;
     private String slot;
     private String equipAction;
 
@@ -19,6 +20,7 @@ public class Equipment extends Item{
     public Equipment(String slot, String equipAction){
         this.equipAction = equipAction;
         this.equipped = false;
+        this.masterwork = false;
         this.slot = slot;
     }
 
@@ -40,6 +42,22 @@ public class Equipment extends Item{
 
     public void setSlot(String slot) {
         this.slot = slot;
+    }
+
+    public boolean isMasterwork() {
+        return masterwork;
+    }
+
+    public void setMasterwork(boolean masterwork) {
+        this.masterwork = masterwork;
+    }
+
+    public String getEquipAction() {
+        return equipAction;
+    }
+
+    public void setEquipAction(String equipAction) {
+        this.equipAction = equipAction;
     }
     //</editor-fold>
 }
