@@ -1,6 +1,8 @@
 package com.android.chronicler.character;
 
 import com.android.chronicler.character.ability.AbilityScores;
+import com.android.chronicler.character.feat.FeatList;
+import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.save.Saves;
 import com.android.chronicler.character.skill.Skills;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,8 +21,8 @@ public class CharacterSheet implements Serializable{
     // VARIABLE DECLARATIONS
     // =====================
     /*private SpellSlots spellSlots = new SpellSlots();
-    private FeatList feats = new FeatList();
     private Inventory inventory = new Inventory();*/
+    private FeatList feats = new FeatList();
     private Skills skills;
     private Saves saves;
     private AbilityScores abilityScores;

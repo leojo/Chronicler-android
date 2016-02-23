@@ -27,7 +27,7 @@ public class Inventory implements Serializable {
     public ArrayList<Item> getEquipped(){
         ArrayList<Item> equipped = new ArrayList<Item>();
         for(Item item : items){
-            if(item.isEquipped()) equipped.add(item);
+            if(item instanceof Equipment) equipped.add(item);
         }
         return equipped;
     }
@@ -36,7 +36,7 @@ public class Inventory implements Serializable {
     public ArrayList<Item> getNotEquipped(){
         ArrayList<Item> notEquipped = new ArrayList<Item>();
         for(Item item : items){
-            if(!item.isEquipped()) notEquipped.add(item);
+            if(item instanceof Equipment) notEquipped.add(item);
         }
         return notEquipped;
     }
