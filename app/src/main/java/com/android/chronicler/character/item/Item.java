@@ -40,5 +40,13 @@ public class Item implements Serializable {
     public void setWeight(String weight) {
         this.weight = weight;
     }
+
+    public SizeCategory getSize() {
+        return size;
+    }
+
+    public void setSize(SizeCategory size) {
+        this.size = size;
+    }
     //</editor-fold>
 }
