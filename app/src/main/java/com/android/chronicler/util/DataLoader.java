@@ -34,7 +34,6 @@ public class DataLoader {
                 CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
-
             }
 
             @Override
@@ -59,6 +58,6 @@ public class DataLoader {
 
             }
         });
-
     }
+
 }
