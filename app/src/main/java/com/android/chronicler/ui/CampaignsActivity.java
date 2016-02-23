@@ -28,21 +28,17 @@ public class CampaignsActivity extends AppCompatActivity {
     ListView campaignListView;
     public List<String> CONTENT;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaigns);
 
+        // ---------------------------------------
+        // ADD TO CONTENT THE RESPONSE FROM SERVER
+        // ---------------------------------------
         Intent intent = getIntent();
         CONTENT = intent.getStringArrayListExtra("CampaignList");
-        // ---------------------------------------
-        // ADD SOMETHING TO CONTENT
-        // ---------------------------------------
-        //CONTENT = new ArrayList<>();
-        //CONTENT.add("andrea");
-        //CONTENT.add("leo");
-        //CONTENT.add("bjorn");
+
 
         // ---------------------------------------
         // GET THE CAMPAIGN LIST VIEW:

@@ -1,42 +1,78 @@
 package com.android.chronicler.ui;
 
-import android.content.Context;
-import android.database.DataSetObserver;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.chronicler.character.*;
 import com.android.chronicler.R;
 import com.android.chronicler.character.enums.AbilityID;
-import com.android.chronicler.character.enums.SavingThrowID;
-import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.SkillsAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Vector;
 
-public class CharacterActivity extends ActionBarActivity {
+
+public class CharacterActivity extends FragmentActivity {
 
     private CharacterSheet character;
     ListView skillsView;
     private SkillsAdapter adapter;
 
+    // For fragment view stuff
+    private ViewPager mPager;
+    private SheetPagerAdapter mPagerAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
+        // -------------------------------------------------------- FRAGMENT RELATED
+
+
+        final List<SheetFragment> fragments = new Vector<SheetFragment>();
+
+
+        fragments.add(SheetFragment.newInstance("COMBAT"));
+        fragments.add(SheetFragment.newInstance("SPELLS"));
+        fragments.add(SheetFragment.newInstance("ABOUT"));
+        fragments.add(SheetFragment.newInstance("FEATS"));
+
+
+        mPager = (ViewPager) findViewById(R.id.product_pager);
+        //mPager.setOffscreenPageLimit(availableProducts.size() - 1);
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //if (state == ViewPager.SCROLL_STATE_DRAGGING)
+                //    for (StoreFragment fragment : fragments) fragment.removeHint();
+            }
+        });
+        //findViewById(R.id.product_pager).setBackgroundResource(R.drawable.void_panel);
+        mPagerAdapter = new SheetPagerAdapter(getSupportFragmentManager(), fragments);
+        mPager.setAdapter(mPagerAdapter);
+
+        // ------------------------------------------------------------------------------------------
+
+        // LEO STUFF
         skillsView = (ListView)findViewById(R.id.skillsView);
         character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
         skillsView.setAdapter(new SkillsAdapter(this, character.getSkills()));
@@ -50,38 +86,25 @@ public class CharacterActivity extends ActionBarActivity {
         ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
         ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
         ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");
-        ((TextView)this.findViewById(R.id.fortInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.FORT).getTotal());
-        ((TextView)this.findViewById(R.id.refInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.REF).getTotal());
-        ((TextView)this.findViewById(R.id.willInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.WILL).getTotal());
-
-        /*
-        String JSON;
-        try {
-            Log.d("CHARACTERSHEET","Writing as JSON...");
-            JSON = character.toJSON();
-        } catch (JsonProcessingException e) {
-            Log.e("CHARACTERSHEET",e.getMessage());
-            return;
-        }
-        CharacterSheet loaded;
-        try {
-            Log.d("CHARACTERSHEET","Loading from JSON...");
-            loaded = CharacterSheet.fromJSON(JSON);
-        } catch (IOException e) {
-            Log.e("CHARACTERSHEET",e.getMessage());
-            return;
-        }
-        String JSON2 = "error";
-        try {
-            Log.d("CHARACTERSHEET","Writing as JSON...");
-            JSON2 = loaded.toJSON();
-        } catch (JsonProcessingException e) {
-            Log.e("CHARACTERSHEET",e.getMessage());
-        }
-        Log.d("CHARACTERSHEET",JSON);
-        Log.d("CHARACTERSHEET",JSON2);
-*/
+        //((TextView)this.findViewById(R.id.fortInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.FORT).getTotal());
+        //((TextView)this.findViewById(R.id.refInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.REF).getTotal());
+        //((TextView)this.findViewById(R.id.willInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.WILL).getTotal());
     }
+
+// ------------------------- FRAGMENT RELATED
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        int currIndex = mPager.getCurrentItem();
+        savedInstanceState.putInt("INDEX", currIndex);
+        /*for(int i=0; i<mPagerAdapter.getCount(); i++) {
+            savedInstanceState.putInt(Integer.toString(i), mPagerAdapter.getItem(i).getAmount());
+        }*/
+    }
+
+
+
+    // ----------------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,4 +127,28 @@ public class CharacterActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    /**
+     * A simple pager adapter that represents the products in the store.
+     */
+    private class SheetPagerAdapter extends FragmentStatePagerAdapter {
+        private List<SheetFragment> fragments;
+
+        public SheetPagerAdapter(FragmentManager fm, List<SheetFragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public SheetFragment getItem(int position) {
+            return this.fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return this.fragments.size();
+        }
+    }
+
 }
