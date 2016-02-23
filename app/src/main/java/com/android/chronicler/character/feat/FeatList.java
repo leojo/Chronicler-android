@@ -10,36 +10,29 @@ public class FeatList  implements Serializable {
     private final ArrayList<FeatSlot> feats;
 
     public FeatList(){
-        feats = new ArrayList<FeatSlot>();
-    }
-
-    public FeatList(ArrayList<FeatSlot> feats){
-        this.feats = feats;
-    }
-
-    public FeatList(String featString){
-        this();
-        String[] featDescriptors = featString.split(";");
-        for(String desc : featDescriptors){
-            if(desc.equals(""))continue;
-            feats.add(new FeatSlot(desc));
-        }
-    }
-
-    public ArrayList<FeatSlot> getFeats() {
-        return feats;
+        feats = new ArrayList<>();
     }
 
     public void add(FeatSlot feat){
         feats.add(feat);
     }
 
-    @Override
-    public String toString() {
-        String featString = "";
-        for(FeatSlot feat : feats){
-            featString += feat.toString()+";";
+    public boolean retrain(Feat oldFeat, Feat newFeat){
+        for(FeatSlot fs : feats){
+            Feat f = fs.getFeat();
+            if(f==null) continue;
+            if(f.equals(oldFeat)){
+                fs.setFeat(newFeat);
+                return true;
+            }
+
         }
-        return featString;
+        return false;
     }
+
+    //<editor-fold desc="Getters and Setters">
+    public ArrayList<FeatSlot> getFeats() {
+        return feats;
+    }
+    //</editor-fold>
 }
