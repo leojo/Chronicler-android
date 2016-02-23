@@ -9,12 +9,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.CampaignsActivity;
 import com.android.chronicler.ui.CharacterActivity;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
+import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.UserLocalStore;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,8 +83,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void openCampaigns(View view) {
-        Intent intent = new Intent(this, CampaignsActivity.class);
-        startActivity(intent);
+        final Intent intent = new Intent(this, CampaignsActivity.class);
+        UserLocalStore store = new UserLocalStore(getApplicationContext());
+        RequestParams user_data = new RequestParams("username", store.getUserData()[0]);
+        ChroniclerRestClient.get("/campaignData", user_data, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                //CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
+                ArrayList<String> responseContent = new ArrayList<>();
+                for (int i=0; i<responseBody.length();i++) {
+                    try {
+                        responseContent.add(responseBody.getString(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                intent.putExtra("CampaignList", responseContent);
+                startActivity(intent);
+            }
+
+            /*@Override
+            public void onFailure(int statusCode, Header[] headers, JSONArray responseBody, Throwable error) {
+                //String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                Log.i("SKILLS", "Failure fetching campaign data");
+            }*/
+        });
     }
 
     public void logout(View view) {
