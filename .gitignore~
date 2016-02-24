@@ -7,4 +7,3 @@ gradlew
 gradlew.bat
 local.properties
 *.iml
-app/app.iml
