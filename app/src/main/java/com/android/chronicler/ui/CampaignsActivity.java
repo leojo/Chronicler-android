@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,9 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.android.chronicler.NewCampaignActivity;
 import com.android.chronicler.R;
-import com.android.chronicler.util.ChroniclerRestClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,31 +25,30 @@ import java.util.List;
 public class CampaignsActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
-
-
-    ListView campaignListView;
+    ListView campaignListView, playerCampaignsView;
     public List<String> CONTENT;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaigns);
 
+        // ---------------------------------------
+        // ADD TO CONTENT THE RESPONSE FROM SERVER
+        // ---------------------------------------
         Intent intent = getIntent();
         CONTENT = intent.getStringArrayListExtra("CampaignList");
-        // ---------------------------------------
-        // ADD SOMETHING TO CONTENT
-        // ---------------------------------------
-        //CONTENT = new ArrayList<>();
-        //CONTENT.add("andrea");
-        //CONTENT.add("leo");
-        //CONTENT.add("bjorn");
+
+        ArrayList<String> CONTENT2 = new ArrayList<String>();
+        CONTENT2.add("asdf1");
+        CONTENT2.add("asdf2");
+        CONTENT2.add("asdf3");
 
         // ---------------------------------------
         // GET THE CAMPAIGN LIST VIEW:
         // ---------------------------------------
-        campaignListView = (ListView)findViewById(R.id.CampaignListView);
+        campaignListView = (ListView)findViewById(R.id.DMCampaignListView);
+        playerCampaignsView = (ListView)findViewById(R.id.PlayerCampaignListView);
 
         // ---------------------------------------------------------------------------------------
         // CREATE AN ADAPTER FOR ARRAY LISTS
@@ -63,6 +61,7 @@ public class CampaignsActivity extends AppCompatActivity {
         // ----------------------------------------------------------------------------------------
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT2);
 
         // Set add button to footer
         Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
@@ -76,6 +75,7 @@ public class CampaignsActivity extends AppCompatActivity {
         // ADD THE ADAPTER TO LIST VIEW
         // -----------------------------------
         campaignListView.setAdapter(adapter);
+        playerCampaignsView.setAdapter(adapter2);
 
         // -------------------------------------------------------------------------------
         // CLICK LISTENER TO LIST VIEW
@@ -85,16 +85,15 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
                 if (position == adapter.getCount()) {
                     newCampaign();
                 } else {
                     openCampaign();
                 }
-                //adapter.add("You just clicked item number "+position);
-
-            }
-        });
+            };
         // --------------------------------------
+        });
     }
 
     public void openCampaign() {

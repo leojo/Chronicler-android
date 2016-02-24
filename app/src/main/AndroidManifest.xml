@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.chronicler">
+    package="com.android.chronicler"
+    android:versionCode="1"
+    android:versionName="1.0" >>
+
 
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,10 +33,18 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main" />
+
+            android:label="Chronicler">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.CharacterActivity"
-            android:label="@string/title_activity_character" />
+            android:label="@string/title_activity_character"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.CampaignsActivity"
             android:label="@string/title_activity_campaign" />
@@ -43,7 +54,7 @@
         <activity
             android:name=".ui.CharactersActivity"
             android:label="@string/title_activity_characters" />
-        <activity android:name=".NewCampaignActivity"></activity>
+        <activity android:name=".ui.NewCampaignActivity"></activity>
     </application>
 
 </manifest>
