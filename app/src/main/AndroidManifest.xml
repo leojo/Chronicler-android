@@ -54,7 +54,7 @@
         <activity
             android:name=".ui.CharactersActivity"
             android:label="@string/title_activity_characters" />
-        <activity android:name=".NewCampaignActivity"></activity>
+        <activity android:name=".ui.NewCampaignActivity"></activity>
     </application>
 
 </manifest>
