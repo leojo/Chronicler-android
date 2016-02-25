@@ -29,7 +29,7 @@ public class CharactersActivity extends ActionBarActivity {
         setContentView(R.layout.activity_characters);
 
         // ---------------------------------------
-        // ADD TO CONTENT THE RESPONSE FROM SERVER
+        // ADD TO DMCampaigns THE RESPONSE FROM SERVER
         // ---------------------------------------
         Intent intent = getIntent();
         loader = new DataLoader();

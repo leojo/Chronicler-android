@@ -27,6 +27,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -91,16 +94,35 @@ public class MainActivity extends AppCompatActivity {
         ChroniclerRestClient.get("/campaignData", user_data, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                //CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
-                ArrayList<String> responseContent = new ArrayList<>();
-                for (int i = 0; i < responseBody.length(); i++) {
-                    try {
-                        responseContent.add(responseBody.getString(i));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    System.out.println(responseBody.getJSONObject(1).getString("7"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                intent.putExtra("CampaignList", responseContent);
+                ArrayList<String> DMCampaigns = new ArrayList<>();
+                ArrayList<String> PCCampaigns = new ArrayList<>();
+
+                try {
+                    JSONArray DMResponse = responseBody.getJSONObject(0).names();
+
+                    for (int i=0; i<DMResponse.length(); i++) {
+                        DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    JSONArray PCResponse = responseBody.getJSONObject(1).names();
+                    for (int i=0; i<PCResponse.length(); i++) {
+                        PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("DMCampaignList", DMCampaigns);
+                intent.putExtra("PCCampaignList", PCCampaigns);
                 startActivity(intent);
             }
 

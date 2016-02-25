@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,8 @@ public class CampaignsActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     ListView campaignListView, playerCampaignsView;
-    public List<String> CONTENT;
+    public List<String> DMCampaigns;
+    public List<String> PCCampaigns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +34,11 @@ public class CampaignsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_campaigns);
 
         // ---------------------------------------
-        // ADD TO CONTENT THE RESPONSE FROM SERVER
+        // ADD TO DMCampaigns THE RESPONSE FROM SERVER
         // ---------------------------------------
         Intent intent = getIntent();
-        CONTENT = intent.getStringArrayListExtra("CampaignList");
-
-        ArrayList<String> CONTENT2 = new ArrayList<String>();
-        CONTENT2.add("asdf1");
-        CONTENT2.add("asdf2");
-        CONTENT2.add("asdf3");
+        DMCampaigns = intent.getStringArrayListExtra("DMCampaignList");
+        PCCampaigns = intent.getStringArrayListExtra("PCCampaignList");
 
         // ---------------------------------------
         // GET THE CAMPAIGN LIST VIEW:
@@ -52,16 +48,16 @@ public class CampaignsActivity extends AppCompatActivity {
 
         // ---------------------------------------------------------------------------------------
         // CREATE AN ADAPTER FOR ARRAY LISTS
-        // This adapter will keep track of the CONTENT array and call some built in functions like
-        // 'notifyDataSetChanged' when we call the .add() method on CONTENT, which makes it update our list.
+        // This adapter will keep track of the DMCampaigns array and call some built in functions like
+        // 'notifyDataSetChanged' when we call the .add() method on DMCampaigns, which makes it update our list.
         // If it wouldn't call the method by default, we could just make sure to call adapter.notifyDataSetChanged() each time something changes.
         // ----------------------------------------------------------------------------------------------------------
         // Important: We can easily make use of some of the abstract adapter classes that android
         // has to offer to suit our needs if we need to do something more complicated than this.
         // ----------------------------------------------------------------------------------------
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT2);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DMCampaigns);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
         // Set add button to footer
         Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
@@ -79,7 +75,7 @@ public class CampaignsActivity extends AppCompatActivity {
 
         // -------------------------------------------------------------------------------
         // CLICK LISTENER TO LIST VIEW
-        // Lets add something the CONTENT on each click, just to see that the list expands.
+        // Lets add something the DMCampaigns on each click, just to see that the list expands.
         // --------------------------------------------------------------------------------
         campaignListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
