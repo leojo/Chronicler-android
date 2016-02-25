@@ -1,14 +1,9 @@
 package com.android.chronicler.character.skill;
 
-import android.util.Log;
-
-import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

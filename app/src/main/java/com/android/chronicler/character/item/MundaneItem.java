@@ -5,7 +5,7 @@ package com.android.chronicler.character.item;
  *
  * The simplest of items, such as some rope, a candle, a ladder... etc.
  */
-public class MundaneItem {
+public class MundaneItem extends Item{
     private String description, shortDesc;
 
     //<editor-fold desc="Getters and Setters">

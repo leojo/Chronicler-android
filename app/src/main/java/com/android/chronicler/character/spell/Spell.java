@@ -1,7 +1,5 @@
 package com.android.chronicler.character.spell;
 
-import com.android.chronicler.util.srdDbLookup;
-import com.android.chronicler.util.OfflineResultSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;

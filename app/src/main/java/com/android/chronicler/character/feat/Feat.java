@@ -1,9 +1,5 @@
 package com.android.chronicler.character.feat;
 
-
-import com.android.chronicler.util.OfflineResultSet;
-import com.android.chronicler.util.srdDbLookup;
-
 import java.io.Serializable;
 
 /**
