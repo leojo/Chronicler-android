@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * A single item
  */
-public class Item implements Serializable {
+abstract class Item implements Serializable {
     private String name = "";
     private String cost;
     private String weight;

@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * Created by Leo on 10.2.2016.
  *
+ * A data wrapper for a skill object, along with some character specific stuff such as skill ranks and update functions.
  */
 
 public class Skill implements Serializable {
@@ -36,45 +37,44 @@ public class Skill implements Serializable {
     @JsonIgnore
     private final static String modBonus = "Ability Modifier";
 
-    public Skill(){ /* Empty constructor for JSON */ }
-
-	public Skill(String name, AbilityScores abilityScores, AbilityID abilityID, boolean trainedOnly, boolean armorPenalty, String description, String synergy, String action, String try_again, String special){
-		this.name = name;
-        this.description = description;
-        this.synergy = synergy;
-        this.abilityID = abilityID;
-		this.trainedOnly = trainedOnly;
-		this.armorPenalty = armorPenalty;
-        this.action = action;
-        this.try_again = try_again;
-        this.special = special;
-
-		this.ranks = 0;
-		this.totalValue = 0;
-		this.bonuses = new HashMap<>();
-		this.update(abilityScores);
-	}
-
+    // UPDATE FUNCTIONS ///////////////////////////////////////////////
+    // Call this to make the skill recalculate stuff i.e. when ranks increase
     public void update(){
         update(this.getBonuses().get(modBonus));
     }
 
+    // Call this when the ability scores change
     public void update(AbilityScores abilityScores){
-        Log.d("SKILL_JSON","Updating "+name+" with abilityID "+abilityID);
         update(abilityScores.get(abilityID).getModifier());
     }
 
+    // The actual update function, using the apropriate ability modifier.
 	public void update(int abilityModifier) {
+        this.bonuses = new HashMap<>();
 		this.bonuses.put("Ranks", this.ranks);
 		this.bonuses.put(modBonus, abilityModifier);
         this.totalValue = 0;
         for(Integer value : bonuses.values()){ totalValue += value; }
 	}
+    // UPDATE END //////////////////////////////////////////////////
 
+    // Does what it says on the tin.
 	public void incrementRanks(){
 		this.ranks++;
 	}
 
+    // Get's the total modifier of the skill, ranks and bonuses added together.
+    @JsonIgnore
+    public int getMod(){
+        int mod = ranks;
+        for(Integer bonus : bonuses.values()){
+            mod += bonus;
+        }
+        return mod;
+    }
+
+    // Does what you'd think, creates bonus if it didn't exist. returns true if bonus existed,
+    // false if it had to be created.
     @JsonIgnore
 	public boolean setBonus(String key, int value){
 		boolean existingBonus = this.bonuses.containsKey(key);
@@ -83,6 +83,8 @@ public class Skill implements Serializable {
 		return existingBonus;
 	}
 
+    // Increments the designated bonus if it exists, creates it if it doesn't.
+    // Returns true if bonus existed, false if it was created.
 	public boolean incrementBonus(String key){
 		boolean existingBonus = this.bonuses.containsKey(key);
 		int value = 1;
@@ -92,6 +94,7 @@ public class Skill implements Serializable {
 		return existingBonus;
 	}
 
+    // Decrements the designated bonus and returns true, returns false if bonus doesn't exist.
 	public boolean decrementBonus(String key){
 		boolean validBonus = this.bonuses.containsKey(key);
 		if(validBonus) {
@@ -102,6 +105,7 @@ public class Skill implements Serializable {
 		return validBonus;
 	}
 
+    // Returns false if bonus didn't exist.
 	public boolean removeBonus(String key){
 		if(this.bonuses.containsKey(key)){
 			this.bonuses.remove(key);
@@ -209,8 +213,7 @@ public class Skill implements Serializable {
     }
     //</editor-fold>
 
-
-
+    // Creates a new skill object using the same static skill data as the baseSkill.
     public static Skill copy(Skill baseSkill) {
         Skill newSkill =  new Skill();
 

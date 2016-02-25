@@ -1,5 +1,7 @@
 package com.android.chronicler.character.spell;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,91 +13,83 @@ import java.util.ArrayList;
 public class SpellSlot implements Serializable {
     private Spell spell;
     private boolean available = true;
-    private final int level;
-    private final String className;
+    private int level;
+    private String className;
 
 
-    public SpellSlot(int level, String className){
-        this.level = level;
-        this.className = className;
-        this.spell = null;
-    }
-
-    public SpellSlot(String className, int level){
-        this(level,className);
-    }
-
-    //Constructor to load form toString output.
-    public SpellSlot(String fromString){
-        String[] info = fromString.split(":");
-        this.className = info[0];
-        this.level = Integer.parseInt(info[1]);
-        if(info.length == 4) {
-            this.spell = new Spell(info[2]);
-            this.available = Boolean.parseBoolean(info[3]);
-        }
-    }
-
+    // Prepares a spell to the spell slot, returns true if successful, false if not.
+    // A spell can be prepared to the slot at any time without altering it's availability.
+    // However this action is supposed to take about an hour in-game and should not be done
+    // Without DM approval or knowledge
     public boolean prepare(Spell s){
         if(this.level != s.getLevelFor(this.className)) return false;
         this.spell = s;
-        this.available = true;
         return true;
-    }
-
-    public boolean prepare(int spellID){
-        return prepare(new Spell(spellID));
     }
 
     public boolean containsSpell(){
         return (this.spell != null);
     }
 
+    // uses the spell slot in this slot, returns the spell for the option of showing details (may not be necessary)
     public Spell cast(){
         this.available = false;
         return this.spell;
     }
 
+    // This may be redundant
+    @JsonIgnore
     public String getStatus(){ return (this.available ? "available" : "spent");}
 
-    public String getClassName() {
-        return className;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public Spell getSpell() {
-        return spell;
-    }
-
+    // This may be redundant
+    @JsonIgnore
     public String getSpellID() {
         return spell.getId();
     }
 
+    // Returns a human readable string describing the class and lvl of the spell-slot.
+    @JsonIgnore
     public String getType() {return ""+this.className+this.level;}
 
-    public ArrayList<Spell> getPossibleSpells(ArrayList<Spell> spellList){
-        ArrayList<Spell> possibleSpells = new ArrayList<Spell>();
-        for(Spell s : spellList){
-            if(s.getLevelFor(this.className) == this.level) possibleSpells.add(s);
-        }
-        return possibleSpells;
+    // Given a spell-list returns a list of all spells this spellslot can hold
+    @JsonIgnore
+    public Spell[] getPossibleSpells(SpellList spellList){
+        return spellList.getSpellsFor(this.className,this.level);
+    }
+
+    //<editor-fold desc="Getters and Setters">
+
+    public Spell getSpell() {
+        return spell;
     }
 
     public void setSpell(Spell spell) {
         this.spell = spell;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
     public void setAvailable(boolean available) {
         this.available = available;
     }
 
-    @Override
-    public String toString(){
-        String s = this.className+":"+this.level;
-        if(this.spell != null) s += ":"+this.spell.toString()+":"+this.available;
-        return s;
+    public int getLevel() {
+        return level;
     }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    //</editor-fold>
 }
