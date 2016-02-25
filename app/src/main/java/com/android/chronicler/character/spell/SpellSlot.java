@@ -51,9 +51,9 @@ public class SpellSlot implements Serializable {
     @JsonIgnore
     public String getType() {return ""+this.className+this.level;}
 
-    // Given a spell-list returns a list of all spells this spellslot can hold
+    // Given a spell-list returns a list of all spells this spell-slot can hold
     @JsonIgnore
-    public Spell[] getPossibleSpells(SpellList spellList){
+    public ArrayList<Spell> getPossibleSpells(SpellList spellList){
         return spellList.getSpellsFor(this.className,this.level);
     }
 

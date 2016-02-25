@@ -13,9 +13,10 @@ import java.util.Map;
 
 /**
  * Created by BjornBjarnsteins on 10/28/15.
+ * Remodelled by Leo Johannsson 5.02.2016
  *
  * Contains info about saving throws used by character sheets
- *
+ * Represents a single saving throw and all it's associated information.
  */
 
 public class SavingThrow  implements Serializable {
@@ -115,7 +116,8 @@ public class SavingThrow  implements Serializable {
 		return false;
 	}
 
-	public String getName() {
+    //<editor-fold desc="Getters and Setters">
+    public String getName() {
 		return name;
 	}
 
@@ -170,5 +172,6 @@ public class SavingThrow  implements Serializable {
 	public void setAbilityBonusName(String abilityBonusName) {
 		this.abilityBonusName = abilityBonusName;
 	}
+    //</editor-fold>
 }
 

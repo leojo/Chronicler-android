@@ -1,13 +1,18 @@
 package com.android.chronicler.character.item;
 
+import com.android.chronicler.character.enums.SizeCategory;
+
 /**
  * Created by leo on 23.2.2016.
+ *
+ * Abstract class for the shared properties of all equippable items.
  */
-public class Equipment extends Item{
+abstract class Equipment extends Item{
     private boolean equipped;
     private boolean masterwork;
     private String slot;
     private String equipAction;
+    private SizeCategory size;
 
     public Equipment(){
         this("Slotless","Free Action");
@@ -59,5 +64,14 @@ public class Equipment extends Item{
     public void setEquipAction(String equipAction) {
         this.equipAction = equipAction;
     }
+
+    public SizeCategory getSize() {
+        return size;
+    }
+
+    public void setSize(SizeCategory size) {
+        this.size = size;
+    }
+
     //</editor-fold>
 }

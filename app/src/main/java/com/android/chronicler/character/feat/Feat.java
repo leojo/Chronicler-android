@@ -9,9 +9,9 @@ import java.io.Serializable;
 /**
  * Created by leo on 28.11.2015.
  *
- * NOTE: This has yet to be connected to the front end
+ * A class representing a single feat. This is only a data structure and has no usability functions.
  */
-public class Feat  implements Serializable {
+public class Feat  implements Serializable, Comparable {
     private String name;
     private String type;
     private String multiple;
@@ -123,4 +123,12 @@ public class Feat  implements Serializable {
         this.selectedChoice = selectedChoice;
     }
     //</editor-fold>
+
+    @Override
+    public int compareTo(Object another) {
+        if(another instanceof Feat){
+            return name.compareTo(((Feat) another).getName());
+        }
+        return 0;
+    }
 }

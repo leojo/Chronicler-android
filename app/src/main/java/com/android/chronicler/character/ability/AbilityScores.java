@@ -4,16 +4,21 @@ import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by leo on 8.2.2016.
+ *
+ * A class to represent and handle all the things you would use the ability score section of a
+ * classic paper character sheet to do.
  */
 public class AbilityScores implements Serializable{
 
     private HashMap<AbilityID, AbilityScore> abilityScores;
 
     public AbilityScores(){
+        // Create the ability scores:
         abilityScores = new HashMap<>();
         abilityScores.put(AbilityID.STR,new AbilityScore(AbilityID.STR));
         abilityScores.put(AbilityID.DEX, new AbilityScore(AbilityID.DEX));
@@ -21,17 +26,15 @@ public class AbilityScores implements Serializable{
         abilityScores.put(AbilityID.INT,new AbilityScore(AbilityID.INT));
         abilityScores.put(AbilityID.WIS,new AbilityScore(AbilityID.WIS));
         abilityScores.put(AbilityID.CHA,new AbilityScore(AbilityID.CHA));
+        // Assign a randomly rolled ability score (using the standard 4d6 drop lowest method)
         setBase(AbilityID.STR,roll4d6dropLowest());
         setBase(AbilityID.DEX,roll4d6dropLowest());
         setBase(AbilityID.CON,roll4d6dropLowest());
         setBase(AbilityID.WIS,roll4d6dropLowest());
         setBase(AbilityID.INT,roll4d6dropLowest());
         setBase(AbilityID.CHA,roll4d6dropLowest());
+        // update the stuff
         update();
-    }
-
-    public AbilityScores(HashMap<AbilityID, AbilityScore> abilityScoreHashMap){
-        this.abilityScores = abilityScoreHashMap;
     }
 
     @JsonIgnore
@@ -62,35 +65,31 @@ public class AbilityScores implements Serializable{
 
     @JsonIgnore
     public void setBase(AbilityID ID, int value){
-        abilityScores.get(ID).setBonus("Base Score", value);
+        abilityScores.get(ID).setBonus(AbilityScore.baseBonusName, value);
     }
 
     public void incrementBase(AbilityID ID){
-        abilityScores.get(ID).incrementBonus("Base Score");
+        abilityScores.get(ID).incrementBonus(AbilityScore.baseBonusName);
     }
 
     public void decrementBase(AbilityID ID){
-        abilityScores.get(ID).decrementBonus("Base Score");
+        abilityScores.get(ID).decrementBonus(AbilityScore.baseBonusName);
     }
 
     @JsonIgnore
-    public int[] getAbilityScoreTotals(){
-        int[] abScoresTotal = new int[6];
-        int i = 0;
+    public ArrayList<Integer> getAbilityScoreTotals(){
+        ArrayList<Integer> abScoresTotal = new ArrayList<>();
         for(AbilityID id : AbilityID.values()){
-            abScoresTotal[i] = abilityScores.get(id).getTotalValue();
-            i++;
+            abScoresTotal.add(abilityScores.get(id).getTotalValue());
         }
         return abScoresTotal;
     }
 
     @JsonIgnore
-    public int[] getAbilityScoreMods() {
-        int[] mods = new int[6];
-        int i=0;
-        for (AbilityID id : AbilityID.values()) {
-            mods[i] = abilityScores.get(id).getModifier();
-            i++;
+    public ArrayList<Integer> getAbilityScoreMods() {
+        ArrayList<Integer> mods = new ArrayList<>();
+        for(AbilityID id : AbilityID.values()){
+            mods.add(abilityScores.get(id).getModifier());
         }
         return mods;
     }

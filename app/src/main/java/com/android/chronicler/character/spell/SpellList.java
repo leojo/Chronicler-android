@@ -37,13 +37,13 @@ public class SpellList implements Serializable {
     //Returns an alphabetically ordered list of spells in the spell-list that are for the desired class and level
     //f.x. a Druid/Wizard can get a list of his available lvl 3 Wizard spells by getSpellsFor("Wizard",3)
     @JsonIgnore
-    public Spell[] getSpellsFor(String className, int level){
+    public ArrayList<Spell> getSpellsFor(String className, int level){
         ArrayList<Spell> subList = new ArrayList<Spell>();
         for(Spell s : this.spells){
             if(s.getLevelFor(className)==level) subList.add(s);
         }
         Collections.sort(subList);
-        return (Spell[]) subList.toArray();
+        return subList;
     }
 
     //<editor-fold desc="Getters and Setters">

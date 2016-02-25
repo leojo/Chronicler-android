@@ -74,16 +74,24 @@ public class Skills  implements Serializable {
 
     //Returns false if skillName is not valid.
     public boolean train(String skillName){
+        // These skills require some further descriptor f.x. Knowledge(Arcana) is a valid skill, whereas Knowledge is not actually a skill.
+        String[] parametrizableSkills = {"Craft","Knowledge","Perform","Profession","Speak Language"};
+        for(String s: parametrizableSkills){
+            // if the skill should be parametrized but isn't, then it's not valid.
+            if(skillName.equalsIgnoreCase(s)) return false;
+        }
         if(!skills.containsKey(skillName)){
-            String[] parametrizableSkills = {"Craft","Knowledge","Perform","Profession","Speak Language"};
             for(String s : parametrizableSkills){
                 if(skillName.startsWith(s)){
+                    // The skill is a parametrized version of a parametrizable skill.
                     Skill baseSkill = skills.get(s);
                     Skill newSkill = Skill.copy(baseSkill);
                     skills.put(skillName,newSkill);
-                    break;
+                    return true;
                 }
             }
+            // The skill was not a valid skill
+            return false;
         }
         skills.get(skillName).incrementRanks();
         return true;

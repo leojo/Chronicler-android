@@ -10,12 +10,15 @@ import java.util.HashMap;
 
 /**
  * Created by leo on 8.2.2016.
+ *
+ * This class represents the trio of skills on a character sheet. Everything you would do in that
+ * section of the character sheet this class should handle.
  */
 public class Saves implements Serializable {
 
     private HashMap<SavingThrowID,SavingThrow> saves;
 
-    public Saves() {
+    public Saves() { // For JSON
         saves = new HashMap<>();
         saves.put(SavingThrowID.FORT, new SavingThrow());
         saves.put(SavingThrowID.REF, new SavingThrow());
@@ -29,6 +32,7 @@ public class Saves implements Serializable {
         saves.put(SavingThrowID.WILL, new SavingThrow(abilityScores,SavingThrowID.WILL));
     }
 
+    // updates all the saves with the given ability scores. Should be called whenever ability scores change.
     public void update(AbilityScores abilityScores){
         for(SavingThrow save : saves.values()){
             save.update(abilityScores);
@@ -56,6 +60,7 @@ public class Saves implements Serializable {
         saves.get(saveID).setBonus(bonusName, value);
     }
 
+    //<editor-fold desc="Getters and Setters">
     public HashMap<SavingThrowID, SavingThrow> getSaves() {
         return saves;
     }
@@ -63,4 +68,5 @@ public class Saves implements Serializable {
     public void setSaves(HashMap<SavingThrowID, SavingThrow> saves) {
         this.saves = saves;
     }
+    //</editor-fold>
 }
