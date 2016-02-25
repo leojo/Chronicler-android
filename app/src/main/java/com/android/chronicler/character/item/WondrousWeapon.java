@@ -3,7 +3,7 @@ package com.android.chronicler.character.item;
 /**
  * Created by leo on 23.2.2016.
  */
-public class WondrousWeapon extends ArmorShield implements Wondrous {
+public class WondrousWeapon extends Weapon implements Wondrous {
     @Override
     public String use() {
         return null;
