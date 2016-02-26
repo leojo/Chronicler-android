@@ -4,6 +4,8 @@ import com.android.chronicler.character.enums.DamageType;
 import com.android.chronicler.character.enums.WeaponCategory;
 import com.android.chronicler.character.enums.WeaponType;
 
+import java.util.ArrayList;
+
 /**
  * Created by leo on 23.2.2016.
  *
@@ -13,7 +15,7 @@ public class Weapon extends Equipment{
 
     private int damageDie, diceCount, critMult, critRange; // critRange = 2 if it's "19-20" i.e. (upper-lower)+1
     private boolean twoHand, oneHand, ranged, thrown, finessable;
-    private DamageType[] damageTypes;
+    private String damageTypes;
     private WeaponCategory wepCategory;
     private WeaponType weaponType;
     private int rangeIncrement;
@@ -99,11 +101,11 @@ public class Weapon extends Equipment{
         this.finessable = finessable;
     }
 
-    public DamageType[] getDamageTypes() {
+    public String getDamageTypes() {
         return damageTypes;
     }
 
-    public void setDamageTypes(DamageType[] damageTypes) {
+    public void setDamageTypes(String damageTypes) {
         this.damageTypes = damageTypes;
     }
 
