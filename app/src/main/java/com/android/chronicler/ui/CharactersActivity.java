@@ -3,6 +3,7 @@ package com.android.chronicler.ui;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,12 @@ import com.android.chronicler.util.DataLoader;
 
 import java.util.List;
 
-public class CharactersActivity extends ActionBarActivity {
+/**
+ * Created by andrea on 28.1.2016.
+ * Characters activity includes a list of the user's characters (both as player and as dungeon master)
+ * and the option to create a new charater
+ **/
+public class CharactersActivity extends AppCompatActivity {
 
 
     private ArrayAdapter<String> adapter;

@@ -1,10 +1,8 @@
 package com.android.chronicler;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +25,16 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
-
+/**
+ * Created by andrea on 28.1.2016.
+ * Main activity is a controller for the main screen. The main screen has the following options
+ *      Characters - Generating a list of ones' characters.
+ *      Campaigns - Generating a list of ones' campaigns.
+ *      About - Maybe remove this? Maybe include a search option
+ *      Logout - An option to logout, this doesn't need to be one of the "main buttons" necessarily
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private UserLocalStore store;
     private DataLoader loader;
     private static PersistentCookieStore cookieStore;
 
@@ -38,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Create a loader for loading character lists, campaign lists, etc from the main screen
         loader = new DataLoader();
+
+        // Create the cookie store: We need this to be able to redirect instantly to
+        // the login screen if the user's cookie has expired.
         cookieStore = new PersistentCookieStore(this);
         boolean inSession = userInSession(cookieStore.getCookies());
         if(!inSession) {
@@ -68,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // ----
+    // UTIL
+    // ----
+
+    // Check if user is in session, i.e. has a valid cookie:
     public boolean userInSession(List<Cookie> cookies) {
         Cookie userCookie = new BasicClientCookie("user", null);
         for(Cookie c : cookies) {
@@ -83,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    // ------------
+    // MENU OPTIONS
+    // ------------
+
+    // Menu option #1: Opens up a list of the user's characters and allows for the option
+    // to create a new character
     public void openCharacters(View view) {
         Intent intent = new Intent(this, CharactersActivity.class);
         boolean inSession = loader.readyCharlistThenStart(this, intent);
@@ -90,55 +110,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //  SHOULD PUT THIS CODE IN DATALOADER class .... thats exactly what it was created for, see
-    // loader.readySheetThenStart(intent) above ^
+    // Menu option #2: Opens up a list of the user's campaigns and allows for the
+    // option to create a new campaign.
+    // TODO: @Bjorn: I took the liberty to move your code to the Data Loader as I'd previously asked you, but it still needs to be fixed so that it uses the cookies and not the user name.
     public void openCampaigns(View view) {
         final Intent intent = new Intent(this, CampaignsActivity.class);
-        UserLocalStore store = new UserLocalStore(getApplicationContext());
-        RequestParams user_data = new RequestParams("username", store.getUserData()[0]);
-        ChroniclerRestClient.get("/campaignData", user_data, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                try {
-                    System.out.println(responseBody.getJSONObject(1).getString("7"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ArrayList<String> DMCampaigns = new ArrayList<>();
-                ArrayList<String> PCCampaigns = new ArrayList<>();
-
-                try {
-                    JSONArray DMResponse = responseBody.getJSONObject(0).names();
-
-                    for (int i=0; i<DMResponse.length(); i++) {
-                        DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    JSONArray PCResponse = responseBody.getJSONObject(1).names();
-                    for (int i=0; i<PCResponse.length(); i++) {
-                        PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                intent.putExtra("DMCampaignList", DMCampaigns);
-                intent.putExtra("PCCampaignList", PCCampaigns);
-                startActivity(intent);
-            }
-
-            /*@Override
-            public void onFailure(int statusCode, Header[] headers, JSONArray responseBody, Throwable error) {
-                //String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching campaign data");
-            }*/
-        });
+        boolean inSession = loader.readyCampListThenStart(this, intent);
+        if(!inSession) redirectToLogin();
     }
 
+    // Menu option #4 (Should probably but this elsewhere than in the main menu)
+    // Allows the user to logout, thereby clearing the cookie store.
     public void logout(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

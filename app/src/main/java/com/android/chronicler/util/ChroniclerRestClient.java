@@ -14,6 +14,14 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 /**
  * Created by andrea on 9.2.2016.
+ * ChroniclerRestClient is the class that has direct communications to our server at
+ * chronicler-webapp.herokuapp.com.
+ *
+ * It uses AsyncHttpClient (see details at http://loopj.com/android-async-http/) for asynchronous
+ * get and post requests.
+ *
+ * This class also manages cookies with a PersistentCookieStore so if the request to be sent is user
+ * specific, it checks first if the user has an unexpired cookie before sending the request.
  */
 public class ChroniclerRestClient {
     private static final String BASE_URL = "https://chronicler-webapp.herokuapp.com";
@@ -32,17 +40,10 @@ public class ChroniclerRestClient {
         // contains a UUID created by server.
         cookieStore = new PersistentCookieStore(context);
         client.setCookieStore(cookieStore);
-        Log.i("LOGINDEBUG", "Created the cookie store! ");
-        List<Cookie> cookies = cookieStore.getCookies();
-        for(Cookie c : cookies) {
-            Log.i("LOGINDEBUG", "In the cookie store: "+c.toString());
-        }
     }
 
     // Generic async get request
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        List<Cookie> cookies = cookieStore.getCookies();
-        for(Cookie c : cookies) Log.i("LOGINDEBUG", "GENERIC GET REQUEST: Found cookie " + c);
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
@@ -51,13 +52,9 @@ public class ChroniclerRestClient {
     public static boolean getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", null);
-        Log.i("LOGINDEBUG", "GETUSERDATA: Checking if we have any cookies ......");
         for(Cookie c : cookies) {
-            Log.i("LOGINDEBUG", "GETUSERDATA: "+c.toString());
             if(c.getName().equals("user")) userCookie = c;
         }
-        Log.i("LOGINDEBUG", "GETUSERDATA userCookie name " + userCookie.getName());
-        Log.i("LOGINDEBUG", "GETUSERDATA userCookie val " + userCookie.getValue());
         if(userCookie.getValue() == null) return false;
         client.addHeader(userCookie.getName(), userCookie.getValue());
         client.get(getAbsoluteUrl(url), params, responseHandler);
@@ -87,7 +84,6 @@ public class ChroniclerRestClient {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        Log.i("LOGIN", "this is the url " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
     }
 }

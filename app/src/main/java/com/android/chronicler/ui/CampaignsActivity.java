@@ -20,6 +20,9 @@ import java.util.List;
 
 /**
  * Created by andrea on 28.1.2016.
+ * Campaigns activity includes a list of the user's campaigns (both as player and as dungeon master)
+ * and the option to create a new campaign. The user that creates a campaign immediately becomes
+ * the dungeon master of the campaign (at least for now)
  */
 public class CampaignsActivity extends AppCompatActivity {
 
@@ -55,7 +58,6 @@ public class CampaignsActivity extends AppCompatActivity {
         // Important: We can easily make use of some of the abstract adapter classes that android
         // has to offer to suit our needs if we need to do something more complicated than this.
         // ----------------------------------------------------------------------------------------
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DMCampaigns);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
@@ -96,6 +98,7 @@ public class CampaignsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CampaignActivity.class);
         startActivity(intent);
     }
+
 
     public void newCampaign() {
         Intent intent = new Intent(this, NewCampaignActivity.class);

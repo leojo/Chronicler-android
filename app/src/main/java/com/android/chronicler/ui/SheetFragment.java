@@ -11,6 +11,14 @@ import com.android.chronicler.R;
 
 /**
  * Created by andrea on 23.2.2016.
+ * A fragment class for character sheet fragments.
+ * The character sheet will have (at least) 6 fragments to shuffle through:
+ *      Combat
+ *      Spells
+ *      Feats
+ *      Skills
+ *      Inventory
+ *      About
  */
 public class SheetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,6 +29,9 @@ public class SheetFragment extends Fragment {
         return rootView;
     }
 
+    // newInstance is called when the CharacterActivity is started and the fragments get
+    // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
+    // as arguments for this function.
     public static SheetFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("ID", type);
@@ -33,9 +44,4 @@ public class SheetFragment extends Fragment {
     public String getName() {
         return getArguments().getString("ID");
     }
-/*
-    public TextView getTextField() {
-        if(getView() != null && getView().findViewById(R.id.editText) != null ) return (TextView)getView().findViewById(R.id.editText);
-        else return null;
-    }*/
 }

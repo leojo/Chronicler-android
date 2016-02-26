@@ -5,7 +5,9 @@ import android.util.Log;
 import java.sql.*;
 import java.util.ArrayList;
 
-/*
+/**
+ * Created by leo
+ *
  * Various convenience functions for accessing the content database, i.e.
  * classes, items, races, etc.
  */
