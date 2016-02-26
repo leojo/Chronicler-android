@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void openCharacters(View view) {
         Intent intent = new Intent(this, CharactersActivity.class);
-        loader.readyCharlistThenStart(this, intent);
+        boolean inSession = loader.readyCharlistThenStart(this, intent);
+        if(!inSession) redirectToLogin();
     }
 
 
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     public void logout(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        store.clearSession();
+        cookieStore.clear();
     }
 
 

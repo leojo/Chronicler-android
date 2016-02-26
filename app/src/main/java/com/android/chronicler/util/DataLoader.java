@@ -43,9 +43,9 @@ public class DataLoader {
 
     }
 
-    public void readyCharlistThenStart(final Context context, final Intent intent) {
+    public boolean readyCharlistThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
+        boolean inSession = cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String JSONresponse = new String(responseBody);
@@ -75,6 +75,9 @@ public class DataLoader {
                 Log.i("CHARLIST", "failed to send requesT???");
             }
         });
+
+        if(!inSession) return false;
+        else return true;
     }
 
 }

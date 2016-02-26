@@ -48,7 +48,7 @@ public class ChroniclerRestClient {
 
     // Async get requests that needs to pass along user id cookie, i.e. when requesting user data
     // such as a character sheet.
-    public static void getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public static boolean getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", null);
         Log.i("LOGINDEBUG", "GETUSERDATA: Checking if we have any cookies ......");
@@ -58,8 +58,10 @@ public class ChroniclerRestClient {
         }
         Log.i("LOGINDEBUG", "GETUSERDATA userCookie name " + userCookie.getName());
         Log.i("LOGINDEBUG", "GETUSERDATA userCookie val " + userCookie.getValue());
+        if(userCookie.getValue() == null) return false;
         client.addHeader(userCookie.getName(), userCookie.getValue());
         client.get(getAbsoluteUrl(url), params, responseHandler);
+        return true;
     }
 
     // Needs a comment what this is for?
