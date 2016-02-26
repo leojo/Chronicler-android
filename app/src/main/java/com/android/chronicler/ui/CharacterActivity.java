@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -15,6 +17,7 @@ import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.util.SkillsAdapter;
+import com.android.chronicler.util.ViewPagerTabs;
 
 import java.util.List;
 import java.util.Vector;
@@ -26,7 +29,11 @@ import java.util.Vector;
  * stats, their spells, feats and skills and a generic "about" fragment containing information
  * such as name, alignment, hair color etc.
  **/
-public class CharacterActivity extends FragmentActivity {
+public class CharacterActivity extends AppCompatActivity { // extends FragmentActivity {
+    // We have to decide whether we want to extend AppCompatActivity, thereby keeping the action bar
+    // and perhaps using it somehow, e.g. putting the name and class and level of our character there
+    // or instead extend FragmentActivity, in which case the fragment fills the whole screen (if we
+    // like) or perhaps we could add a banner up top with name, class, level....
 
     private CharacterSheet character;
     ListView skillsView;
@@ -35,6 +42,8 @@ public class CharacterActivity extends FragmentActivity {
     // For fragment view stuff
     private ViewPager mPager;
     private SheetPagerAdapter mPagerAdapter;
+    private static final int INITIAL_PAGE = 1;
+
 
 
     @Override
@@ -43,15 +52,23 @@ public class CharacterActivity extends FragmentActivity {
         setContentView(R.layout.activity_character);
         // -------------------------------------------------------- FRAGMENT RELATED
 
+        // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
+        final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
+        pagerTabs.addTabLabels(R.string.charactersheet_about_tab, R.string.charactersheet_combat_tab,
+                R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_skills_tab);
+
+
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
+        fragments.add(SheetFragment.newInstance("ABOUT"));
         fragments.add(SheetFragment.newInstance("COMBAT"));
         fragments.add(SheetFragment.newInstance("SPELLS"));
-        fragments.add(SheetFragment.newInstance("ABOUT"));
         fragments.add(SheetFragment.newInstance("FEATS"));
+        fragments.add(SheetFragment.newInstance("SKILLS"));
 
 
+        // The view pager is an element that can shift through views by swiping right and left
         mPager = (ViewPager) findViewById(R.id.product_pager);
         // Potentially want to use this later on to control if we go into a circle or what
         //mPager.setOffscreenPageLimit(availableProducts.size() - 1);
@@ -72,13 +89,22 @@ public class CharacterActivity extends FragmentActivity {
                 //    for (StoreFragment fragment : fragments) fragment.removeHint();
             }
         });
+
+        // the view pager needs an adapter to handle the fragments, inflate the views, etc.
         mPagerAdapter = new SheetPagerAdapter(getSupportFragmentManager(), fragments);
         mPager.setAdapter(mPagerAdapter);
+
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setOnPageChangeListener(pagerTabs);
+        mPager.setCurrentItem(INITIAL_PAGE);
+        mPager.setPageMargin(2);
+        mPager.setPageMarginDrawable(R.color.tabs_color);
+        pagerTabs.onPageScrolled(INITIAL_PAGE, 0, 0); // should not be needed
 
         // ------------------------------------------------------------------------------------------
 
         // LEO STUFF
-        skillsView = (ListView)findViewById(R.id.skillsView);
+        /* skillsView = (ListView)findViewById(R.id.skillsView);
         character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
         skillsView.setAdapter(new SkillsAdapter(this, character.getSkills()));
 
@@ -90,7 +116,7 @@ public class CharacterActivity extends FragmentActivity {
         ((TextView)this.findViewById(R.id.intInfo)).setText("INT: "+character.getAbilityScores().get(AbilityID.INT).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.INT).getModifier());
         ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
         ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
-        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");
+        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");*/
     }
 
 // ------------------------- FRAGMENT RELATED
