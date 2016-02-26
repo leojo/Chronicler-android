@@ -32,12 +32,17 @@ public class ChroniclerRestClient {
         // contains a UUID created by server.
         cookieStore = new PersistentCookieStore(context);
         client.setCookieStore(cookieStore);
+        Log.i("LOGINDEBUG", "Created the cookie store! ");
+        List<Cookie> cookies = cookieStore.getCookies();
+        for(Cookie c : cookies) {
+            Log.i("LOGINDEBUG", "In the cookie store: "+c.toString());
+        }
     }
 
     // Generic async get request
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
-        for(Cookie c : cookies) Log.i("LOGIN_COOKIE", "inside rest client " + c);
+        for(Cookie c : cookies) Log.i("LOGINDEBUG", "GENERIC GET REQUEST: Found cookie " + c);
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
@@ -45,10 +50,14 @@ public class ChroniclerRestClient {
     // such as a character sheet.
     public static void getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
-        Cookie userCookie = new BasicClientCookie("user", "null");
+        Cookie userCookie = new BasicClientCookie("user", null);
+        Log.i("LOGINDEBUG", "GETUSERDATA: Checking if we have any cookies ......");
         for(Cookie c : cookies) {
+            Log.i("LOGINDEBUG", "GETUSERDATA: "+c.toString());
             if(c.getName().equals("user")) userCookie = c;
         }
+        Log.i("LOGINDEBUG", "GETUSERDATA userCookie name " + userCookie.getName());
+        Log.i("LOGINDEBUG", "GETUSERDATA userCookie val " + userCookie.getValue());
         client.addHeader(userCookie.getName(), userCookie.getValue());
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }

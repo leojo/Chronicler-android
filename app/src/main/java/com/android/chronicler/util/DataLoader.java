@@ -61,22 +61,8 @@ public class DataLoader {
                         content.add(jObject.get(key).toString());
                     }
                 }catch(JSONException e) {Log.i("CHARLIST", "JSON EXCEPTION");}
-/*
-                JSONParser parser = new JSONParser();
 
-                try {
-                    Object obj = parser.parse(JSONresponse);
-                    Log.i("CHARLIST", obj.toString());
-                    JSONArray jArray = (JSONArray)obj;
-                    Log.i("CHARLIST", jArray.toString());
-                    for(int i = 0; i< jArray.size(); i++) {
-                        content.add((String)jArray.get(i));
-                    }
 
-                }catch(ParseException e) {
-                    Log.i("CHARLIST", "Parsing exception: Not valid character list JSON");
-                }
-*/
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
                 context.startActivity(intent);
