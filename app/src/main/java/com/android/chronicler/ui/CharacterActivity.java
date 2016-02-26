@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.chronicler.character.*;
 import com.android.chronicler.R;
+import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.util.SkillsAdapter;
 

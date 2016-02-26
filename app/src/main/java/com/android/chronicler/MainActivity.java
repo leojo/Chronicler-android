@@ -10,18 +10,11 @@ import android.view.View;
 import com.android.chronicler.ui.CampaignsActivity;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
-import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.DataLoader;
-import com.android.chronicler.util.UserLocalStore;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import java.util.ArrayList;
 import java.util.List;
-import cz.msebera.android.httpclient.Header;
+
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 

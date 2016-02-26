@@ -1,15 +1,16 @@
 package com.android.chronicler.util;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
-import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.List;
 
 import cz.msebera.android.httpclient.cookie.Cookie;
-import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 /**

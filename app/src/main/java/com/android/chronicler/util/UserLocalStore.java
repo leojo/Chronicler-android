@@ -2,7 +2,6 @@ package com.android.chronicler.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 
 /**
