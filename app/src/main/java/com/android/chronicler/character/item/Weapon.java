@@ -6,6 +6,8 @@ import com.android.chronicler.character.enums.WeaponType;
 
 /**
  * Created by leo on 23.2.2016.
+ *
+ * A weapon
  */
 public class Weapon extends Equipment{
 

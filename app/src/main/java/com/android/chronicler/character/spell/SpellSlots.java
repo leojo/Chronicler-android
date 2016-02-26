@@ -10,43 +10,33 @@ import java.util.HashMap;
  * Class that represents the collection of spell slots for a single character.
  */
 public class SpellSlots  implements Serializable {
-    private final ArrayList<SpellSlot> spellSlots;
-
-    public SpellSlots(){
-        this.spellSlots = new ArrayList<SpellSlot>();
-    }
-
-    // constructor to load from toString output
-    public SpellSlots(String s){
-        this();
-        for(String pair : s.split(";")){
-            if(pair.length()==0) continue;
-            this.spellSlots.add(new SpellSlot(pair));
-        }
-    }
+    private ArrayList<SpellSlot> spellSlots;
 
     public void add(SpellSlot ss){
         this.spellSlots.add(ss);
     }
 
-    public void remove(String className, int level){
+    // Removes a single spellslot of the given className and level. Returns true if a deletion was made.
+    public boolean remove(String className, int level){
         for(SpellSlot slot : this.spellSlots){
-            if(slot.getClassName()==className && slot.getLevel() == level){
+            if(slot.getClassName() == className && slot.getLevel() == level){
                 this.spellSlots.remove(slot);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
-    // get the spellslots nicely formated for thymeleaf to foreach through them
-    public HashMap<Integer,ArrayList<SpellSlot>> getSpellSlots() {
-        HashMap<Integer,ArrayList<SpellSlot>> spellSlotTable = new HashMap<Integer,ArrayList<SpellSlot>>();
-        for(SpellSlot ss : this.spellSlots){
-            int level = ss.getLevel();
-            if(!spellSlotTable.containsKey(level)) spellSlotTable.put(level, new ArrayList<SpellSlot>());
-            spellSlotTable.get(level).add(ss);
+    // Removes all spellslots matching the className,level. Returns true if any deletion was made.
+    public boolean removeAll(String className, int level){
+        boolean retVal = false;
+        for(SpellSlot slot : this.spellSlots){
+            if(slot.getClassName() == className && slot.getLevel() == level){
+                this.spellSlots.remove(slot);
+                retVal = true;
+            }
         }
-        return spellSlotTable;
+        return retVal;
     }
 
     // get a list of the unique spell slot types.
@@ -63,44 +53,25 @@ public class SpellSlots  implements Serializable {
         return types;
     }
 
-    //Update the spells in the array
-    public void updateSpells(ArrayList<String> newSpellInfo){
-        HashMap<Integer,ArrayList<SpellSlot>> spellSlotTable = getSpellSlots();
-        for(String spell : newSpellInfo){
-            String[] info = spell.split(":");
-            Integer level = Integer.parseInt(info[0]);
-            Integer slotNum = Integer.parseInt(info[1]);
-            Integer spellID = Integer.parseInt(info[2]);
-            if(spellID == 0) continue;
-            spellSlotTable.get(level).get(slotNum).setSpell(new Spell(spellID));
-        }
-    }
-
-    public void updateSpellStatus(ArrayList<String> newPrepInfo) {
-        HashMap<Integer,ArrayList<SpellSlot>> spellSlotTable = getSpellSlots();
-        for(String spell : newPrepInfo){
-            String[] info = spell.split(":");
-            Integer level = Integer.parseInt(info[0]);
-            Integer slotNum = Integer.parseInt(info[1]);
-            String status = info[2];
-            spellSlotTable.get(level).get(slotNum).setAvailable(!status.equalsIgnoreCase("spent"));
-        }
-    }
-
+    // Sets the number of spell-slots for the className and level to numSpells
     public void update(String className, int level, int numSpells){
         int oldCount = this.count(className, level);
         if(numSpells >= oldCount){
             for (int i = 0; i < numSpells - oldCount; i++) {
-                this.add(new SpellSlot(className,level));
+                SpellSlot ss = new SpellSlot();
+                ss.setClassName(className);
+                ss.setLevel(level);
+                this.add(ss);
             }
         } else {
-            // Pretty sure this will never happen
+            // This should never happen, except by manual override from user
             for (int i = 0; i < oldCount - numSpells; i++) {
                 this.remove(className,level);
             }
         }
     }
 
+    // Returns the number of spell-slots that match the criteria
     public int count(String className, int level){
         int count = 0;
         for(SpellSlot slot : this.spellSlots){
@@ -109,12 +80,13 @@ public class SpellSlots  implements Serializable {
         return count;
     }
 
-    @Override
-    public String toString(){
-        String s = "";
-        for(SpellSlot ss : this.spellSlots){
-            s += ss.toString()+";";
-        }
-        return s;
+    //<editor-fold desc="Getters and Setters">
+    public ArrayList<SpellSlot> getSpellSlots() {
+        return spellSlots;
     }
+
+    public void setSpellSlots(ArrayList<SpellSlot> spellSlots) {
+        this.spellSlots = spellSlots;
+    }
+    //</editor-fold>
 }

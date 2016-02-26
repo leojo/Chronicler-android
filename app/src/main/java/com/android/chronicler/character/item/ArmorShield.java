@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 /**
  * Created by leo on 23.2.2016.
+ *
+ * A single piece of armor or shield.
  */
 public class ArmorShield extends Equipment {
     private int ACbonus, maxDex, arcaneSpellFailure, armorCheckPen, speed30, speed20;

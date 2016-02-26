@@ -8,13 +8,13 @@ import java.io.Serializable;
 /**
  * Created by leo on 28.11.2015.
  *
- * A single item
+ * Abstract class for a single item. Each item should belong to one of the item subcategories,
+ * each with it's own class.
  */
-public class Item implements Serializable {
+abstract class Item implements Serializable, Comparable {
     private String name = "";
     private String cost;
     private String weight;
-    private SizeCategory size;
 
     //<editor-fold desc="Getters and Setters">
     public String getName() {
@@ -40,13 +40,13 @@ public class Item implements Serializable {
     public void setWeight(String weight) {
         this.weight = weight;
     }
-
-    public SizeCategory getSize() {
-        return size;
-    }
-
-    public void setSize(SizeCategory size) {
-        this.size = size;
-    }
     //</editor-fold>
+
+    @Override
+    public int compareTo(Object another) {
+        if(another instanceof Item){
+            return name.compareTo(((Item) another).getName());
+        }
+        return 0;
+    }
 }

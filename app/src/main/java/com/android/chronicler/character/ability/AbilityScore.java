@@ -1,7 +1,6 @@
 package com.android.chronicler.character.ability;
 
 import android.util.Log;
-
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +24,9 @@ public class AbilityScore implements Serializable{
 	private Map<String, Integer> bonuses; // Map<source, value> of bonuses to this skill
 	private int totalValue;
 	private int modifier;
+
+    @JsonIgnore
+    public static String baseBonusName = "Base Score";
 
 	public AbilityScore(){ /*Empty constructor for JSON*/ }
 
@@ -59,7 +61,7 @@ public class AbilityScore implements Serializable{
 		this.totalValue = 10;
 		this.modifier = 0;
 		this.bonuses = new HashMap<String, Integer>();
-		this.bonuses.put("Base Score", 10);
+		this.bonuses.put(baseBonusName, 10);
 	}
 
 	public void update() {
@@ -69,6 +71,10 @@ public class AbilityScore implements Serializable{
 
 	}
 
+
+    // bonus handling functions:
+    //// They all return false if the bonus did not exist. The set/increment ones create the bonus
+    //// if needed and return false, the others just return false if the bonus doesn't exist.
 	@JsonIgnore
 	public boolean setBonus(String key, int value){
 		boolean existingBonus = this.bonuses.containsKey(key);
@@ -105,7 +111,8 @@ public class AbilityScore implements Serializable{
 		return false;
 	}
 
-	public String getName() { return name; }
+    //<editor-fold desc="Getters and Setters">
+    public String getName() { return name; }
 
 	public void setName(String name) {
 		this.name = name;
@@ -142,4 +149,5 @@ public class AbilityScore implements Serializable{
 	public void setModifier(int modifier) {
 		this.modifier = modifier;
 	}
+    //</editor-fold>
 }

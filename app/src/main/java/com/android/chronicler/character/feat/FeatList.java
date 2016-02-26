@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by leo on 28.11.2015.
  */
 public class FeatList  implements Serializable {
-    private final ArrayList<FeatSlot> feats;
+    private ArrayList<FeatSlot> feats;
 
     public FeatList(){
         feats = new ArrayList<>();
@@ -33,6 +33,10 @@ public class FeatList  implements Serializable {
     //<editor-fold desc="Getters and Setters">
     public ArrayList<FeatSlot> getFeats() {
         return feats;
+    }
+
+    public void setFeats(ArrayList<FeatSlot> feats) {
+        this.feats = feats;
     }
     //</editor-fold>
 }

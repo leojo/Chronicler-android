@@ -13,7 +13,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,11 +25,11 @@ import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by leo on 8.2.2016.
+ *
+ * A class representing a list of skills. Unique to a character.
  */
 public class Skills  implements Serializable {
     private HashMap<String, Skill> skills;
-    private boolean loaded = false;
-    private boolean usable = false;
 
     public Skills(){ /* Empty constructor for JSON */ }
 
@@ -44,45 +47,51 @@ public class Skills  implements Serializable {
                 Skill s = mapper.readValue(skillString, Skill.class);
                 skills.put(key, s);
             }
-        } catch(Exception e) {e.printStackTrace();}
-        loaded = true;
-
-        final AbilityScores finalAbilityScores = new AbilityScores();
-        finalAbilityScores.setAbilityScores(abilityScores.getAbilityScores());
-
-        try {
-            update(finalAbilityScores);
-        } catch(Exception e) {e.printStackTrace();}
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        update(abilityScores);
     }
 
-    public void update(AbilityScores abilityScores) throws SkillsException{
-        if(!loaded)throw new SkillsException();
+    public void update(AbilityScores abilityScores){
         for(Skill s : skills.values()){
+            // speak language isn't really a skill, but it costs skill points to learn new languages so there...
             if(!s.getName().equalsIgnoreCase("speak language")) s.update(abilityScores);
         }
-        usable = true;
     }
 
     @JsonIgnore
-    public Skill get(String skillName) throws SkillsException{
-        if(!usable) throw new SkillsException();
+    public Skill get(String skillName){
         if(!skills.containsKey(skillName)) throw new IllegalArgumentException("Skill \""+skillName+"\" not found. Check spelling.");
         return skills.get(skillName);
     }
 
     //Returns false if skillName is not valid.
-    public boolean train(String skillName) throws SkillsException{
-        if(!usable) throw new SkillsException();
+    public boolean train(String skillName){
+        // These skills require some further descriptor f.x. Knowledge(Arcana) is a valid skill, whereas Knowledge is not actually a skill.
+        String[] parametrizableSkills = {"Craft","Knowledge","Perform","Profession","Speak Language"};
+        for(String s: parametrizableSkills){
+            // if the skill should be parametrized but isn't, then it's not valid.
+            if(skillName.equalsIgnoreCase(s)) return false;
+        }
         if(!skills.containsKey(skillName)){
-            String[] parametrizableSkills = {"Craft","Knowledge","Perform","Profession","Speak Language"};
             for(String s : parametrizableSkills){
                 if(skillName.startsWith(s)){
+                    // The skill is a parametrized version of a parametrizable skill.
                     Skill baseSkill = skills.get(s);
                     Skill newSkill = Skill.copy(baseSkill);
                     skills.put(skillName,newSkill);
-                    break;
+                    return true;
                 }
             }
+            // The skill was not a valid skill
+            return false;
         }
         skills.get(skillName).incrementRanks();
         return true;
@@ -99,14 +108,4 @@ public class Skills  implements Serializable {
     }
 
     //</editor-fold>
-
-    public class SkillsException extends Exception{
-        public SkillsException(){
-            super((loaded?"Skills need to be updated with abilityScores before use.":"Skills were not loaded succesfully."));
-        }
-
-        public SkillsException(String message){
-            super(message);
-        }
-    }
 }
