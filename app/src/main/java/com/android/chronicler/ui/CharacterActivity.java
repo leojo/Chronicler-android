@@ -11,15 +11,21 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.chronicler.character.*;
 import com.android.chronicler.R;
+import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.util.SkillsAdapter;
 
 import java.util.List;
 import java.util.Vector;
 
-
+/**
+ * Created by andrea on 28.1.2016.
+ * Character activity is the character sheet with all information about the character.
+ * It is put together of several fragments that include information about the character's combat
+ * stats, their spells, feats and skills and a generic "about" fragment containing information
+ * such as name, alignment, hair color etc.
+ **/
 public class CharacterActivity extends FragmentActivity {
 
     private CharacterSheet character;
@@ -37,10 +43,9 @@ public class CharacterActivity extends FragmentActivity {
         setContentView(R.layout.activity_character);
         // -------------------------------------------------------- FRAGMENT RELATED
 
-
+        // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
-
-
+        // Call new instance and include a string 'type' to identify each fragment
         fragments.add(SheetFragment.newInstance("COMBAT"));
         fragments.add(SheetFragment.newInstance("SPELLS"));
         fragments.add(SheetFragment.newInstance("ABOUT"));
@@ -48,6 +53,7 @@ public class CharacterActivity extends FragmentActivity {
 
 
         mPager = (ViewPager) findViewById(R.id.product_pager);
+        // Potentially want to use this later on to control if we go into a circle or what
         //mPager.setOffscreenPageLimit(availableProducts.size() - 1);
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -66,7 +72,6 @@ public class CharacterActivity extends FragmentActivity {
                 //    for (StoreFragment fragment : fragments) fragment.removeHint();
             }
         });
-        //findViewById(R.id.product_pager).setBackgroundResource(R.drawable.void_panel);
         mPagerAdapter = new SheetPagerAdapter(getSupportFragmentManager(), fragments);
         mPager.setAdapter(mPagerAdapter);
 
@@ -86,9 +91,6 @@ public class CharacterActivity extends FragmentActivity {
         ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
         ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
         ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");
-        //((TextView)this.findViewById(R.id.fortInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.FORT).getTotal());
-        //((TextView)this.findViewById(R.id.refInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.REF).getTotal());
-        //((TextView)this.findViewById(R.id.willInfo)).setText(character.getSaves().getSaves().get(SavingThrowID.WILL).getTotal());
     }
 
 // ------------------------- FRAGMENT RELATED
@@ -97,9 +99,6 @@ public class CharacterActivity extends FragmentActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         int currIndex = mPager.getCurrentItem();
         savedInstanceState.putInt("INDEX", currIndex);
-        /*for(int i=0; i<mPagerAdapter.getCount(); i++) {
-            savedInstanceState.putInt(Integer.toString(i), mPagerAdapter.getItem(i).getAmount());
-        }*/
     }
 
 
@@ -130,7 +129,7 @@ public class CharacterActivity extends FragmentActivity {
 
 
     /**
-     * A simple pager adapter that represents the products in the store.
+     * A simple pager adapter for our fragments
      */
     private class SheetPagerAdapter extends FragmentStatePagerAdapter {
         private List<SheetFragment> fragments;

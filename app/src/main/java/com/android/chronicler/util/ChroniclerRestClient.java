@@ -1,19 +1,28 @@
 package com.android.chronicler.util;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
-import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.List;
 
 import cz.msebera.android.httpclient.cookie.Cookie;
-import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 /**
  * Created by andrea on 9.2.2016.
+ * ChroniclerRestClient is the class that has direct communications to our server at
+ * chronicler-webapp.herokuapp.com.
+ *
+ * It uses AsyncHttpClient (see details at http://loopj.com/android-async-http/) for asynchronous
+ * get and post requests.
+ *
+ * This class also manages cookies with a PersistentCookieStore so if the request to be sent is user
+ * specific, it checks first if the user has an unexpired cookie before sending the request.
  */
 public class ChroniclerRestClient {
     private static final String BASE_URL = "https://chronicler-webapp.herokuapp.com";
@@ -36,21 +45,21 @@ public class ChroniclerRestClient {
 
     // Generic async get request
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        List<Cookie> cookies = cookieStore.getCookies();
-        for(Cookie c : cookies) Log.i("LOGIN_COOKIE", "inside rest client " + c);
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
     // Async get requests that needs to pass along user id cookie, i.e. when requesting user data
     // such as a character sheet.
-    public static void getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public static boolean getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
-        Cookie userCookie = new BasicClientCookie("user", "null");
+        Cookie userCookie = new BasicClientCookie("user", null);
         for(Cookie c : cookies) {
             if(c.getName().equals("user")) userCookie = c;
         }
+        if(userCookie.getValue() == null) return false;
         client.addHeader(userCookie.getName(), userCookie.getValue());
         client.get(getAbsoluteUrl(url), params, responseHandler);
+        return true;
     }
 
     // Needs a comment what this is for?
@@ -76,7 +85,6 @@ public class ChroniclerRestClient {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
-        Log.i("LOGIN", "this is the url " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
     }
 }

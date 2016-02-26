@@ -2,11 +2,15 @@ package com.android.chronicler.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 
 /**
  * Created by andrea on 16.7.2015.
+ *
+ * This user local store is mainly for storing user info, such as username and password,
+ * so that the fields can be filled out for the user on the login screen.
+ * It may also be used to store information JSON strings for character sheets and such to make
+ * the game playable offline and also so we don't bombard the server with too many requests each time.
  */
 public class UserLocalStore {
 
