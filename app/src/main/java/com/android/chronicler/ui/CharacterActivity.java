@@ -2,20 +2,20 @@ package com.android.chronicler.ui;
 
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
-import com.android.chronicler.character.enums.AbilityID;
+import com.android.chronicler.ui.fragments.CombatFragment;
+import com.android.chronicler.ui.fragments.FeatFragment;
+import com.android.chronicler.ui.fragments.SheetFragment;
+import com.android.chronicler.ui.fragments.SkillFragment;
+import com.android.chronicler.ui.fragments.SpellFragment;
 import com.android.chronicler.util.SkillsAdapter;
 import com.android.chronicler.util.ViewPagerTabs;
 
@@ -62,33 +62,14 @@ public class CharacterActivity extends AppCompatActivity { // extends FragmentAc
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
         fragments.add(SheetFragment.newInstance("ABOUT"));
-        fragments.add(SheetFragment.newInstance("COMBAT"));
-        fragments.add(SheetFragment.newInstance("SPELLS"));
-        fragments.add(SheetFragment.newInstance("FEATS"));
-        fragments.add(SheetFragment.newInstance("SKILLS"));
+        fragments.add(CombatFragment.newInstance("COMBAT"));
+        fragments.add(SpellFragment.newInstance("SPELLS"));
+        fragments.add(FeatFragment.newInstance("FEATS"));
+        fragments.add(SkillFragment.newInstance("SKILLS"));
 
 
         // The view pager is an element that can shift through views by swiping right and left
         mPager = (ViewPager) findViewById(R.id.product_pager);
-        // Potentially want to use this later on to control if we go into a circle or what
-        //mPager.setOffscreenPageLimit(availableProducts.size() - 1);
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //if (state == ViewPager.SCROLL_STATE_DRAGGING)
-                //    for (StoreFragment fragment : fragments) fragment.removeHint();
-            }
-        });
 
         // the view pager needs an adapter to handle the fragments, inflate the views, etc.
         mPagerAdapter = new SheetPagerAdapter(getSupportFragmentManager(), fragments);
