@@ -2,8 +2,8 @@
 
     <!-- Strings related to login -->
     <string name="app_name">Chronicler</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="plus_sign_out">Switch Google+ account</string>
@@ -25,4 +25,11 @@
     <string name="title_activity_characters">CharactersActivity</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_new_campaign">NewCampaignActivity</string>
+
+    <!-- Strings related to the charachter sheet -->
+    <string name="charactersheet_about_tab">About</string>
+    <string name="charactersheet_combat_tab">Combat</string>
+    <string name="charactersheet_spells_tab">Spells</string>
+    <string name="charactersheet_feats_tab">Feats</string>
+    <string name="charactersheet_skills_tab">Skills</string>
 </resources>
