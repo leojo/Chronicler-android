@@ -90,7 +90,7 @@ public class CharacterActivity extends FragmentActivity {
         ((TextView)this.findViewById(R.id.intInfo)).setText("INT: "+character.getAbilityScores().get(AbilityID.INT).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.INT).getModifier());
         ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
         ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
-        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");
+        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: "+(character.getHp()+character.getTempHp()));
     }
 
 // ------------------------- FRAGMENT RELATED
