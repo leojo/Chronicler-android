@@ -1,7 +1,5 @@
 package com.android.chronicler.character.item;
 
-import com.android.chronicler.character.enums.SizeCategory;
-
 /**
  * Created by leo on 23.2.2016.
  *
@@ -12,14 +10,14 @@ abstract class Equipment extends Item{
     private boolean masterwork;
     private String slot;
     private String equipAction;
-    private SizeCategory size;
+    private String description;
 
     public Equipment(){
-        this("Slotless","Free Action");
+        this("Slotless","Move Action");
     }
 
     public Equipment(String slot){
-        this(slot,"Free Action");
+        this(slot,"Move Action");
     }
 
     public Equipment(String slot, String equipAction){
@@ -65,12 +63,12 @@ abstract class Equipment extends Item{
         this.equipAction = equipAction;
     }
 
-    public SizeCategory getSize() {
-        return size;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSize(SizeCategory size) {
-        this.size = size;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     //</editor-fold>

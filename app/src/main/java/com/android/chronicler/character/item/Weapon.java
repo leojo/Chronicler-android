@@ -1,11 +1,5 @@
 package com.android.chronicler.character.item;
 
-import com.android.chronicler.character.enums.DamageType;
-import com.android.chronicler.character.enums.WeaponCategory;
-import com.android.chronicler.character.enums.WeaponType;
-
-import java.util.ArrayList;
-
 /**
  * Created by leo on 23.2.2016.
  *
@@ -13,13 +7,8 @@ import java.util.ArrayList;
  */
 public class Weapon extends Equipment{
 
-    private int damageDie, diceCount, critMult, critRange; // critRange = 2 if it's "19-20" i.e. (upper-lower)+1
-    private boolean twoHand, oneHand, ranged, thrown, finessable;
-    private String damageTypes;
-    private WeaponCategory wepCategory;
-    private WeaponType weaponType;
-    private int rangeIncrement;
-    private Projectile ammo;
+    private boolean twoHand, oneHand, ranged, thrown, light;
+    private String damageTypes, damage, crit, wepCat, type, rangeIncr;
 
     public Weapon(){
         super();
@@ -29,38 +18,6 @@ public class Weapon extends Equipment{
 
 
     //<editor-fold desc="Getters and Setters">
-    public int getDamageDie() {
-        return damageDie;
-    }
-
-    public void setDamageDie(int damageDie) {
-        this.damageDie = damageDie;
-    }
-
-    public int getDiceCount() {
-        return diceCount;
-    }
-
-    public void setDiceCount(int diceCount) {
-        this.diceCount = diceCount;
-    }
-
-    public int getCritMult() {
-        return critMult;
-    }
-
-    public void setCritMult(int critMult) {
-        this.critMult = critMult;
-    }
-
-    public int getCritRange() {
-        return critRange;
-    }
-
-    public void setCritRange(int critRange) {
-        this.critRange = critRange;
-    }
-
     public boolean isTwoHand() {
         return twoHand;
     }
@@ -93,12 +50,12 @@ public class Weapon extends Equipment{
         this.thrown = thrown;
     }
 
-    public boolean isFinessable() {
-        return finessable;
+    public boolean isLight() {
+        return light;
     }
 
-    public void setFinessable(boolean finessable) {
-        this.finessable = finessable;
+    public void setLight(boolean light) {
+        this.light = light;
     }
 
     public String getDamageTypes() {
@@ -109,36 +66,45 @@ public class Weapon extends Equipment{
         this.damageTypes = damageTypes;
     }
 
-    public WeaponCategory getWepCategory() {
-        return wepCategory;
+    public String getDamage() {
+        return damage;
     }
 
-    public void setWepCategory(WeaponCategory wepCategory) {
-        this.wepCategory = wepCategory;
+    public void setDamage(String damage) {
+        this.damage = damage;
     }
 
-    public WeaponType getWeaponType() {
-        return weaponType;
+    public String getCrit() {
+        return crit;
     }
 
-    public void setWeaponType(WeaponType weaponType) {
-        this.weaponType = weaponType;
+    public void setCrit(String crit) {
+        this.crit = crit;
     }
 
-    public int getRangeIncrement() {
-        return rangeIncrement;
+    public String getWepCat() {
+        return wepCat;
     }
 
-    public void setRangeIncrement(int rangeIncrement) {
-        this.rangeIncrement = rangeIncrement;
+    public void setWepCat(String wepCat) {
+        this.wepCat = wepCat;
     }
 
-    public Projectile getAmmo() {
-        return ammo;
+    public String getType() {
+        return type;
     }
 
-    public void setAmmo(Projectile ammo) {
-        this.ammo = ammo;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    public String getRangeIncr() {
+        return rangeIncr;
+    }
+
+    public void setRangeIncr(String rangeIncr) {
+        this.rangeIncr = rangeIncr;
+    }
+
     //</editor-fold>
 }
