@@ -57,7 +57,7 @@ public class CharacterSheet implements Serializable{
         this.tempHp = 3;
         this.nonlethalDamage = 0;
         ObjectMapper mapper = new ObjectMapper();
-        try {
+        /*try {
             Item sword = mapper.readValue("{\"name\":\"Sword, short\",\"cost\":\"10 gp\",\"weight\":\"2 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"\",\"twoHand\":false,\"oneHand\":false,\"ranged\":false,\"thrown\":false,\"light\":true,\"damageTypes\":\"Piercing\",\"damage\":\"1d6\",\"crit\":\"19-20/x2\",\"wepCat\":\"Martial Weapons\",\"type\":null,\"rangeIncr\":\"-\"}",Weapon.class);
             inventory.add(sword);
             Item shield = mapper.readValue("{\"name\":\"Shield, light wooden\",\"cost\":\"3 gp\",\"weight\":\"5 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"You strap a shield to your forearm and grip it with your hand. A light shield's weight lets you carry other items in that hand, although you cannot use weapons with it. Wooden or Steel: Wooden and steel shields offer the same basic protection, though they respond differently to special attacks. Shield Bash Attacks: You can bash an opponent with a light shield, using it as an off-hand weapon. See Table: Weapons for the damage dealt by a shield bash. Used this way, a light shield is a martial bludgeoning weapon. For the purpose of penalties on attack rolls, treat a light shield as a light weapon. If you use your shield as a weapon, you lose its AC bonus until your next action (usually until the next round). An enhancement bonus on a shield does not improve the effectiveness of a shield bash made with it, but the shield can be made into a magic weapon in its own right.\",\"maxDex\":\"-\",\"arcaneSpellFailure\":\"5%\",\"armorCheckPen\":\"-1\",\"speed20\":\"-\",\"speed30\":\"-\",\"type\":\"Shields\",\"acbonus\":\"+1\"}",ArmorShield.class);
@@ -75,7 +75,7 @@ public class CharacterSheet implements Serializable{
             feats.add(featSlot);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         abilityScores = new AbilityScores();
         saves = new Saves(abilityScores);
         skills = new Skills(abilityScores, skillsJSON);

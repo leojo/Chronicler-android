@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.skill.Skills;
 
 /**
  * Created by andrea on 23.2.2016.

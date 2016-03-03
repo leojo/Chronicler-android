@@ -57,6 +57,7 @@ public class CharacterActivity extends AppCompatActivity { // extends FragmentAc
         pagerTabs.addTabLabels(R.string.charactersheet_about_tab, R.string.charactersheet_combat_tab,
                 R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_skills_tab);
 
+        character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
@@ -65,7 +66,7 @@ public class CharacterActivity extends AppCompatActivity { // extends FragmentAc
         fragments.add(CombatFragment.newInstance("COMBAT"));
         fragments.add(SpellFragment.newInstance("SPELLS"));
         fragments.add(FeatFragment.newInstance("FEATS"));
-        fragments.add(SkillFragment.newInstance("SKILLS"));
+        fragments.add(SkillFragment.newInstance("SKILLS",character.getSkills()));
 
 
         // The view pager is an element that can shift through views by swiping right and left

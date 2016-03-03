@@ -22,13 +22,15 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             tools:listitem="@android:layout/simple_list_item_2"
-            android:layout_alignParentEnd="false" />
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false" />
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/PlayerCampaignListView"
             android:layout_below="@id/DMCampaignListView"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
 
 </RelativeLayout>
