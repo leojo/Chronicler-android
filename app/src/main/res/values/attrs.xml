@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ContentView">
+        <attr name="name" format="string"></attr>
+        <attr name="value" format="string"></attr>
+        <attr name="editable" format="boolean"></attr>
+        <attr name="border" format="integer">
+            <!--<enum name="bottom" value="@drawable/border_bottom"></enum>
+            <enum name="bottom-right" value="@drawable/border_right_bottom"></enum>
+            <enum name="bottom-left" value="@drawable/border_left_bottom"></enum>-->
+        </attr>
+        <attr name="id" format="string"></attr>
+    </declare-styleable>
+
+</resources>
