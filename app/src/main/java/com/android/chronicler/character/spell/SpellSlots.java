@@ -1,5 +1,7 @@
 package com.android.chronicler.character.spell;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +42,7 @@ public class SpellSlots  implements Serializable {
     }
 
     // get a list of the unique spell slot types.
+    @JsonIgnore
     public ArrayList<SpellSlot> getSpellSlotTypes() {
         ArrayList<String> typeNames = new ArrayList<String>();
         ArrayList<SpellSlot> types = new ArrayList<SpellSlot>();

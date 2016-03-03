@@ -8,6 +8,7 @@ import java.io.Serializable;
  * A class representing a single feat. This is only a data structure and has no usability functions.
  */
 public class Feat  implements Serializable, Comparable {
+    private String id;
     private String name;
     private String type;
     private String multiple;
@@ -22,15 +23,23 @@ public class Feat  implements Serializable, Comparable {
     private String selectedChoice = "Please select";
 
     //<editor-fold desc="Getters and Setters">
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
-        if(choice.equalsIgnoreCase("none")) return name;
-        return name+" ["+selectedChoice+"]";
+        return name;
     }
 
     public void setName(String name) {
-        if(this.choice.equalsIgnoreCase("none")) return;
         this.name = name;
     }
+
     public String getType() {
         return type;
     }
@@ -118,6 +127,7 @@ public class Feat  implements Serializable, Comparable {
     public void setSelectedChoice(String selectedChoice) {
         this.selectedChoice = selectedChoice;
     }
+
     //</editor-fold>
 
     @Override

@@ -1,5 +1,7 @@
 package com.android.chronicler.character;
 
+import android.util.Log;
+
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
@@ -13,18 +15,13 @@ import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellList;
 import com.android.chronicler.character.spell.SpellSlots;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CharacterSheet implements Serializable{
-    @JsonIgnore
-    private static final Logger logger = Logger.getLogger(CharacterSheet.class.getName());
 
     // =====================
     // VARIABLE DECLARATIONS
@@ -57,7 +54,7 @@ public class CharacterSheet implements Serializable{
         this.tempHp = 3;
         this.nonlethalDamage = 0;
         ObjectMapper mapper = new ObjectMapper();
-        /*try {
+        try {
             Item sword = mapper.readValue("{\"name\":\"Sword, short\",\"cost\":\"10 gp\",\"weight\":\"2 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"\",\"twoHand\":false,\"oneHand\":false,\"ranged\":false,\"thrown\":false,\"light\":true,\"damageTypes\":\"Piercing\",\"damage\":\"1d6\",\"crit\":\"19-20/x2\",\"wepCat\":\"Martial Weapons\",\"type\":null,\"rangeIncr\":\"-\"}",Weapon.class);
             inventory.add(sword);
             Item shield = mapper.readValue("{\"name\":\"Shield, light wooden\",\"cost\":\"3 gp\",\"weight\":\"5 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"You strap a shield to your forearm and grip it with your hand. A light shield's weight lets you carry other items in that hand, although you cannot use weapons with it. Wooden or Steel: Wooden and steel shields offer the same basic protection, though they respond differently to special attacks. Shield Bash Attacks: You can bash an opponent with a light shield, using it as an off-hand weapon. See Table: Weapons for the damage dealt by a shield bash. Used this way, a light shield is a martial bludgeoning weapon. For the purpose of penalties on attack rolls, treat a light shield as a light weapon. If you use your shield as a weapon, you lose its AC bonus until your next action (usually until the next round). An enhancement bonus on a shield does not improve the effectiveness of a shield bash made with it, but the shield can be made into a magic weapon in its own right.\",\"maxDex\":\"-\",\"arcaneSpellFailure\":\"5%\",\"armorCheckPen\":\"-1\",\"speed20\":\"-\",\"speed30\":\"-\",\"type\":\"Shields\",\"acbonus\":\"+1\"}",ArmorShield.class);
@@ -65,6 +62,7 @@ public class CharacterSheet implements Serializable{
             Item armor = mapper.readValue("{\"name\":\"Banded mail\",\"cost\":\"250 gp\",\"weight\":\"35 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"The suit includes gauntlets.\",\"maxDex\":\"+1\",\"arcaneSpellFailure\":\"35%\",\"armorCheckPen\":\"-6\",\"speed20\":\"15 ft.\",\"speed30\":\"20 ft.\",\"type\":\"Heavy\",\"acbonus\":\"+6\"}",ArmorShield.class);
             inventory.add(armor);
             Spell spell = mapper.readValue("{\"id\":\"422\",\"name\":\"Magic Missile\",\"shortDescription\":\"1d4+1 damage; +1 missile per two levels above 1st (max 5).\",\"fullText\":\"\\n      <div topic='Magic Missile' level='5'><p><h5>Magic Missile</h5></p><table width='100%' border='1' cellpadding='2' cellspacing='2' frame='VOID' rules='ROWS'><tr maxcol='3' curcol='3'><td width='25%'/><td>Evocation [Force]<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Level:</b><br/></td><td>Sorcerer/Wizard 1<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Components:</b><br/></td><td>V, S<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Casting Time:</b><br/></td><td>1 standard action<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Range:</b><br/></td><td>Medium (100 ft. + 10 ft./level)<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Targets:</b><br/></td><td>Up to five creatures, no two of which can be more than 15 ft. apart<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Duration:</b><br/></td><td>Instantaneous<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Saving Throw:</b><br/></td><td>None<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Spell Resistance:</b><br/></td><td>Yes<br/></td></tr></table><p>A missile of magical energy darts forth from your fingertip and strikes its target, dealing 1d4+1 points of force damage.</p><p>The missile strikes unerringly, even if the target is in melee combat or has less than total cover or total concealment. Specific parts of a creature can't be singled out. Inanimate objects are not damaged by the spell.</p><p>For every two caster levels beyond 1st, you gain an additional missile-two at 3rd level, three at 5th, four at 7th, and the maximum of five missiles at 9th level or higher. If you shoot multiple missiles, you can have them strike a single creature or several creatures. A single missile can strike only one creature. You must designate targets before you check for spell resistance or roll damage.</p><p/>\\n</div>\\n    \",\"description\":\"\\n      <p>A missile of magical energy darts forth from your fingertip and strikes its target, dealing 1d4+1 points of force damage.</p>\\n      <p>The missile strikes unerringly, even if the target is in melee combat or has less than total cover or total concealment. Specific parts of a creature can't be singled out. Inanimate objects are not damaged by the spell.</p>\\n      <p>For every two caster levels beyond 1st, you gain an additional missile-two at 3rd level, three at 5th, four at 7th, and the maximum of five missiles at 9th level or higher. If you shoot multiple missiles, you can have them strike a single creature or several creatures. A single missile can strike only one creature. You must designate targets before you check for spell resistance or roll damage.</p>\\n      <p/>\\n    \",\"school\":\"Evocation\",\"specialVerbal\":\"None\",\"druidFocus\":\"None\",\"clericFocus\":\"None\",\"bardFocus\":\"None\",\"sorcererFocus\":\"None\",\"wizardFocus\":\"None\",\"arcaneFocus\":\"None\",\"xpCost\":\"None\",\"focus\":\"None\",\"arcaneMat\":\"None\",\"material\":\"None\",\"developCost\":\"None\",\"save\":\"None\",\"duration\":\"Instantaneous\",\"effect\":\"None\",\"area\":\"None\",\"target\":\"Up to five creatures, no two of which can be more than 15 ft. apart\",\"range\":\"Medium (100 ft. + 10 ft./level)\",\"castingTime\":\"1 standard action\",\"components\":\"V, S\",\"level\":\"Sorcerer/Wizard 1\",\"spellcraftDC\":\"None\",\"subSchool\":\"None\",\"descriptor\":\"Force\",\"sr\":\"Yes\"}",Spell.class);
+            Log.d("SPELL_LOAD","spell == null : "+(spell==null));
             availableSpells.add(spell);
             Spell spell2 = mapper.readValue("{\"id\":\"168\",\"name\":\"Color Spray\",\"shortDescription\":\"Knocks unconscious, blinds, and/or stuns weak creatures.\",\"fullText\":\"\\n      <div topic='Color Spray' level='5'><p><h5>Color Spray</h5></p><table width='100%' border='1' cellpadding='2' cellspacing='2' frame='VOID' rules='ROWS'><tr maxcol='3' curcol='3'><td width='25%'/><td>Illusion (Pattern) [Mind-Affecting]<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Level:</b><br/></td><td>Sorcerer/Wizard 1<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Components:</b><br/></td><td>V, S, M<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Casting Time:</b><br/></td><td>1 standard action<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Range:</b><br/></td><td>15 ft.<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Area:</b><br/></td><td>Cone-shaped burst<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Duration:</b><br/></td><td>Instantaneous; see text<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Saving Throw:</b><br/></td><td>Will negates<br/></td></tr><tr maxcol='3' curcol='3'><td width='25%'><b>Spell Resistance:</b><br/></td><td>Yes<br/></td></tr></table><p>A vivid cone of clashing colors springs forth from your hand, causing creatures to become stunned, perhaps also blinded, and possibly knocking them unconscious.</p><p>Each creature within the cone is affected according to its Hit Dice.</p><p><i>2 HD or less:</i> The creature is unconscious, blinded, and stunned for 2d4 rounds, then blinded and stunned for 1d4 rounds, and then stunned for 1 round. (Only living creatures are knocked unconscious.)</p><p><i>3 or 4 HD:</i> The creature is blinded and stunned for 1d4 rounds, then stunned for 1 round.</p><p><i>5 or more HD:</i> The creature is stunned for 1 round.</p><p>Sightless creatures are not affected by <i>color spray</i>.</p><p><i>Material Component:</i> A pinch each of powder or sand that is colored red, yellow, and blue.</p><p/>\\n</div>\\n    \",\"description\":\"\\n      <p>A vivid cone of clashing colors springs forth from your hand, causing creatures to become stunned, perhaps also blinded, and possibly knocking them unconscious.</p>\\n      <p>Each creature within the cone is affected according to its Hit Dice.</p>\\n      <p><i>2 HD or less:</i> The creature is unconscious, blinded, and stunned for 2d4 rounds, then blinded and stunned for 1d4 rounds, and then stunned for 1 round. (Only living creatures are knocked unconscious.)</p>\\n      <p><i>3 or 4 HD:</i> The creature is blinded and stunned for 1d4 rounds, then stunned for 1 round.</p>\\n      <p><i>5 or more HD:</i> The creature is stunned for 1 round.</p>\\n      <p>Sightless creatures are not affected by <i>color spray</i>.</p>\\n      <p/>\\n    \",\"school\":\"Illusion\",\"specialVerbal\":\"None\",\"druidFocus\":\"None\",\"clericFocus\":\"None\",\"bardFocus\":\"None\",\"sorcererFocus\":\"None\",\"wizardFocus\":\"None\",\"arcaneFocus\":\"None\",\"xpCost\":\"None\",\"focus\":\"None\",\"arcaneMat\":\"None\",\"material\":\"A pinch each of powder or sand that is colored red, yellow, and blue.\",\"developCost\":\"None\",\"save\":\"Will negates\",\"duration\":\"Instantaneous; see text\",\"effect\":\"None\",\"area\":\"Cone-shaped burst\",\"target\":\"None\",\"range\":\"15 ft.\",\"castingTime\":\"1 standard action\",\"components\":\"V, S, M\",\"level\":\"Sorcerer/Wizard 1\",\"spellcraftDC\":\"None\",\"subSchool\":\"Pattern\",\"descriptor\":\"Mind-Affecting\",\"sr\":\"Yes\"}",Spell.class);
             availableSpells.add(spell2);
@@ -75,7 +73,7 @@ public class CharacterSheet implements Serializable{
             feats.add(featSlot);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
         abilityScores = new AbilityScores();
         saves = new Saves(abilityScores);
         skills = new Skills(abilityScores, skillsJSON);
@@ -152,6 +150,13 @@ public class CharacterSheet implements Serializable{
     }
 
     //<editor-fold desc="Getters and Setters">
+    public SpellSlots getSpellSlots() {
+        return spellSlots;
+    }
+
+    public void setSpellSlots(SpellSlots spellSlots) {
+        this.spellSlots = spellSlots;
+    }
 
     public SpellList getAvailableSpells() {
         return availableSpells;
@@ -161,36 +166,12 @@ public class CharacterSheet implements Serializable{
         this.availableSpells = availableSpells;
     }
 
-    public int getHp() {
-        return hp;
+    public Inventory getInventory() {
+        return inventory;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getTempHp() {
-        return tempHp;
-    }
-
-    public void setTempHp(int tempHp) {
-        this.tempHp = tempHp;
-    }
-
-    public int getNonlethalDamage() {
-        return nonlethalDamage;
-    }
-
-    public void setNonlethalDamage(int nonlethalDamage) {
-        this.nonlethalDamage = nonlethalDamage;
-    }
-
-    public SpellSlots getSpellSlots() {
-        return spellSlots;
-    }
-
-    public void setSpellSlots(SpellSlots spellSlots) {
-        this.spellSlots = spellSlots;
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public FeatList getFeats() {
@@ -199,14 +180,6 @@ public class CharacterSheet implements Serializable{
 
     public void setFeats(FeatList feats) {
         this.feats = feats;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     public Skills getSkills() {
@@ -264,5 +237,22 @@ public class CharacterSheet implements Serializable{
     public void setLevel(int level) {
         this.level = level;
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getTempHp() {
+        return tempHp;
+    }
+
+    public void setTempHp(int tempHp) {
+        this.tempHp = tempHp;
+    }
+
     //</editor-fold>
 }

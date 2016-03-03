@@ -10,6 +10,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.List;
 
+import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
@@ -25,16 +26,15 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
  * specific, it checks first if the user has an unexpired cookie before sending the request.
  */
 public class ChroniclerRestClient {
-    private static final String BASE_URL = "https://chronicler-webapp.herokuapp.com";
+    private final String BASE_URL = "https://chronicler-webapp.herokuapp.com";
 
-    private static AsyncHttpClient client;
-    private static PersistentCookieStore cookieStore;
-    public ChroniclerRestClient() {
-        client = new AsyncHttpClient();
-    }
+    private AsyncHttpClient client;
+    private PersistentCookieStore cookieStore;
+    private Context context;
 
     public ChroniclerRestClient(Context context) {
         client = new AsyncHttpClient();
+        this.context = context;
         // If the Rest Client is initialized with this constructor, a persistent cookie store is
         // created. This saves all cookies from all responses gotten for the get/post requests below.
         // Will be used for a user ID to create a persistent login, cookie is called 'user' and
@@ -44,13 +44,13 @@ public class ChroniclerRestClient {
     }
 
     // Generic async get request
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
     // Async get requests that needs to pass along user id cookie, i.e. when requesting user data
     // such as a character sheet.
-    public static boolean getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public boolean getUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", null);
         for(Cookie c : cookies) {
@@ -63,28 +63,43 @@ public class ChroniclerRestClient {
     }
 
     // Needs a comment what this is for?
-    public static void get(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
+    public void get(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
     // Generic async post request.
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
     // Async post requests that needs to pass along user id cookie, i.e. when updating user data
     // such as a character sheet.
-    public static void postUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public void postUserData(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", "null");
         for(Cookie c : cookies) {
             if(c.getName().equals("user")) userCookie = c;
         }
+
         client.addHeader(userCookie.getName(), userCookie.getValue());
-        client.post(getAbsoluteUrl(url), params, responseHandler);
+        client.post(context, getAbsoluteUrl(url), entity, "application/json", responseHandler);
+        /*try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+            String json;
+            while((json = br.readLine()) != null){
+                int i;
+                for(i = 4000; i<json.length(); i+=4000) {
+                    Log.d("STORECHAR_JSON", json.substring(i - 4000, i));
+                }
+                Log.d("STORECHAR_JSON", json.substring(i - 4000));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        //client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    private static String getAbsoluteUrl(String relativeUrl) {
+    private String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }
 }

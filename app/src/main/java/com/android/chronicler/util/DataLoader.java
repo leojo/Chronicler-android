@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.android.chronicler.character.CharacterSheet;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -18,6 +20,8 @@ import java.util.Iterator;
 
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.ContentType;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**
  * Created by leo on 12.2.2016.
@@ -26,12 +30,33 @@ public class DataLoader {
 
     public void readySheetThenStart(final Context context, final Intent intent) {
 
-        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
+                StringEntity charEntity = null;
+                try {
+                    charEntity = new StringEntity(character.toJSON(), ContentType.APPLICATION_JSON);
+                } catch (JsonProcessingException e) {
+                    Log.e("STORECHAR","Error converting character sheet to JSON");
+                    e.printStackTrace();
+                }
+                if(charEntity!= null) {
+                    cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Log.i("STORECHAR", "Success");
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.i("STORECHAR", "Failure");
+                            error.printStackTrace();
+                        }
+                    });
+                }
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
             }

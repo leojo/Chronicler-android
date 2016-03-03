@@ -1,5 +1,7 @@
 package com.android.chronicler.character.spell;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -14,6 +16,10 @@ import java.util.Collections;
 public class SpellList implements Serializable {
     private ArrayList<Spell> spells;
 
+    public SpellList(){
+        spells = new ArrayList<>();
+    }
+
     // usability functions
 
     // returns true if added successfully
@@ -21,6 +27,7 @@ public class SpellList implements Serializable {
         try{
             this.spells.add(s);
         } catch (Exception e){
+            Log.e("SPELL_ADD","Error adding spell"+(s==null?". The spell was null.":" "+s.getName()));
             e.printStackTrace(System.err);
             return false;
         }
