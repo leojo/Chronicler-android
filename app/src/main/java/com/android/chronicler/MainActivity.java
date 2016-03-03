@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     //  SHOULD PUT THIS CODE IN DATALOADER class .... thats exactly what it was created for, see
     // loader.readySheetThenStart(intent) above ^
     public void openCampaigns(View view) {
+        Log.i("OPEN", "OPENING CAMPAIGNS");
         final Intent intent = new Intent(this, CampaignsActivity.class);
         loader.readyCampaignlistThenStart(this, intent);
     }

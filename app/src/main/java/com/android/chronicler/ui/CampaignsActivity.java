@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.chronicler.R;
 
@@ -68,6 +70,13 @@ public class CampaignsActivity extends AppCompatActivity {
         addButtonView.setImageDrawable(addButtonDrawable);
 
         campaignListView.addFooterView(addButtonView);
+
+        TextView DMHeaderText = new TextView(this);
+        DMHeaderText.setText("Campaigns I run");
+        DMHeaderText.setPadding(20, 20, 20, 20);
+        DMHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+
+        campaignListView.addHeaderView(DMHeaderText, null, false);
 
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW

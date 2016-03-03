@@ -1,6 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="fill_parent"
+    android:weightSum="1">
 
-</GridLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.405"
+        android:id="@+id/topCombatLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.5"
+            android:weightSum="1"
+            android:id="@+id/allAcLayout">
+
+
+            <com.android.chronicler.util.ContentView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.60"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                custom:editable="true"
+                custom:name="AC"
+                custom:value="16"
+                android:id="@+id/acView"
+                android:background="@drawable/border_bottom"/>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="0.40"
+                android:layout_height="0dp"
+                android:id="@+id/touchffLayout">
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="0.5"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Touch"
+                    custom:value="13"
+                    android:id="@+id/touchView"
+                    android:background="@drawable/border_bottom"/>
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="0.5"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="FF"
+                    custom:value="12"
+                    android:id="@+id/ffView"
+                    android:background="@drawable/border_left_bottom"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.android.chronicler.util.ContentView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@drawable/border_left_bottom"
+            custom:editable="true"
+            custom:name="HitPoints"
+            custom:value="40"
+            >
+        </com.android.chronicler.util.ContentView>
+
+        <!--<LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/hpLayout"
+            android:layout_gravity="right"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="HP"
+                android:id="@+id/hpTextView"
+                android:layout_gravity="right"
+                android:background="@drawable/border_left_bottom"/>
+        </LinearLayout>-->
+
+
+
+    </LinearLayout>
+
+    <com.android.chronicler.util.ContentView
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.155"
+        android:background="@drawable/border_bottom"
+        custom:editable="true"
+        custom:name="Initiative"
+        custom:value="+3"
+        >
+    </com.android.chronicler.util.ContentView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.44"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="0.27"
+            android:layout_height="match_parent">
+
+            <com.android.chronicler.util.ContentView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                custom:editable="true"
+                custom:name="Fortitude save"
+                custom:value="+4"
+                android:id="@+id/fortView"
+                android:background="@drawable/border_right_bottom"/>
+
+            <com.android.chronicler.util.ContentView
+
+            android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                custom:editable="true"
+                custom:name="Reflex save"
+                custom:value="+7"
+                android:id="@+id/refView"
+                android:background="@drawable/border_right_bottom"/>
+
+            <com.android.chronicler.util.ContentView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                custom:editable="true"
+                custom:name="Will save"
+                custom:value="+3"
+                android:id="@+id/willView"
+                android:background="@drawable/border_right_bottom"
+                android:orientation="horizontal" />
+            <com.android.chronicler.util.ContentView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                custom:editable="true"
+                custom:name="Speed"
+                custom:value="30ft"
+                android:id="@+id/speedView"
+                android:background="@drawable/border_right_bottom"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.72"></LinearLayout>
+    </LinearLayout>
+</LinearLayout>

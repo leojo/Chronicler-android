@@ -156,6 +156,11 @@ public class DataLoader {
                 intent.putExtra("PCCampaignList", PCCampaigns);
                 context.startActivity(intent);
             }
+
+            @Override
+            public void onStart() {
+                Log.i("START", "Started campaign fetching");
+            }
         });
     }
 }
