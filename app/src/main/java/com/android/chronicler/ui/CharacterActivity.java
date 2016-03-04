@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.fragments.AboutFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
+import com.android.chronicler.ui.fragments.InventoryFragment;
 import com.android.chronicler.ui.fragments.SheetFragment;
 import com.android.chronicler.ui.fragments.SkillFragment;
 import com.android.chronicler.ui.fragments.SpellFragment;
@@ -56,17 +58,18 @@ public class CharacterActivity extends FragmentActivity {
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
         final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
         pagerTabs.addTabLabels(R.string.charactersheet_about_tab, R.string.charactersheet_combat_tab,
-                R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_skills_tab);
+                R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_inventory_tab, R.string.charactersheet_skills_tab);
 
         character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
-        fragments.add(SheetFragment.newInstance("ABOUT"));
+        fragments.add(AboutFragment.newInstance("ABOUT"));
         fragments.add(CombatFragment.newInstance("COMBAT"));
         fragments.add(SpellFragment.newInstance("SPELLS"));
         fragments.add(FeatFragment.newInstance("FEATS"));
+        fragments.add(InventoryFragment.newInstance("INVENTORY"));
         fragments.add(SkillFragment.newInstance("SKILLS",character.getSkills()));
 
 

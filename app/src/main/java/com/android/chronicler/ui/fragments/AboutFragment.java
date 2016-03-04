@@ -14,10 +14,18 @@ import com.android.chronicler.R;
 public class AboutFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.about_fragment_layout, container, false);
-
-        // This is where we should input stuff, by using getArguments().get....
-        ((TextView)rootView.findViewById(R.id.tabID)).setText(getArguments().getString("ID"));
-
         return rootView;
+    }
+
+    // newInstance is called when the CharacterActivity is started and the fragments get
+    // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
+    // as arguments for this function.
+    public static AboutFragment newInstance(String type) {
+        Bundle args = new Bundle();
+        args.putString("ID", type);
+        AboutFragment aboutFrag = new AboutFragment();
+        aboutFrag.setArguments(args);
+
+        return aboutFrag;
     }
 }

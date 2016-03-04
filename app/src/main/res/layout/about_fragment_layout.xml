@@ -1,6 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="1"
+            android:layout_weight="0.55"
+            android:id="@+id/topCombatLayout">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.5"
+                android:weightSum="1"
+                android:id="@+id/allAcLayout">
+
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.33"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    custom:editable="true"
+                    custom:name="Name"
+                    custom:value="Legolas"
+                    android:id="@+id/charNameView"
+                    android:background="@drawable/border_bottom"/>
+
+
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.33"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    custom:editable="true"
+                    custom:name="Race"
+                    custom:value="Elf"
+                    android:id="@+id/raceView"
+                    android:background="@drawable/border_bottom"/>
+
+
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.33"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    custom:editable="true"
+                    custom:name="Alignment"
+                    custom:value="NG"
+                    android:id="@+id/alignView"
+                    android:background="@drawable/border_bottom"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.55"
+                    android:gravity="bottom|center_horizontal"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Barbarian"
+                    android:id="@+id/classView"
+                    android:layout_gravity="right"
+                    android:background="@drawable/border_bottom"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.45"
+                    android:gravity="top|center_horizontal"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Level 5"
+                    android:id="@+id/lvlView"
+                    android:layout_gravity="right"
+                    android:background="@drawable/border_bottom"/>
+
+            </LinearLayout>
+
+
+
+            <!--<LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/hpLayout"
+                android:layout_gravity="right"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="HP"
+                    android:id="@+id/hpTextView"
+                    android:layout_gravity="right"
+                    android:background="@drawable/border_left_bottom"/>
+            </LinearLayout>-->
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.45"
+            android:weightSum="1">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="0.48"
+                android:layout_height="match_parent">
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="0.36"
+                android:layout_height="match_parent">
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Strength"
+                    custom:value="10"
+                    android:id="@+id/strView"
+                    android:background="@drawable/border_bottom"/>
+
+                <com.android.chronicler.util.ContentView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Constitution"
+                    custom:value="12"
+                    android:id="@+id/conView"
+                    android:background="@drawable/border_bottom"/>
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Dexterity Score"
+                    custom:value="8"
+                    android:id="@+id/dexView"
+                    android:background="@drawable/border_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Intelligence"
+                    custom:value="15"
+                    android:id="@+id/intView"
+                    android:background="@drawable/border_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Wisdom"
+                    custom:value="17"
+                    android:id="@+id/wisView"
+                    android:background="@drawable/border_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Charisma"
+                    custom:value="10"
+                    android:id="@+id/chaView"
+                    android:background="@drawable/border_bottom"
+                    android:orientation="horizontal" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="0.16"
+                android:layout_height="match_parent">
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+4"
+                    android:id="@+id/strMod"
+                    android:background="@drawable/border_right_bottom"/>
+
+                <com.android.chronicler.util.ContentView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+7"
+                    android:id="@+id/conMod"
+                    android:background="@drawable/border_right_bottom"/>
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+3"
+                    android:id="@+id/dexMod"
+                    android:background="@drawable/border_right_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+3"
+                    android:id="@+id/intMod"
+                    android:background="@drawable/border_right_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+3"
+                    android:id="@+id/wisMod"
+                    android:background="@drawable/border_right_bottom"
+                    android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Modifier"
+                    custom:value="+3"
+                    android:id="@+id/chaMod"
+                    android:background="@drawable/border_right_bottom"
+                    android:orientation="horizontal" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.72"></LinearLayout>
+        </LinearLayout>
+
 
 </LinearLayout>

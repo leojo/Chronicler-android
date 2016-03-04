@@ -44,6 +44,7 @@ public class DataLoader {
                     e.printStackTrace();
                 }
                 if(charEntity!= null) {
+                    Log.i("STORECHAR", "HERE COMES THE CHAR ENTITY"+charEntity.toString());
                     cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
