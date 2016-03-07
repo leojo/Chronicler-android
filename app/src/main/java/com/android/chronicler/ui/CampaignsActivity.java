@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class CampaignsActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter, adapter2;
     ListView campaignListView, playerCampaignsView;
     public List<String> DMCampaigns;
     public List<String> PCCampaigns;
@@ -61,7 +62,7 @@ public class CampaignsActivity extends AppCompatActivity {
         // has to offer to suit our needs if we need to do something more complicated than this.
         // ----------------------------------------------------------------------------------------
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DMCampaigns);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
+        adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
         // Set add button to footer
         Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
@@ -70,13 +71,6 @@ public class CampaignsActivity extends AppCompatActivity {
         addButtonView.setImageDrawable(addButtonDrawable);
 
         campaignListView.addFooterView(addButtonView);
-
-        TextView DMHeaderText = new TextView(this);
-        DMHeaderText.setText("Campaigns I run");
-        DMHeaderText.setPadding(20, 20, 20, 20);
-        DMHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-
-        campaignListView.addHeaderView(DMHeaderText, null, false);
 
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW
@@ -92,8 +86,7 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                if (position == adapter.getCount()) {
+                if (position == adapter.getCount()+1) {
                     newCampaign();
                 } else {
                     openCampaign();

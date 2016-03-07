@@ -5,7 +5,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.android.chronicler.MainActivity"
+    tools:context="com.android.chronicler.ui.MyAccountActivity"
     android:id="@+id/MainActivityLayout"
     android:weightSum="1">
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Chronicler"
+        android:text="My Account"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
@@ -32,31 +32,30 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Characters"
+        android:text="Pending Invites"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
-        android:onClick="openCharacters"/>
+        android:onClick="openInvites"/>
 
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Campaigns"
+        android:text="Settings"
         android:id="@+id/button2"
         android:layout_gravity="center_horizontal"
-        android:onClick="openCampaigns" />
+        android:onClick="openSettings" />
 
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="My Account"
+        android:text="Something"
         android:id="@+id/button3"
-        android:layout_gravity="center_horizontal"
-        android:onClick="openMyAccount"/>
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="Something"
         android:id="@+id/button4"
         android:layout_gravity="center_horizontal"
         android:onClick="logout"/>

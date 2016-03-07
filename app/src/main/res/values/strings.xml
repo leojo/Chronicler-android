@@ -31,6 +31,7 @@
     <string name="charactersheet_combat_tab">Combat</string>
     <string name="charactersheet_spells_tab">Spells</string>
     <string name="charactersheet_feats_tab">Feats</string>
+    <string name="charactersheet_inventory_tab">Inventory</string>
     <string name="charactersheet_skills_tab">Skills</string>
 
     <!-- String related to making a new character -->

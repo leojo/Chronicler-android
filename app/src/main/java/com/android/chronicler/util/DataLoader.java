@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 
 import org.json.JSONArray;
@@ -29,6 +30,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  */
 public class DataLoader {
 
+    // NOTE: Wouldn't it make more sense to make these methods static?
+
     public void readySheetThenStart(final Context context, final Intent intent) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
@@ -45,6 +48,7 @@ public class DataLoader {
                     e.printStackTrace();
                 }
                 if(charEntity!= null) {
+                    Log.i("STORECHAR", "HERE COMES THE CHAR ENTITY"+charEntity.toString());
                     cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -167,30 +171,16 @@ public class DataLoader {
 
                 try {
 
-                JSONObject jObject = new JSONObject(JSONresponse);
-                Iterator<?> keys = jObject.keys();
+                    JSONObject jObject = new JSONObject(JSONresponse);
+                    Iterator<?> keys = jObject.keys();
 
                     while (keys.hasNext()) {
                         String key = (String) keys.next();
                         content.add(jObject.get(key).toString());
                     }
-                }catch(JSONException e) {Log.i("CHARLIST", "JSON EXCEPTION");}
-/*
-                JSONParser parser = new JSONParser();
-
-                try {
-                    Object obj = parser.parse(JSONresponse);
-                    Log.i("CHARLIST", obj.toString());
-                    JSONArray jArray = (JSONArray)obj;
-                    Log.i("CHARLIST", jArray.toString());
-                    for(int i = 0; i< jArray.size(); i++) {
-                        content.add((String)jArray.get(i));
-                    }
-
-                }catch(ParseException e) {
-                    Log.i("CHARLIST", "Parsing exception: Not valid character list JSON");
+                } catch (JSONException e) {
+                    Log.i("CHARLIST", "JSON EXCEPTION");
                 }
-*/
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
                 context.startActivity(intent);
@@ -247,6 +237,24 @@ public class DataLoader {
             @Override
             public void onStart() {
                 Log.i("START", "Started campaign fetching");
+            }
+        });
+    }
+
+    public void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+        cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("SUCCESS", "Starting campaign activity");
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("DataLoader", "Failed to post campaign");
             }
         });
     }
