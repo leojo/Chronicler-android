@@ -56,12 +56,8 @@ public class ContentView extends LinearLayout {
         nameView.setText(name);
         valueView.setText(value);
         if(border != 0) this.setBackgroundResource(border);
-        //if(editable) setEditable();
+        if(editable) setEditable();
         Log.i("ContentView", "Ready, the name is "+name);
-    }
-
-    public boolean isEditable() {
-        return editable;
     }
 
     private void setEditable() {
@@ -70,14 +66,16 @@ public class ContentView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Log.i("EDITABLE", "CLICK! Should be making this editable");
+
                 TextView valView = (TextView)v.findViewById(R.id.valueView);
                 valView.setFocusable(true);
                 valView.setFocusableInTouchMode(true);
+                valView.setClickable(true);
                 valView.setCursorVisible(true);
                 valView.setInputType(InputType.TYPE_CLASS_TEXT);
                 valView.requestFocus();
                 valView.invalidate();
-                Log.i("EDITABLE", "This is the value of valView "+valView.getText());
+                Log.i("EDITABLE", "This is the value of our field "+valView.getText());
                 Log.i("EDITABLE", "CLICK! Should now be editable");
             }
         });

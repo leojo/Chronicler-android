@@ -1,11 +1,13 @@
 package com.android.chronicler.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
@@ -18,17 +20,30 @@ public class CombatFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.combat_fragment_layout, container, false);
 
-        int n = rootView.getChildCount();
+        /*int n = rootView.getChildCount();
         for(int i=0; i<n; i++) {
             View v = rootView.getChildAt(i);
             if(v instanceof ContentView && ((ContentView)v).isEditable()) {
-                v.setOnClickListener(new View.OnClickListener(){
+                Log.i("EDITABLE", "Setting an onClickListener ");
+                final TextView valView = (TextView)v.findViewById(R.id.valueView);
+                Log.i("EDITABLE", "CLICK! Should be making this editable");
+                valView.setFocusable(true);
+                valView.setFocusableInTouchMode(true);
+                valView.requestFocus();
+                valView.setCursorVisible(true);
+                valView.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                valView.invalidate();
+                Log.i("EDITABLE", "This is the value of valView "+valView.getText());
+                Log.i("EDITABLE", "CLICK! Should now be editable");
+
+                ((ContentView)v).setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         Log.i("EDITABLE", "CLICK! Should be making this editable");
-                        TextView valView = (TextView)v.findViewById(R.id.valueView);
                         valView.setFocusable(true);
                         valView.setFocusableInTouchMode(true);
+
                         valView.setCursorVisible(true);
                         valView.setInputType(InputType.TYPE_CLASS_TEXT);
                         valView.requestFocus();
@@ -38,7 +53,7 @@ public class CombatFragment extends SheetFragment {
                     }
                 });
             }
-        }
+        }*/
 
 
         return rootView;

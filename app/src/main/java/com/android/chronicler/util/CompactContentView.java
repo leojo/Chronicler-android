@@ -2,6 +2,7 @@ package com.android.chronicler.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -58,10 +59,22 @@ public class CompactContentView extends LinearLayout {
     }
 
     private void setEditable() {
+        Log.i("EDITABLE", "Setting editable");
         this.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.i("ContentView", "The click listener is working");
+                Log.i("EDITABLE", "CLICK! Should be making this editable");
+
+                TextView valView = (TextView)v.findViewById(R.id.compValueView);
+                valView.setFocusable(true);
+                valView.setFocusableInTouchMode(true);
+                valView.setClickable(true);
+                valView.setCursorVisible(true);
+                valView.setInputType(InputType.TYPE_CLASS_TEXT);
+                valView.requestFocus();
+                valView.invalidate();
+                Log.i("EDITABLE", "This is the value of our field "+valView.getText());
+                Log.i("EDITABLE", "CLICK! Should now be editable");
             }
         });
     }
