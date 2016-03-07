@@ -46,6 +46,10 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".ui.NewCharacterActivity"
+            android:label="NewCharacterActivity">
+        </activity>
+        <activity
             android:name=".ui.CampaignsActivity"
             android:label="@string/title_activity_campaign" />
         <activity

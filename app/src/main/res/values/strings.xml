@@ -32,4 +32,9 @@
     <string name="charactersheet_spells_tab">Spells</string>
     <string name="charactersheet_feats_tab">Feats</string>
     <string name="charactersheet_skills_tab">Skills</string>
+
+    <!-- String related to making a new character -->
+    <string name="new_character_preview_text" formatted="false">I will roll a %s %s named %s</string>
+    <string name="new_character_button_text" formatted="false">Create %s!</string>
+
 </resources>

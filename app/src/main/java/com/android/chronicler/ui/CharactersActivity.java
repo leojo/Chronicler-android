@@ -1,6 +1,7 @@
 package com.android.chronicler.ui;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.chronicler.R;
@@ -40,14 +42,26 @@ public class CharactersActivity extends AppCompatActivity {
         loader = new DataLoader();
         CONTENT = intent.getStringArrayListExtra("CharacterList");
         characterListView = (ListView)findViewById(R.id.CharacterListView);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
+
+        Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
+        ImageView addButtonView = new ImageView(this);
+        addButtonView.setPadding(20, 20, 20, 20);
+        addButtonView.setImageDrawable(addButtonDrawable);
+
+        characterListView.addFooterView(addButtonView);
+
         characterListView.setAdapter(adapter);
         characterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                openSheet();
+                ;if (position == adapter.getCount()) {
+                    newSheet();
+                } else {
+                    openSheet();
+                }
                 //adapter.add("You just clicked item number "+position);
 
             }
@@ -57,6 +71,16 @@ public class CharactersActivity extends AppCompatActivity {
     public void openSheet() {
         Intent intent = new Intent(this, CharacterActivity.class);
         loader.readySheetThenStart(this, intent);
+    }
+
+    public void newSheet() {
+        Intent intent = new Intent(this, NewCharacterActivity.class);
+        loader.readyCreateCharThenStart(this, intent);
+    }
+
+    public void newCharacter(View view, String name, String race, String charClass) {
+        Intent intent = new Intent(this, NewCharacterActivity.class);
+        loader.readyNewSheetThenStart(this, intent, name, race, charClass);
     }
 
 
