@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,6 +79,13 @@ public class CampaignsActivity extends AppCompatActivity {
 
         campaignListView.addHeaderView(DMHeaderText, null, false);
 
+        TextView playerHeaderText = new TextView(this);
+        playerHeaderText.setText("Campaigns I play in");
+        playerHeaderText.setPadding(20, 20, 20, 20);
+        playerHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+
+        playerCampaignsView.addHeaderView(playerHeaderText, null, false);
+
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW
         // -----------------------------------
@@ -92,8 +100,7 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                if (position == adapter.getCount()) {
+                if (position == adapter.getCount()+1) {
                     newCampaign();
                 } else {
                     openCampaign();

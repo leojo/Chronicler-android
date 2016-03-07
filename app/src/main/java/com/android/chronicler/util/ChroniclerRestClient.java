@@ -74,6 +74,8 @@ public class ChroniclerRestClient {
 
     // Async post requests that needs to pass along user id cookie, i.e. when updating user data
     // such as a character sheet.
+
+    // Why does this use a HttpEntity instead of a RequestParams like everything else?
     public void postUserData(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", "null");
@@ -97,6 +99,10 @@ public class ChroniclerRestClient {
             e.printStackTrace();
         }*/
         //client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public void addHeader(String name, String value) {
+        client.addHeader(name, value);
     }
 
     private String getAbsoluteUrl(String relativeUrl) {
