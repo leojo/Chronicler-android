@@ -40,28 +40,6 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
-                StringEntity charEntity = null;
-                try {
-                    charEntity = new StringEntity(character.toJSON(), ContentType.APPLICATION_JSON);
-                } catch (JsonProcessingException e) {
-                    Log.e("STORECHAR","Error converting character sheet to JSON");
-                    e.printStackTrace();
-                }
-                if(charEntity!= null) {
-                    Log.i("STORECHAR", "HERE COMES THE CHAR ENTITY"+charEntity.toString());
-                    cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Log.i("STORECHAR", "Success");
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Log.i("STORECHAR", "Failure");
-                            error.printStackTrace();
-                        }
-                    });
-                }
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
             }
