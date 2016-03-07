@@ -72,20 +72,6 @@ public class CampaignsActivity extends AppCompatActivity {
 
         campaignListView.addFooterView(addButtonView);
 
-        TextView DMHeaderText = new TextView(this);
-        DMHeaderText.setText("Campaigns I run");
-        DMHeaderText.setPadding(20, 20, 20, 20);
-        DMHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-
-        campaignListView.addHeaderView(DMHeaderText, null, false);
-
-        TextView playerHeaderText = new TextView(this);
-        playerHeaderText.setText("Campaigns I play in");
-        playerHeaderText.setPadding(20, 20, 20, 20);
-        playerHeaderText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-
-        playerCampaignsView.addHeaderView(playerHeaderText, null, false);
-
         // ---------------------------------------
         // ADD THE ADAPTER TO LIST VIEW
         // -----------------------------------

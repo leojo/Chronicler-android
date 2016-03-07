@@ -14,6 +14,7 @@ import com.android.chronicler.ui.CampaignsActivity;
 import com.android.chronicler.ui.CharacterActivity;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
+import com.android.chronicler.ui.MyAccountActivity;
 import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.UserLocalStore;
@@ -98,13 +99,14 @@ public class MainActivity extends AppCompatActivity {
         loader.readyCharlistThenStart(this, intent);
     }
 
-
-    //  SHOULD PUT THIS CODE IN DATALOADER class .... thats exactly what it was created for, see
-    // loader.readySheetThenStart(intent) above ^
     public void openCampaigns(View view) {
-        Log.i("OPEN", "OPENING CAMPAIGNS");
         final Intent intent = new Intent(this, CampaignsActivity.class);
         loader.readyCampaignlistThenStart(this, intent);
+    }
+
+    public void openMyAccount(View view) {
+        Intent intent = new Intent(this, MyAccountActivity.class);
+        startActivity(intent);
     }
 
     public void logout(View view) {
