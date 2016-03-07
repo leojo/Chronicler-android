@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class CampaignsActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter, adapter2;
     ListView campaignListView, playerCampaignsView;
     public List<String> DMCampaigns;
     public List<String> PCCampaigns;
@@ -62,7 +62,7 @@ public class CampaignsActivity extends AppCompatActivity {
         // has to offer to suit our needs if we need to do something more complicated than this.
         // ----------------------------------------------------------------------------------------
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DMCampaigns);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
+        adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
         // Set add button to footer
         Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);

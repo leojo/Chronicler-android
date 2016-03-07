@@ -43,7 +43,7 @@
         <activity
             android:name=".ui.CharacterActivity"
             android:exported="true"
-            android:label="@string/title_activity_character"></activity>
+            android:label="@string/title_activity_character" />
         <activity
             android:name=".ui.CampaignsActivity"
             android:label="@string/title_activity_campaign" />
@@ -54,7 +54,8 @@
             android:name=".ui.CharactersActivity"
             android:label="@string/title_activity_characters" />
         <activity android:name=".ui.NewCampaignActivity" />
-        <activity android:name=".ui.MyAccountActivity"></activity>
+        <activity android:name=".ui.MyAccountActivity" />
+        <activity android:name=".ui.InvitesActivity"></activity>
     </application>
 
 </manifest>
