@@ -101,6 +101,17 @@ public class ChroniclerRestClient {
         //client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public void postUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        List<Cookie> cookies = cookieStore.getCookies();
+        Cookie userCookie = new BasicClientCookie("user", "null");
+        for(Cookie c : cookies) {
+            if(c.getName().equals("user")) userCookie = c;
+        }
+
+        client.addHeader(userCookie.getName(), userCookie.getValue());
+        client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
     public void addHeader(String name, String value) {
         client.addHeader(name, value);
     }

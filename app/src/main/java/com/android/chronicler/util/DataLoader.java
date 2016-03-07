@@ -176,7 +176,7 @@ public class DataLoader {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
-        cli.postUserData("/campaignData", params.getEntity(new JsonHttpResponseHandler()), new AsyncHttpResponseHandler() {
+        cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.i("SUCCESS", "Starting campaign activity");
