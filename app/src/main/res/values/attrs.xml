@@ -11,5 +11,11 @@
         </attr>
         <attr name="id" format="string"></attr>
     </declare-styleable>
-
+    <declare-styleable name="CompactContentView">
+        <attr name="compName" format="string"></attr>
+        <attr name="compValue" format="string"></attr>
+        <attr name="compEditable" format="boolean"></attr>
+        <attr name="compBorder" format="integer"></attr>
+        <attr name="compId" format="string"></attr>
+    </declare-styleable>
 </resources>

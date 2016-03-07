@@ -2,9 +2,11 @@ package com.android.chronicler.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ public class ContentView extends LinearLayout {
     String value;
     boolean editable;
     int border;
+    TextView valueView;
 
     public ContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,6 +39,7 @@ public class ContentView extends LinearLayout {
             editable = a.getBoolean(R.styleable.ContentView_editable, false);
             border = a.getInt(R.styleable.ContentView_border, 0);
 
+
             Log.i("ContentView", "Getting all your style attributes!");
         } finally {
             a.recycle();
@@ -48,19 +52,33 @@ public class ContentView extends LinearLayout {
         Log.i("ContentView", "init");
         inflate(getContext(), R.layout.content_view, this);
         TextView nameView = (TextView)findViewById(R.id.nameView);
-        TextView valueView = (TextView)findViewById(R.id.valueView);
+        valueView = (TextView)findViewById(R.id.valueView);
         nameView.setText(name);
         valueView.setText(value);
         if(border != 0) this.setBackgroundResource(border);
-        if(editable) setEditable();
+        //if(editable) setEditable();
         Log.i("ContentView", "Ready, the name is "+name);
     }
 
+    public boolean isEditable() {
+        return editable;
+    }
+
     private void setEditable() {
+        Log.i("EDITABLE", "Setting editable");
         this.setOnClickListener(new OnClickListener(){
             @Override
             public void onClick(View v) {
-                Log.i("ContentView", "The click listener is working");
+                Log.i("EDITABLE", "CLICK! Should be making this editable");
+                TextView valView = (TextView)v.findViewById(R.id.valueView);
+                valView.setFocusable(true);
+                valView.setFocusableInTouchMode(true);
+                valView.setCursorVisible(true);
+                valView.setInputType(InputType.TYPE_CLASS_TEXT);
+                valView.requestFocus();
+                valView.invalidate();
+                Log.i("EDITABLE", "This is the value of valView "+valView.getText());
+                Log.i("EDITABLE", "CLICK! Should now be editable");
             }
         });
     }
