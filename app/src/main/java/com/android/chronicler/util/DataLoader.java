@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -41,6 +40,26 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
+                intent.putExtra("CharacterSheet", character);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String response = (responseBody==null?"Empty response":new String(responseBody));
+                Log.i("SKILLS", "Failure fetching skill data: " + response);
+            }
+        });
+
+    }
+
+    public void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass){
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
                 StringEntity charEntity = null;
                 try {
                     charEntity = new StringEntity(character.toJSON(), ContentType.APPLICATION_JSON);
@@ -49,7 +68,6 @@ public class DataLoader {
                     e.printStackTrace();
                 }
                 if(charEntity!= null) {
-                    Log.i("STORECHAR", "HERE COMES THE CHAR ENTITY"+charEntity.toString());
                     cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -73,7 +91,52 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
+    }
 
+    public void readyCreateCharThenStart(final Context context, final Intent intent){
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        final ObjectMapper mapper = new ObjectMapper();
+        cli.get("/raceList", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String raceListJSON = new String(responseBody);
+                ArrayList<String> raceList;
+                try {
+                    raceList = mapper.readValue(raceListJSON, ArrayList.class);
+                } catch (IOException e) {
+                    onFailure(statusCode,headers,responseBody,new Error(e.getMessage()));
+                    return;
+                }
+                intent.putStringArrayListExtra("raceList", raceList);
+                cli.get("/classList", null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String classListJSON = new String(responseBody);
+                        ArrayList<String> classList;
+                        try {
+                            classList = mapper.readValue(classListJSON,ArrayList.class);
+                        } catch (IOException e) {
+                            onFailure(statusCode,headers,responseBody,new Error(e.getMessage()));
+                            return;
+                        }
+                        intent.putStringArrayListExtra("classList", classList);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String response = (responseBody==null?"Empty response":new String(responseBody));
+                        Log.e("CLASSLIST", "Failure fetching class list: " + response);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String response = (responseBody==null?"Empty response":new String(responseBody));
+                Log.e("RACELIST", "Failure fetching race list: " + response);
+            }
+        });
     }
 
     public void readyCharlistThenStart(final Context context, final Intent intent) {

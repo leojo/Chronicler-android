@@ -34,7 +34,7 @@
                     custom:name="Name"
                     custom:value="Legolas"
                     android:id="@+id/charNameView"
-                    android:background="@drawable/border_bottom"/>
+                    android:background="@drawable/border_right_bottom"/>
 
 
 
@@ -48,7 +48,7 @@
                     custom:name="Race"
                     custom:value="Elf"
                     android:id="@+id/raceView"
-                    android:background="@drawable/border_bottom"/>
+                    android:background="@drawable/border_right_bottom"/>
 
 
 
@@ -62,7 +62,7 @@
                     custom:name="Alignment"
                     custom:value="NG"
                     android:id="@+id/alignView"
-                    android:background="@drawable/border_bottom"/>
+                    android:background="@drawable/border_right_bottom"/>
 
 
 
@@ -106,7 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.30"
-            android:weightSum="1">
+            android:weightSum="1"
+            >
 
 
             <LinearLayout
@@ -114,6 +115,79 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="match_parent">
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Gender"
+                    custom:compValue="Undecided"
+                    android:id="@+id/genderView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Deity"
+                    custom:compValue="Noodles"
+                    android:id="@+id/deityView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Eyes"
+                    custom:compValue="Silver"
+                    android:id="@+id/eyesView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Hair"
+                    custom:compValue="Black"
+                    android:id="@+id/hairView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Height"
+                    custom:compValue="5\'3\'\'"
+                    android:id="@+id/heightView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Weight"
+                    custom:compValue="120 lbs"
+                    android:id="@+id/weightView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Size"
+                    custom:compValue="Small"
+                    android:id="@+id/sizeView"
+                    android:background="@drawable/border_right_bottom"/>
+                <com.android.chronicler.util.CompactContentView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1111"
+                    custom:compEditable="true"
+                    custom:compName="Skin"
+                    custom:compValue="Green"
+                    android:id="@+id/skinView"
+                    android:background="@drawable/border_right_bottom"/>
 
 
             </LinearLayout>
