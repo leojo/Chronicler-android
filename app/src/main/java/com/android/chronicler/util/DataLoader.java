@@ -29,9 +29,6 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  * Created by leo on 12.2.2016.
  */
 public class DataLoader {
-
-    // NOTE: Wouldn't it make more sense to make these methods static?
-
     public static void readySheetThenStart(final Context context, final Intent intent) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
@@ -179,7 +176,6 @@ public class DataLoader {
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                Log.i("CAMPAIGNS", "Got campaigns");
                 try {
                     System.out.println(responseBody.getJSONObject(1).getString("7"));
                 } catch (JSONException e) {
@@ -211,11 +207,6 @@ public class DataLoader {
                 intent.putExtra("PCCampaignList", PCCampaigns);
                 context.startActivity(intent);
             }
-
-            @Override
-            public void onStart() {
-                Log.i("START", "Started campaign fetching");
-            }
         });
     }
 
@@ -226,7 +217,6 @@ public class DataLoader {
         cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.i("SUCCESS", "Starting campaign activity");
                 context.startActivity(intent);
             }
 

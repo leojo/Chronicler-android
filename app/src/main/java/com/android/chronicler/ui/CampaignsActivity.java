@@ -86,7 +86,8 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (position == adapter.getCount()+1) {
+                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
+                if (position == adapter.getCount()) {
                     newCampaign();
                 } else {
                     openCampaign();
