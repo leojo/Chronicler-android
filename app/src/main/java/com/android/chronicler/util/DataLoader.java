@@ -60,27 +60,7 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
                 CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                StringEntity charEntity = null;
-                try {
-                    charEntity = new StringEntity(character.toJSON(), ContentType.APPLICATION_JSON);
-                } catch (JsonProcessingException e) {
-                    Log.e("STORECHAR","Error converting character sheet to JSON");
-                    e.printStackTrace();
-                }
-                if(charEntity!= null) {
-                    cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Log.i("STORECHAR", "Success: "+new String(responseBody));
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Log.i("STORECHAR", "Failure");
-                            error.printStackTrace();
-                        }
-                    });
-                }
+                storeCharSheet(context, character);
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
             }
@@ -237,7 +217,28 @@ public class DataLoader {
         });
     }
 
-    public static void storeCharSheet(CharacterSheet c){
+    public static void storeCharSheet(Context context, CharacterSheet c){
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        StringEntity charEntity = null;
+        try {
+            charEntity = new StringEntity(c.toJSON(), ContentType.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            Log.e("STORECHAR","Error converting character sheet to JSON");
+            e.printStackTrace();
+        }
+        if(charEntity!= null) {
+            cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Log.i("STORECHAR", "Success: "+new String(responseBody));
+                }
 
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Log.i("STORECHAR", "Failure");
+                    error.printStackTrace();
+                }
+            });
+        }
     }
 }
