@@ -32,7 +32,7 @@ public class DataLoader {
 
     // NOTE: Wouldn't it make more sense to make these methods static?
 
-    public void readySheetThenStart(final Context context, final Intent intent) {
+    public static void readySheetThenStart(final Context context, final Intent intent) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
@@ -53,12 +53,12 @@ public class DataLoader {
 
     }
 
-    public void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass){
+    public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Create a new character sheet object
                 CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
                 StringEntity charEntity = null;
                 try {
@@ -71,7 +71,7 @@ public class DataLoader {
                     cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Log.i("STORECHAR", "Success");
+                            Log.i("STORECHAR", "Success: "+new String(responseBody));
                         }
 
                         @Override
@@ -93,7 +93,7 @@ public class DataLoader {
         });
     }
 
-    public void readyCreateCharThenStart(final Context context, final Intent intent){
+    public static void readyCreateCharThenStart(final Context context, final Intent intent){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         final ObjectMapper mapper = new ObjectMapper();
         cli.get("/raceList", null, new AsyncHttpResponseHandler() {
@@ -104,7 +104,7 @@ public class DataLoader {
                 try {
                     raceList = mapper.readValue(raceListJSON, ArrayList.class);
                 } catch (IOException e) {
-                    onFailure(statusCode,headers,responseBody,new Error(e.getMessage()));
+                    onFailure(statusCode, headers, responseBody, new Error(e.getMessage()));
                     return;
                 }
                 intent.putStringArrayListExtra("raceList", raceList);
@@ -114,9 +114,9 @@ public class DataLoader {
                         String classListJSON = new String(responseBody);
                         ArrayList<String> classList;
                         try {
-                            classList = mapper.readValue(classListJSON,ArrayList.class);
+                            classList = mapper.readValue(classListJSON, ArrayList.class);
                         } catch (IOException e) {
-                            onFailure(statusCode,headers,responseBody,new Error(e.getMessage()));
+                            onFailure(statusCode, headers, responseBody, new Error(e.getMessage()));
                             return;
                         }
                         intent.putStringArrayListExtra("classList", classList);
@@ -125,7 +125,7 @@ public class DataLoader {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        String response = (responseBody==null?"Empty response":new String(responseBody));
+                        String response = (responseBody == null ? "Empty response" : new String(responseBody));
                         Log.e("CLASSLIST", "Failure fetching class list: " + response);
                     }
                 });
@@ -139,7 +139,7 @@ public class DataLoader {
         });
     }
 
-    public void readyCharlistThenStart(final Context context, final Intent intent) {
+    public static void readyCharlistThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
             @Override
@@ -173,7 +173,7 @@ public class DataLoader {
         });
     }
 
-    public void readyCampaignlistThenStart(final Context context, final Intent intent) {
+    public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         UserLocalStore store = new UserLocalStore(context.getApplicationContext());
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
@@ -219,7 +219,7 @@ public class DataLoader {
         });
     }
 
-    public void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
+    public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
@@ -235,5 +235,9 @@ public class DataLoader {
                 Log.i("DataLoader", "Failed to post campaign");
             }
         });
+    }
+
+    public static void storeCharSheet(CharacterSheet c){
+
     }
 }

@@ -46,7 +46,8 @@
             android:label="@string/title_activity_character" />
         <activity
             android:name=".ui.NewCharacterActivity"
-            android:label="NewCharacterActivity">
+            android:label="NewCharacterActivity"
+            android:noHistory="true">
         </activity>
         <activity
             android:name=".ui.CampaignsActivity"

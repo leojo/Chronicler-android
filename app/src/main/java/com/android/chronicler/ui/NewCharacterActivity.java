@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class NewCharacterActivity extends AppCompatActivity {
         name = nameField.getText().toString();
 
         previewTextView.setText(String.format(previewText,race,className,name));
-        createButton.setText(String.format(buttonText,name));
+        createButton.setText(String.format(buttonText, name));
 
         // LISTENERS ====================================
         raceSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -99,9 +100,21 @@ public class NewCharacterActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 name = s.toString();
-                previewTextView.setText(String.format(previewText,race,className,name));
-                createButton.setText(String.format(buttonText,name));
+                previewTextView.setText(String.format(previewText, race, className, name));
+                createButton.setText(String.format(buttonText, name));
             }
         });
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeChar();
+            }
+        });
+    }
+
+    public void makeChar(){
+        Intent intent = new Intent(this,CharacterActivity.class);
+        DataLoader.readyNewSheetThenStart(this, intent, name, race, className);
     }
 }
