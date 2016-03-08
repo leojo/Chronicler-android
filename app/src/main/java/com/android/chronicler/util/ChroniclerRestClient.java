@@ -76,6 +76,7 @@ public class ChroniclerRestClient {
     // such as a character sheet.
 
     // Why does this use a HttpEntity instead of a RequestParams like everything else?
+    // A: Because this is used to send a characterJSON which is around 100k characters.
     public void postUserData(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", "null");
@@ -85,20 +86,6 @@ public class ChroniclerRestClient {
 
         client.addHeader(userCookie.getName(), userCookie.getValue());
         client.post(context, getAbsoluteUrl(url), entity, "application/json", responseHandler);
-        /*try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-            String json;
-            while((json = br.readLine()) != null){
-                int i;
-                for(i = 4000; i<json.length(); i+=4000) {
-                    Log.d("STORECHAR_JSON", json.substring(i - 4000, i));
-                }
-                Log.d("STORECHAR_JSON", json.substring(i - 4000));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        //client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
     public void postUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
