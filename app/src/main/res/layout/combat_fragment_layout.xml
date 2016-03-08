@@ -141,8 +141,7 @@
                 android:background="@drawable/border_right_bottom"/>
 
             <com.android.chronicler.util.ContentView
-
-            android:layout_width="match_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.30"
                 android:textAppearance="?android:attr/textAppearanceLarge"

@@ -6,7 +6,6 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,29 +14,28 @@ import com.android.chronicler.R;
 /**
  * Created by andrea on 3.3.2016.
  */
-public class ContentView extends LinearLayout {
+public class CompactContentView extends LinearLayout {
     String id;
     String name;
     String value;
     boolean editable;
     int border;
-    TextView valueView;
 
-    public ContentView(Context context, AttributeSet attrs) {
+    public CompactContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
 
         // Get attributes as defined in values/attrs.xml:
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.ContentView,
+                R.styleable.CompactContentView,
                 0, 0);
         try {
-            id = a.getString(R.styleable.ContentView_id);
-            name = a.getString(R.styleable.ContentView_name);
-            value = a.getString(R.styleable.ContentView_value);
-            editable = a.getBoolean(R.styleable.ContentView_editable, false);
-            border = a.getInt(R.styleable.ContentView_border, 0);
+            id = a.getString(R.styleable.CompactContentView_compId);
+            name = a.getString(R.styleable.CompactContentView_compName);
+            value = a.getString(R.styleable.CompactContentView_compValue);
+            editable = a.getBoolean(R.styleable.CompactContentView_compEditable, false);
+            border = a.getInt(R.styleable.CompactContentView_compBorder, 0);
 
 
             Log.i("ContentView", "Getting all your style attributes!");
@@ -50,9 +48,9 @@ public class ContentView extends LinearLayout {
 
     private void init() {
         Log.i("ContentView", "init");
-        inflate(getContext(), R.layout.content_view, this);
-        TextView nameView = (TextView)findViewById(R.id.nameView);
-        valueView = (TextView)findViewById(R.id.valueView);
+        inflate(getContext(), R.layout.compact_content_view, this);
+        TextView nameView = (TextView)findViewById(R.id.compNameView);
+        TextView valueView = (TextView)findViewById(R.id.compValueView);
         nameView.setText(name);
         valueView.setText(value);
         if(border != 0) this.setBackgroundResource(border);
@@ -67,7 +65,7 @@ public class ContentView extends LinearLayout {
             public void onClick(View v) {
                 Log.i("EDITABLE", "CLICK! Should be making this editable");
 
-                TextView valView = (TextView)v.findViewById(R.id.valueView);
+                TextView valView = (TextView)v.findViewById(R.id.compValueView);
                 valView.setFocusable(true);
                 valView.setFocusableInTouchMode(true);
                 valView.setClickable(true);
@@ -81,32 +79,4 @@ public class ContentView extends LinearLayout {
         });
     }
 
-/*
-    @Override
-    public boolean onTouchEvent(final MotionEvent e) {
-        //touchCounter++;
-        //float touched_x = e.getX();
-        //float touched_y = e.getY();
-
-        int action = e.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                touched = true;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touched = true;
-                break;
-            case MotionEvent.ACTION_UP:
-                touched = false;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                touched = false;
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
-                touched = false;
-                break;
-            default:
-        }
-        return true; // processed
-    }*/
 }
