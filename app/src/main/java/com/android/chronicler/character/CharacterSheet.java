@@ -3,6 +3,8 @@ package com.android.chronicler.character;
 import android.util.Log;
 
 import com.android.chronicler.character.ability.AbilityScores;
+import com.android.chronicler.character.enums.AbilityID;
+import com.android.chronicler.character.enums.SavingThrowID;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
 import com.android.chronicler.character.feat.FeatSlot;
@@ -33,10 +35,8 @@ public class CharacterSheet implements Serializable{
     private Skills skills;
     private Saves saves;
     private AbilityScores abilityScores;
-    private String name;
-    private String race;
-    private String characterClass;
-    private int level, hp, tempHp, nonlethalDamage;
+    private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
+    private int level, hp, tempHp, nonlethalDamage, ac, touch, ff;
 
     //TODO: Add functions and variables as they become needed, don't try to foresee every possible need beforehand. Focus on the scalability of the class so that adding new functions will be easy in the future.
 
@@ -88,6 +88,10 @@ public class CharacterSheet implements Serializable{
     // =================
 
     //<editor-fold desc="HP stuff">
+    public void updateHP(int newHP){
+        hp = newHP;
+    }
+
     public void setHP(int currentHP){
         //TODO: Implement setHP
     }
@@ -106,6 +110,35 @@ public class CharacterSheet implements Serializable{
 
     public void removeNonLethalDamage(){
         //TODO: Implement removeNonLethalDamage
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="AC stuff">
+    public void updateAC(int newAC){
+        // FIXME: 8.3.2016 This is a naive temporary implementation, this is not a final version of this function
+        ac = newAC;
+        int dex = abilityScores.get(AbilityID.DEX).getModifier();
+        ff = ac - dex;
+        touch = 10 + dex;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Save stuff">
+    public void updateFort(int val){
+        saves.getSaves().get(SavingThrowID.FORT).setBase(val);
+        saves.update(abilityScores);
+    }
+
+
+    public void updateRef(int val){
+        saves.getSaves().get(SavingThrowID.REF).setBase(val);
+        saves.update(abilityScores);
+    }
+
+
+    public void updateWill(int val){
+        saves.getSaves().get(SavingThrowID.WILL).setBase(val);
+        saves.update(abilityScores);
     }
     //</editor-fold>
 
@@ -252,6 +285,110 @@ public class CharacterSheet implements Serializable{
 
     public void setTempHp(int tempHp) {
         this.tempHp = tempHp;
+    }
+
+    public int getNonlethalDamage() {
+        return nonlethalDamage;
+    }
+
+    public void setNonlethalDamage(int nonlethalDamage) {
+        this.nonlethalDamage = nonlethalDamage;
+    }
+
+    public int getAc() {
+        return ac;
+    }
+
+    public void setAc(int ac) {
+        this.ac = ac;
+    }
+
+    public int getTouch() {
+        return touch;
+    }
+
+    public void setTouch(int touch) {
+        this.touch = touch;
+    }
+
+    public int getFf() {
+        return ff;
+    }
+
+    public void setFf(int ff) {
+        this.ff = ff;
+    }
+
+    public String getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(String alignment) {
+        this.alignment = alignment;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDeity() {
+        return deity;
+    }
+
+    public void setDeity(String deity) {
+        this.deity = deity;
+    }
+
+    public String getEyes() {
+        return eyes;
+    }
+
+    public void setEyes(String eyes) {
+        this.eyes = eyes;
+    }
+
+    public String getHair() {
+        return hair;
+    }
+
+    public void setHair(String hair) {
+        this.hair = hair;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getSkin() {
+        return skin;
+    }
+
+    public void setSkin(String skin) {
+        this.skin = skin;
     }
 
     //</editor-fold>

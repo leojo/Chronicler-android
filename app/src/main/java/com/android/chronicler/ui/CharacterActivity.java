@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -86,27 +87,9 @@ public class CharacterActivity extends FragmentActivity {
         mPager.setPageMargin(2);
         mPager.setPageMarginDrawable(R.color.tabs_color);
         pagerTabs.onPageScrolled(INITIAL_PAGE, 0, 0); // should not be needed
-
-        // ------------------------------------------------------------------------------------------
-
-        // LEO STUFF
-        /* skillsView = (ListView)findViewById(R.id.skillsView);
-        character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
-        skillsView.setAdapter(new SkillsAdapter(this, character.getSkills()));
-
-        ((TextView)this.findViewById(R.id.charName)).setText(character.getName());
-        ((TextView)this.findViewById(R.id.classLevels)).setText(character.getCharacterClass());
-        ((TextView)this.findViewById(R.id.strInfo)).setText("STR: "+character.getAbilityScores().get(AbilityID.STR).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.STR).getModifier());
-        ((TextView)this.findViewById(R.id.dexInfo)).setText("DEX: "+character.getAbilityScores().get(AbilityID.DEX).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.DEX).getModifier());
-        ((TextView)this.findViewById(R.id.conInfo)).setText("CON: "+character.getAbilityScores().get(AbilityID.CON).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CON).getModifier());
-        ((TextView)this.findViewById(R.id.intInfo)).setText("INT: "+character.getAbilityScores().get(AbilityID.INT).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.INT).getModifier());
-        ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
-        ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
-        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");*/
     }
 
 // ------------------------- FRAGMENT RELATED
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         int currIndex = mPager.getCurrentItem();
@@ -159,6 +142,53 @@ public class CharacterActivity extends FragmentActivity {
         @Override
         public int getCount() {
             return this.fragments.size();
+        }
+    }
+
+    /**
+     * A function for updating a specified field of the underlying character-sheet
+     *
+     * STILL A WORK IN PROGRESS!
+     */
+    private void updateField(String id, String newVal){
+        int intVal = 0;
+        intVal = Integer.parseInt(newVal);
+        switch (id.toLowerCase()){
+            case "hp":
+                character.updateHP(intVal);
+                return;
+            case "ac":
+                character.updateAC(intVal);
+                return;
+            case "fort":
+                character.updateFort(intVal);
+                return;
+            case "ref":
+                character.updateRef(intVal);
+                return;
+            case "will":
+                character.updateWill(intVal);
+                return;
+         /* // Implement these in the character-sheet
+            case "str":
+                character.updateStr(intVal);
+                return;
+            case "con":
+                character.updateCon(intVal);
+                return;
+            case "dex":
+                character.updateDex(intVal);
+                return;
+            case "int":
+                character.updateInt(intVal);
+                return;
+            case "wis":
+                character.updateWis(intVal);
+                return;
+            case "cha":
+                character.updateCha(intVal);
+                return;*/
+            default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
         }
     }
 
