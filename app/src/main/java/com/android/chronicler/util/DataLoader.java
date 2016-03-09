@@ -290,48 +290,4 @@ public class DataLoader {
         Intent loadingScreenIntent = new Intent(context, WaitingActivity.class);
         context.startActivity(loadingScreenIntent);
     }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private static void showProgress(final boolean show, Context context) {
-        // IMPORTANT: THIS COMPILES BUT DOESN'T WORK. DO NOT USE THIS YET
-        // We may have to do a minor overhaul on our layouts to get this to work
-        Activity activity = (Activity) context;
-        final View rootView = ((Activity) context).getWindow().getDecorView().getRootView();
-        final View progressView = activity.findViewById(R.id.login_progress);
-        Log.i("Progress", activity.toString());
-        Log.i("Progress", rootView.toString());
-        Log.i("Progress", progressView.toString());
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-            rootView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
 }
