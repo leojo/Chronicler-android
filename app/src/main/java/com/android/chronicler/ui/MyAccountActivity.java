@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 
@@ -19,13 +20,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
     public void openInvites(View view) {
         Intent intent = new Intent(this, InvitesActivity.class);
-        ArrayList<String> test = new ArrayList<>();
-        test.add("asdf1");
-        test.add("asdf2");
-        test.add("asdf3");
-        intent.putStringArrayListExtra("invites", test);
-
-        startActivity(intent);
+        DataLoader.readyInvitesThenStart(this, intent);
     }
 
     public void openSettings(View view) {

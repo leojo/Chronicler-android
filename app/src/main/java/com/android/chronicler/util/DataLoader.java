@@ -181,11 +181,6 @@ public class DataLoader {
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                try {
-                    System.out.println(responseBody.getJSONObject(1).getString("7"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
 
@@ -257,6 +252,36 @@ public class DataLoader {
                 }
             });
         }
+    }
+
+    public static void readyInvitesThenStart(final Context context, final Intent intent) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+        cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                ArrayList<String> invites = new ArrayList<>();
+
+                try {
+                    JSONArray inviteJSON = responseBody.getJSONObject(0).names();
+
+                    for (int i = 0; i < inviteJSON.length(); i++) {
+                        invites.add(responseBody.getJSONObject(0).getString(inviteJSON.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("INVITES", invites);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject object) {
+                Log.i("DataLoader", object.toString());
+            }
+        });
+        goToWaitScreen(context);
     }
 
     private static void goToWaitScreen(Context context){
