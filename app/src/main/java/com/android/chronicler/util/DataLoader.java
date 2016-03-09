@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -55,6 +56,7 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
+        goToWaitScreen(context);
 
     }
 
@@ -76,6 +78,7 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCreateCharThenStart(final Context context, final Intent intent){
@@ -122,6 +125,7 @@ public class DataLoader {
                 Log.e("RACELIST", "Failure fetching race list: " + response);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
@@ -168,6 +172,7 @@ public class DataLoader {
                 Log.i("CHARLIST", "failed to send requesT???");
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
@@ -208,6 +213,7 @@ public class DataLoader {
                 context.startActivity(intent);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
@@ -225,6 +231,7 @@ public class DataLoader {
                 Log.i("DataLoader", "Failed to post campaign");
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void storeCharSheet(Context context, CharacterSheet c){
@@ -250,6 +257,11 @@ public class DataLoader {
                 }
             });
         }
+    }
+
+    private static void goToWaitScreen(Context context){
+        Intent loadingScreenIntent = new Intent(context, WaitingActivity.class);
+        context.startActivity(loadingScreenIntent);
     }
 
     /**

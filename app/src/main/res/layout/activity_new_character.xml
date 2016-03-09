@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Create"
             android:id="@+id/confirmButton"
+            style="@style/MainButtonStyle"
             android:layout_gravity="bottom"/>
     </LinearLayout>
 
