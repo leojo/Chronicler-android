@@ -260,6 +260,8 @@ public class DataLoader {
         cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                Log.i("DataLoader", responseBody.toString());
+
                 ArrayList<String> invites = new ArrayList<>();
 
                 try {
