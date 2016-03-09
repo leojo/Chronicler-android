@@ -125,6 +125,14 @@ public class DataLoader {
     }
 
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
+        readyCharlistThenStart(context, intent, false, 0);
+    }
+
+    public static void readyCharlistThenStartForResult(final Context context, final Intent intent, int code) {
+        readyCharlistThenStart(context, intent, true, code);
+    }
+
+    public static void readyCharlistThenStart(final Context context, final Intent intent, final boolean getResult, final int code) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
             @Override
@@ -146,7 +154,11 @@ public class DataLoader {
                 }
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
-                context.startActivity(intent);
+                if (getResult) {
+                    ((Activity) context).startActivityForResult(intent, code);
+                } else {
+                    context.startActivity(intent);
+                }
                 Log.i("USERGET", new String(responseBody));
 
             }

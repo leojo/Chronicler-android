@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.android.chronicler.ui.CampaignActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+    <item android:id="@+id/action_accept_invite" android:title="@string/action_accept_invite"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_decline_invite" android:title="@string/action_decline_invite"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
