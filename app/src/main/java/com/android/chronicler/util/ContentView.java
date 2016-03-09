@@ -5,8 +5,11 @@ import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,8 +19,8 @@ import com.android.chronicler.R;
  * Created by andrea on 3.3.2016.
  */
 public class ContentView extends LinearLayout {
-    String id;
-    String name;
+    final boolean intField;
+    final String name;
     String value;
     boolean editable;
     int border;
@@ -33,7 +36,7 @@ public class ContentView extends LinearLayout {
                 R.styleable.ContentView,
                 0, 0);
         try {
-            id = a.getString(R.styleable.ContentView_id);
+            intField = a.getBoolean(R.styleable.ContentView_integerField, false);
             name = a.getString(R.styleable.ContentView_name);
             value = a.getString(R.styleable.ContentView_value);
             editable = a.getBoolean(R.styleable.ContentView_editable, false);
@@ -67,7 +70,9 @@ public class ContentView extends LinearLayout {
             public void onClick(View v) {
                 Log.i("EDITABLE", "CLICK! Should be making this editable");
 
-                TextView valView = (TextView)v.findViewById(R.id.valueView);
+                final TextView valView = (TextView)v.findViewById(R.id.valueView);
+                final String oldVal = valView.getText().toString();
+                Log.i("EDITABLE", "Current val is "+oldVal);
                 valView.setFocusable(true);
                 valView.setFocusableInTouchMode(true);
                 valView.setClickable(true);
@@ -75,7 +80,26 @@ public class ContentView extends LinearLayout {
                 valView.setInputType(InputType.TYPE_CLASS_TEXT);
                 valView.requestFocus();
                 valView.invalidate();
-                Log.i("EDITABLE", "This is the value of our field "+valView.getText());
+                valView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        String val = v.getText().toString();
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            if (intField) {
+                                Log.i("EDITABLE", "Setting field value to: " + val.replaceAll("[^\\d+-]",""));
+                                valView.setText(oldVal);
+                            } else {
+                                Log.i("EDITABLE", "Setting field value to: " + val);
+                                valView.setText(oldVal);
+                            }
+                        } else {
+                            Log.i("EDITABLE", "Edit cancelled, setting field value to: " + oldVal);
+                            valView.setText(oldVal);
+                        }
+                        return false;
+                    }
+                });
+                Log.i("EDITABLE", "This is the value of our field " + valView.getText());
                 Log.i("EDITABLE", "CLICK! Should now be editable");
             }
         });

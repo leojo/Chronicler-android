@@ -33,6 +33,7 @@
                 custom:editable="true"
                 custom:name="AC"
                 custom:value="16"
+                custom:integerField="true"
                 android:id="@+id/acView"
                 android:background="@drawable/border_bottom"/>
 
@@ -53,6 +54,7 @@
                     custom:editable="true"
                     custom:name="Touch"
                     custom:value="13"
+                    custom:integerField="true"
                     android:id="@+id/touchView"
                     android:background="@drawable/border_bottom"/>
                 <com.android.chronicler.util.ContentView
@@ -64,6 +66,7 @@
                     custom:editable="true"
                     custom:name="FF"
                     custom:value="12"
+                    custom:integerField="true"
                     android:id="@+id/ffView"
                     android:background="@drawable/border_left_bottom"/>
             </LinearLayout>
@@ -77,6 +80,7 @@
             custom:editable="true"
             custom:name="HitPoints"
             custom:value="40"
+            custom:integerField="true"
             >
         </com.android.chronicler.util.ContentView>
 
@@ -112,6 +116,7 @@
         custom:editable="true"
         custom:name="Initiative"
         custom:value="+3"
+        custom:integerField="true"
         >
     </com.android.chronicler.util.ContentView>
 
@@ -137,6 +142,7 @@
                 custom:editable="true"
                 custom:name="Fortitude save"
                 custom:value="+4"
+                custom:integerField="true"
                 android:id="@+id/fortView"
                 android:background="@drawable/border_right_bottom"/>
 
@@ -148,6 +154,7 @@
                 custom:editable="true"
                 custom:name="Reflex save"
                 custom:value="+7"
+                custom:integerField="true"
                 android:id="@+id/refView"
                 android:background="@drawable/border_right_bottom"/>
 
@@ -159,6 +166,7 @@
                 custom:editable="true"
                 custom:name="Will save"
                 custom:value="+3"
+                custom:integerField="true"
                 android:id="@+id/willView"
                 android:background="@drawable/border_right_bottom"
                 android:orientation="horizontal" />
@@ -170,6 +178,7 @@
                 custom:editable="true"
                 custom:name="Speed"
                 custom:value="30ft"
+                custom:integerField="true"
                 android:id="@+id/speedView"
                 android:background="@drawable/border_right_bottom"/>
         </LinearLayout>
