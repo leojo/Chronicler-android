@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,7 +57,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
+        TextInputLayout helpTextLayout1 = (TextInputLayout)findViewById(R.id.textinputlayout1);
+        TextInputLayout helpTextLayout2 = (TextInputLayout)findViewById(R.id.textinputlayout2);
+        helpTextLayout1.setHintTextAppearance(R.style.HelpText);
+        helpTextLayout2.setHintTextAppearance(R.style.HelpText);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();

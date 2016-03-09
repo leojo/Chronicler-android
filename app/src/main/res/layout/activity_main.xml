@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:text="Characters"
         android:id="@+id/button"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openCharacters"/>
 
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Campaigns"
         android:id="@+id/button2"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openCampaigns" />
 
@@ -50,6 +52,7 @@
         android:layout_height="wrap_content"
         android:text="My Account"
         android:id="@+id/button3"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openMyAccount"/>
 
@@ -58,6 +61,7 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/button4"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="logout"/>
 
