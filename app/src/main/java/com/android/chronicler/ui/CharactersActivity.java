@@ -28,7 +28,6 @@ public class CharactersActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     ListView characterListView;
     public List<String> CONTENT;
-    private DataLoader loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,6 @@ public class CharactersActivity extends AppCompatActivity {
         // ADD TO DMCampaigns THE RESPONSE FROM SERVER
         // ---------------------------------------
         Intent intent = getIntent();
-        loader = new DataLoader();
         CONTENT = intent.getStringArrayListExtra("CharacterList");
         characterListView = (ListView)findViewById(R.id.CharacterListView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
@@ -57,10 +55,24 @@ public class CharactersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                ;if (position == adapter.getCount()) {
-                    newSheet();
+                ;
+                if (getCallingActivity() == null) {
+                    // If called with startActivity
+                    if (position == adapter.getCount()) {
+                        newSheet();
+                    } else {
+                        openSheet();
+                    }
                 } else {
-                    openSheet();
+                    // If called with startActivityForResult
+                    if (position == adapter.getCount()) {
+                        //TODO: Make this return new character sheet
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra("CHARACTER_NAME", adapter.getItem(position));
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                 }
                 //adapter.add("You just clicked item number "+position);
 
@@ -70,17 +82,17 @@ public class CharactersActivity extends AppCompatActivity {
 
     public void openSheet() {
         Intent intent = new Intent(this, CharacterActivity.class);
-        loader.readySheetThenStart(this, intent);
+        DataLoader.readySheetThenStart(this, intent);
     }
 
     public void newSheet() {
         Intent intent = new Intent(this, NewCharacterActivity.class);
-        loader.readyCreateCharThenStart(this, intent);
+        DataLoader.readyCreateCharThenStart(this, intent);
     }
 
     public void newCharacter(View view, String name, String race, String charClass) {
         Intent intent = new Intent(this, NewCharacterActivity.class);
-        loader.readyNewSheetThenStart(this, intent, name, race, charClass);
+        DataLoader.readyNewSheetThenStart(this, intent, name, race, charClass);
     }
 
 

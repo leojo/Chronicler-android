@@ -1,6 +1,8 @@
 package com.android.chronicler.ui;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +18,17 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataLoader;
 
 import java.lang.reflect.Array;
 import java.util.List;
 
 public class InvitesActivity extends AppCompatActivity {
+    final int SELECT_CHARACTER = 1;
     List<String> invites;
     ListView inviteListView;
     ArrayAdapter<String> adapter;
+    String selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,7 @@ public class InvitesActivity extends AppCompatActivity {
         inviteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedItem = invites.get(position);
                 showPopup(view);
             }
         });
@@ -51,7 +57,32 @@ public class InvitesActivity extends AppCompatActivity {
 
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
-        popup.inflate(R.menu.menu_campaign_details);
+        popup.inflate(R.menu.menu_invite_options);
+        final Activity thisActivity = this;
+
+        final Intent intent = new Intent(this, CharactersActivity.class);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Accept":
+                        DataLoader.readyCharlistThenStartForResult(thisActivity, intent, SELECT_CHARACTER);
+                        break;
+                    case "Decline":
+                        adapter.remove(selectedItem);
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
         popup.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("Result!", data.getStringExtra("CHARACTER_NAME"));
+        adapter.remove(selectedItem);
     }
 }
