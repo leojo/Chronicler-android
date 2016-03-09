@@ -3,15 +3,51 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="actionBarStyle">@style/My.Action.Bar.Theme</item>
+    </style>
+
+    <style name="My.Action.Bar.Theme" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="background">@drawable/action_bar_background</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/action_bar_background</item>
+    </style>
+
+    <style name="HelpText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MainButtonStyle">
+        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_margin">15px</item>
+        <item name="android:layout_weight">0.02</item>
+        <item name="android:background">@drawable/main_buttons</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="LoginButtonStyle">
+        <item name="android:layout_width">224dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_margin">10px</item>
+        <item name="android:layout_weight">0.01</item>
+        <item name="android:background">@drawable/login_button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
 </resources>
