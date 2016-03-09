@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:text="Pending Invites"
         android:id="@+id/button"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openInvites"/>
 
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/button2"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openSettings" />
 
@@ -50,6 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Something"
         android:id="@+id/button3"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -57,6 +60,7 @@
         android:layout_height="wrap_content"
         android:text="Something"
         android:id="@+id/button4"
+        style="@style/MainButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="logout"/>
 

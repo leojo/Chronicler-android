@@ -55,10 +55,24 @@ public class CharactersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                ;if (position == adapter.getCount()) {
-                    newSheet();
+                ;
+                if (getCallingActivity() == null) {
+                    // If called with startActivity
+                    if (position == adapter.getCount()) {
+                        newSheet();
+                    } else {
+                        openSheet();
+                    }
                 } else {
-                    openSheet();
+                    // If called with startActivityForResult
+                    if (position == adapter.getCount()) {
+                        //TODO: Make this return new character sheet
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra("CHARACTER_NAME", adapter.getItem(position));
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
                 }
                 //adapter.add("You just clicked item number "+position);
 

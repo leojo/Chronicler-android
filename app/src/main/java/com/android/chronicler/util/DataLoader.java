@@ -1,9 +1,17 @@
 package com.android.chronicler.util;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 
+import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,9 +37,6 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  * Created by leo on 12.2.2016.
  */
 public class DataLoader {
-
-    // NOTE: Wouldn't it make more sense to make these methods static?
-
     public static void readySheetThenStart(final Context context, final Intent intent) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
@@ -120,6 +125,14 @@ public class DataLoader {
     }
 
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
+        readyCharlistThenStart(context, intent, false, 0);
+    }
+
+    public static void readyCharlistThenStartForResult(final Context context, final Intent intent, int code) {
+        readyCharlistThenStart(context, intent, true, code);
+    }
+
+    public static void readyCharlistThenStart(final Context context, final Intent intent, final boolean getResult, final int code) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.getUserData("/characters", null, new AsyncHttpResponseHandler() {
             @Override
@@ -141,7 +154,11 @@ public class DataLoader {
                 }
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
-                context.startActivity(intent);
+                if (getResult) {
+                    ((Activity) context).startActivityForResult(intent, code);
+                } else {
+                    context.startActivity(intent);
+                }
                 Log.i("USERGET", new String(responseBody));
 
             }
@@ -159,7 +176,6 @@ public class DataLoader {
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                Log.i("CAMPAIGNS", "Got campaigns");
                 try {
                     System.out.println(responseBody.getJSONObject(1).getString("7"));
                 } catch (JSONException e) {
@@ -191,11 +207,6 @@ public class DataLoader {
                 intent.putExtra("PCCampaignList", PCCampaigns);
                 context.startActivity(intent);
             }
-
-            @Override
-            public void onStart() {
-                Log.i("START", "Started campaign fetching");
-            }
         });
     }
 
@@ -206,7 +217,6 @@ public class DataLoader {
         cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.i("SUCCESS", "Starting campaign activity");
                 context.startActivity(intent);
             }
 
@@ -239,6 +249,50 @@ public class DataLoader {
                     error.printStackTrace();
                 }
             });
+        }
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private static void showProgress(final boolean show, Context context) {
+        // IMPORTANT: THIS COMPILES BUT DOESN'T WORK. DO NOT USE THIS YET
+        // We may have to do a minor overhaul on our layouts to get this to work
+        Activity activity = (Activity) context;
+        final View rootView = ((Activity) context).getWindow().getDecorView().getRootView();
+        final View progressView = activity.findViewById(R.id.login_progress);
+        Log.i("Progress", activity.toString());
+        Log.i("Progress", rootView.toString());
+        Log.i("Progress", progressView.toString());
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
+            rootView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    rootView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }
