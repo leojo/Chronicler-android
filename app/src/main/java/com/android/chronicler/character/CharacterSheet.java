@@ -2,6 +2,7 @@ package com.android.chronicler.character;
 
 import android.util.Log;
 
+import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.character.enums.SavingThrowID;
@@ -36,7 +37,7 @@ public class CharacterSheet implements Serializable{
     private Saves saves;
     private AbilityScores abilityScores;
     private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
-    private int level, hp, tempHp, nonlethalDamage, ac, touch, ff;
+    private int level, hp, tempHp, nonlethalDamage, ac, touch, ff, speed;
 
     //TODO: Add functions and variables as they become needed, don't try to foresee every possible need beforehand. Focus on the scalability of the class so that adding new functions will be easy in the future.
 
@@ -140,6 +141,14 @@ public class CharacterSheet implements Serializable{
         saves.getSaves().get(SavingThrowID.WILL).setBase(val);
         saves.update(abilityScores);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Ability score stuff">
+
+    public void updateAbility(AbilityID id, int val){
+        abilityScores.get(id).setBonus(AbilityScore.baseBonusName,val);
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Posessions stuff">
@@ -389,6 +398,14 @@ public class CharacterSheet implements Serializable{
 
     public void setSkin(String skin) {
         this.skin = skin;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     //</editor-fold>

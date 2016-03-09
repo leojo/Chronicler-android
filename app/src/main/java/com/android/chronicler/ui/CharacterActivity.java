@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.ui.fragments.AboutFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
@@ -146,48 +147,92 @@ public class CharacterActivity extends FragmentActivity {
     }
 
     /**
-     * A function for updating a specified field of the underlying character-sheet
+     * Functions for updating a specified field of the underlying character-sheet
      *
-     * STILL A WORK IN PROGRESS!
      */
-    private void updateField(String id, String newVal){
-        int intVal = 0;
-        intVal = Integer.parseInt(newVal);
+    private void updateField(String id, int val){
         switch (id.toLowerCase()){
             case "hp":
-                character.updateHP(intVal);
+                character.updateHP(val);
                 return;
             case "ac":
-                character.updateAC(intVal);
+                character.updateAC(val);
                 return;
             case "fort":
-                character.updateFort(intVal);
+                character.updateFort(val);
                 return;
             case "ref":
-                character.updateRef(intVal);
+                character.updateRef(val);
                 return;
             case "will":
-                character.updateWill(intVal);
+                character.updateWill(val);
                 return;
-         /* // Implement these in the character-sheet
             case "str":
-                character.updateStr(intVal);
-                return;
-            case "con":
-                character.updateCon(intVal);
+                character.updateAbility(AbilityID.STR, val);
                 return;
             case "dex":
-                character.updateDex(intVal);
+                character.updateAbility(AbilityID.DEX, val);
+                return;
+            case "con":
+                character.updateAbility(AbilityID.CON, val);
                 return;
             case "int":
-                character.updateInt(intVal);
+                character.updateAbility(AbilityID.INT, val);
                 return;
             case "wis":
-                character.updateWis(intVal);
+                character.updateAbility(AbilityID.WIS, val);
                 return;
             case "cha":
-                character.updateCha(intVal);
-                return;*/
+                character.updateAbility(AbilityID.CHA, val);
+                return;
+            case "lvl":
+                character.setLevel(val);
+                return;
+            case "speed":
+                character.setSpeed(val);
+                return;
+            default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
+        }
+    }
+
+    private void updateField(String id, String val){
+        switch (id.toLowerCase()){
+            case "name":
+                character.setName(val);
+                return;
+            case "race":
+                character.setRace(val);
+                return;
+            case "alignment":
+                character.setAlignment(val);
+                return;
+            case "class":
+                character.setCharacterClass(val);
+                return;
+            case "gender":
+                character.setGender(val);
+                return;
+            case "deity":
+                character.setDeity(val);
+                return;
+            case "eyes":
+                character.setEyes(val);
+                return;
+            case "hair":
+                character.setHair(val);
+                return;
+            case "height":
+                character.setHeight(val);
+                return;
+            case "weight":
+                character.setWeight(val);
+                return;
+            case "size":
+                character.setSize(val);
+                return;
+            case "skin":
+                character.setSkin(val);
+                return;
             default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
         }
     }
