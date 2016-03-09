@@ -1,18 +1,58 @@
 package com.android.chronicler.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.ChroniclerRestClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
 
 public class CampaignActivity extends AppCompatActivity {
+    private String campaignName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaign);
+
+        Intent intent = getIntent();
+        campaignName = intent.getStringExtra("CAMPAIGN_NAME");
+
+        final EditText textField = (EditText) findViewById(R.id.invite_field);
+        final Button button = (Button) findViewById(R.id.send_invite_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                inviteToCampaign(textField.getText().toString());
+            }
+        });
+    }
+
+    private void inviteToCampaign(String user) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(this);
+        RequestParams params = new RequestParams();
+        params.put("Campaign", "Awesome campaign!");
+        params.put("User", user);
+        cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully invited player to campaign");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to invite player to campaign");
+            }
+        });
     }
 
     @Override

@@ -90,15 +90,16 @@ public class CampaignsActivity extends AppCompatActivity {
                 if (position == adapter.getCount()) {
                     newCampaign();
                 } else {
-                    openCampaign();
+                    openCampaign(DMCampaigns.get(position));
                 }
             };
         // --------------------------------------
         });
     }
 
-    public void openCampaign() {
+    public void openCampaign(String name) {
         Intent intent = new Intent(this, CampaignActivity.class);
+        intent.putExtra("CAMPAIGN_NAME", name);
         startActivity(intent);
     }
 
