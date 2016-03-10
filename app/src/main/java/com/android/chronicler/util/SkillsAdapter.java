@@ -17,6 +17,8 @@ import java.util.HashMap;
 
 /**
  * Created by leo on 12.2.2016.
+ *
+ * An adapter for displaying a list of skills.
  */
 public class SkillsAdapter extends BaseAdapter {
 

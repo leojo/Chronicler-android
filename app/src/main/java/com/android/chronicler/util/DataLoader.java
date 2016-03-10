@@ -36,8 +36,13 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**
  * Created by leo on 12.2.2016.
+ *
+ * A class that handles all data requests to the server.
  */
 public class DataLoader {
+
+    // Function to ready an existing character-sheet and then start the characterActivity
+    // INCOMPLETE: needs to be reworked (Doesn't load a character sheet from the database)
     public static void readySheetThenStart(final Context context, final Intent intent) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
@@ -60,6 +65,7 @@ public class DataLoader {
 
     }
 
+    // Function to ready a fresh character-sheet and then start the characterActivity.
     public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
@@ -81,9 +87,12 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    // Function to fetch data for dropdown menus and then start the NewCharActivity
+    // FIXME: 10.3.2016 This class could take more advantage of the asynch nature of the requests.
     public static void readyCreateCharThenStart(final Context context, final Intent intent){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         final ObjectMapper mapper = new ObjectMapper();
+        // First fetch the raceList
         cli.get("/raceList", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -95,7 +104,9 @@ public class DataLoader {
                     onFailure(statusCode, headers, responseBody, new Error(e.getMessage()));
                     return;
                 }
+                // Attach the list to the intent
                 intent.putStringArrayListExtra("raceList", raceList);
+                // Next fetch the classList
                 cli.get("/classList", null, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -107,6 +118,7 @@ public class DataLoader {
                             onFailure(statusCode, headers, responseBody, new Error(e.getMessage()));
                             return;
                         }
+                        // Attach to the intent and then start the activity.
                         intent.putStringArrayListExtra("classList", classList);
                         context.startActivity(intent);
                     }
@@ -128,6 +140,8 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    // These functions are used to get a list of character the user has to populate
+    // a list before starting the activity with the list.
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
         readyCharlistThenStart(context, intent, false, 0);
     }
@@ -175,6 +189,7 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         UserLocalStore store = new UserLocalStore(context.getApplicationContext());
@@ -216,6 +231,7 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    // Stores the specified campaign in the database and then opens the Campaign activity for it.
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         RequestParams params = new RequestParams();
@@ -234,6 +250,7 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    // Stores a given character sheet in the server-side database.
     public static void storeCharSheet(Context context, CharacterSheet c){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
@@ -259,52 +276,10 @@ public class DataLoader {
         }
     }
 
+    // Displays a spinning wheel waiting screen while the user waits for an async http request.
     private static void goToWaitScreen(Context context){
-        Intent loadingScreenIntent = new Intent(context, WaitingActivity.class);
-        context.startActivity(loadingScreenIntent);
+        Intent intent = new Intent(context, WaitingActivity.class);
+        context.startActivity(intent);
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private static void showProgress(final boolean show, Context context) {
-        // IMPORTANT: THIS COMPILES BUT DOESN'T WORK. DO NOT USE THIS YET
-        // We may have to do a minor overhaul on our layouts to get this to work
-        Activity activity = (Activity) context;
-        final View rootView = ((Activity) context).getWindow().getDecorView().getRootView();
-        final View progressView = activity.findViewById(R.id.login_progress);
-        Log.i("Progress", activity.toString());
-        Log.i("Progress", rootView.toString());
-        Log.i("Progress", progressView.toString());
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-            rootView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
 }

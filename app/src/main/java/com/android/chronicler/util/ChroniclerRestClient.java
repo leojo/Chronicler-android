@@ -1,6 +1,7 @@
 package com.android.chronicler.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -8,6 +9,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.io.Serializable;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -25,15 +27,14 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
  * This class also manages cookies with a PersistentCookieStore so if the request to be sent is user
  * specific, it checks first if the user has an unexpired cookie before sending the request.
  */
-public class ChroniclerRestClient {
+public class ChroniclerRestClient implements Serializable{
     private final String BASE_URL = "https://chronicler-webapp.herokuapp.com";
 
-    private AsyncHttpClient client;
+    private AsyncHttpClient client = new AsyncHttpClient();
     private PersistentCookieStore cookieStore;
     private Context context;
 
     public ChroniclerRestClient(Context context) {
-        client = new AsyncHttpClient();
         this.context = context;
         // If the Rest Client is initialized with this constructor, a persistent cookie store is
         // created. This saves all cookies from all responses gotten for the get/post requests below.
@@ -62,7 +63,7 @@ public class ChroniclerRestClient {
         return true;
     }
 
-    // Needs a comment what this is for?
+    // Generic async get request
     public void get(String url, RequestParams params, TextHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
@@ -75,7 +76,7 @@ public class ChroniclerRestClient {
     // Async post requests that needs to pass along user id cookie, i.e. when updating user data
     // such as a character sheet.
 
-    // Why does this use a HttpEntity instead of a RequestParams like everything else?
+    // Q: Why does this use a HttpEntity instead of a RequestParams like everything else?
     // A: Because this is used to send a characterJSON which is around 100k characters.
     public void postUserData(String url, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
@@ -88,6 +89,7 @@ public class ChroniclerRestClient {
         client.post(context, getAbsoluteUrl(url), entity, "application/json", responseHandler);
     }
 
+    // Post user specific data in the form of request parameters
     public void postUserData(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         List<Cookie> cookies = cookieStore.getCookies();
         Cookie userCookie = new BasicClientCookie("user", "null");
@@ -99,11 +101,20 @@ public class ChroniclerRestClient {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    // Adds a header to the next outgoing request
     public void addHeader(String name, String value) {
         client.addHeader(name, value);
     }
 
+    // Gets an absolute url based on the url ending
     private String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
+    }
+
+    // Function to cancel all active requests
+    public void cancel(){
+        Log.i("LOADING_SCREEN","Cancelling all requests...");
+        client.cancelAllRequests(true);
+        Log.i("LOADING_SCREEN", "Done!");
     }
 }

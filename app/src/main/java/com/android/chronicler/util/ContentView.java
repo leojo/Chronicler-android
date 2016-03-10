@@ -17,6 +17,8 @@ import com.android.chronicler.R;
 
 /**
  * Created by andrea on 3.3.2016.
+ *
+ * A custom view to display a named field which may be editable.
  */
 public class ContentView extends LinearLayout {
     final boolean intField;
@@ -36,12 +38,12 @@ public class ContentView extends LinearLayout {
                 R.styleable.ContentView,
                 0, 0);
         try {
+            // Get all the tags and put them into variables:
             intField = a.getBoolean(R.styleable.ContentView_integerField, false);
             name = a.getString(R.styleable.ContentView_name);
             value = a.getString(R.styleable.ContentView_value);
             editable = a.getBoolean(R.styleable.ContentView_editable, false);
             border = a.getInt(R.styleable.ContentView_border, 0);
-
 
             Log.i("ContentView", "Getting all your style attributes!");
         } finally {
@@ -51,6 +53,8 @@ public class ContentView extends LinearLayout {
         init();
     }
 
+
+    // Do all the other stuff needed to initialize the view
     private void init() {
         Log.i("ContentView", "init");
         inflate(getContext(), R.layout.content_view, this);
@@ -63,6 +67,11 @@ public class ContentView extends LinearLayout {
         Log.i("ContentView", "Ready, the name is "+name);
     }
 
+    // This function detects when the view is clicked and emulates the EditField 
+    // i.e. makes the value part of the view editable, gives it focus and brings up the soft keyboard
+    // Also it adds a listener to the now editable view to store the new value to the
+    // underlying character sheet..
+    // TODO: 10.3.2016 This is still buggy, and has not yet been fully implemented.
     private void setEditable() {
         Log.i("EDITABLE", "Setting editable");
         this.setOnClickListener(new OnClickListener(){
@@ -71,8 +80,11 @@ public class ContentView extends LinearLayout {
                 Log.i("EDITABLE", "CLICK! Should be making this editable");
 
                 final TextView valView = (TextView)v.findViewById(R.id.valueView);
+                //Grab the old value to revert if the user cancels (Maybe unnecessary??)
                 final String oldVal = valView.getText().toString();
+
                 Log.i("EDITABLE", "Current val is "+oldVal);
+                // Do editable magics!!!!
                 valView.setFocusable(true);
                 valView.setFocusableInTouchMode(true);
                 valView.setClickable(true);
@@ -80,8 +92,11 @@ public class ContentView extends LinearLayout {
                 valView.setInputType(InputType.TYPE_CLASS_TEXT);
                 valView.requestFocus();
                 valView.invalidate();
+
+                // Try to set a "onChange" listener but this doesn't seem to do the trick... :(
                 valView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                     @Override
+                    // A test of concept, nowhere near a final implementation:
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                         String val = v.getText().toString();
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -104,33 +119,4 @@ public class ContentView extends LinearLayout {
             }
         });
     }
-
-/*
-    @Override
-    public boolean onTouchEvent(final MotionEvent e) {
-        //touchCounter++;
-        //float touched_x = e.getX();
-        //float touched_y = e.getY();
-
-        int action = e.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                touched = true;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touched = true;
-                break;
-            case MotionEvent.ACTION_UP:
-                touched = false;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                touched = false;
-                break;
-            case MotionEvent.ACTION_OUTSIDE:
-                touched = false;
-                break;
-            default:
-        }
-        return true; // processed
-    }*/
 }

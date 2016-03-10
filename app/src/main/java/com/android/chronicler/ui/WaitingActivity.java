@@ -10,8 +10,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.ChroniclerRestClient;
 import com.loopj.android.http.AsyncHttpClient;
 
+/**
+ *  Created by leo on 9.3.2016.
+ *
+ *  This is a simple spinning-wheel activity to show while we wait for a data request to finish
+ */
 public class WaitingActivity extends AppCompatActivity {
 
     @Override
@@ -24,11 +30,12 @@ public class WaitingActivity extends AppCompatActivity {
         spinner.setIndeterminate(true);
     }
 
+    // Intended to cancel the request we are waiting for if back button is pressed
+    // does nothing as of now except log a message.
     @Override
     public void onBackPressed() {
-        Log.i("LOADING_SCREEN","Pressed the back key");
+        Log.i("LOADING_SCREEN", "Pressed the back key");
         super.onBackPressed();
-        return;
     }
 
 }

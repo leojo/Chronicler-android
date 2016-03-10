@@ -15,6 +15,8 @@ import com.android.chronicler.R;
 
 /**
  * Created by andrea on 3.3.2016.
+ *
+ * A compact version of our custom ContentView
  */
 public class CompactContentView extends LinearLayout {
     final boolean intField;
