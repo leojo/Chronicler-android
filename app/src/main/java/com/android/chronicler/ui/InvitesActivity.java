@@ -40,7 +40,7 @@ public class InvitesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_invites);
 
         Intent intent = getIntent();
-        invites = intent.getStringArrayListExtra("invites");
+        invites = intent.getStringArrayListExtra("INVITES");
 
         Log.i("Invites", invites.toString());
 

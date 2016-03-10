@@ -9,13 +9,13 @@
             <enum name="bottom-right" value="@drawable/border_right_bottom"></enum>
             <enum name="bottom-left" value="@drawable/border_left_bottom"></enum>-->
         </attr>
-        <attr name="id" format="string"></attr>
+        <attr name="integerField" format="boolean"></attr>
     </declare-styleable>
     <declare-styleable name="CompactContentView">
         <attr name="compName" format="string"></attr>
         <attr name="compValue" format="string"></attr>
         <attr name="compEditable" format="boolean"></attr>
         <attr name="compBorder" format="integer"></attr>
-        <attr name="compId" format="string"></attr>
+        <attr name="compIntegerField" format="boolean"></attr>
     </declare-styleable>
 </resources>

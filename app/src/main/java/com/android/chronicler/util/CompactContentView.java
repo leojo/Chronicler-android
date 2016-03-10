@@ -5,7 +5,9 @@ import android.content.res.TypedArray;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +17,8 @@ import com.android.chronicler.R;
  * Created by andrea on 3.3.2016.
  */
 public class CompactContentView extends LinearLayout {
-    String id;
-    String name;
+    final boolean intField;
+    final String name;
     String value;
     boolean editable;
     int border;
@@ -31,7 +33,7 @@ public class CompactContentView extends LinearLayout {
                 R.styleable.CompactContentView,
                 0, 0);
         try {
-            id = a.getString(R.styleable.CompactContentView_compId);
+            intField = a.getBoolean(R.styleable.CompactContentView_compIntegerField, false);
             name = a.getString(R.styleable.CompactContentView_compName);
             value = a.getString(R.styleable.CompactContentView_compValue);
             editable = a.getBoolean(R.styleable.CompactContentView_compEditable, false);
@@ -65,7 +67,7 @@ public class CompactContentView extends LinearLayout {
             public void onClick(View v) {
                 Log.i("EDITABLE", "CLICK! Should be making this editable");
 
-                TextView valView = (TextView)v.findViewById(R.id.compValueView);
+                final TextView valView = (TextView)v.findViewById(R.id.compValueView);
                 valView.setFocusable(true);
                 valView.setFocusableInTouchMode(true);
                 valView.setClickable(true);
@@ -73,6 +75,20 @@ public class CompactContentView extends LinearLayout {
                 valView.setInputType(InputType.TYPE_CLASS_TEXT);
                 valView.requestFocus();
                 valView.invalidate();
+                valView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        String val = valView.getText().toString();
+                        if (intField) {
+                            Log.i("SHEET_EDIT", "You just clicked an integer valued field");
+                            Log.i("SHEET_EDIT", "The value on click was: " + val.replaceAll("[^\\d.]", ""));
+                        } else {
+                            Log.i("SHEET_EDIT", "You just clicked a string valued field");
+                            Log.i("SHEET_EDIT", "The value on click was: " + val);
+                        }
+                        return false;
+                    }
+                });
                 Log.i("EDITABLE", "This is the value of our field "+valView.getText());
                 Log.i("EDITABLE", "CLICK! Should now be editable");
             }

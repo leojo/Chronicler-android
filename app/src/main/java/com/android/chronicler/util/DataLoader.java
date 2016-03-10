@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -55,6 +56,7 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
+        goToWaitScreen(context);
 
     }
 
@@ -76,6 +78,7 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCreateCharThenStart(final Context context, final Intent intent){
@@ -122,6 +125,7 @@ public class DataLoader {
                 Log.e("RACELIST", "Failure fetching race list: " + response);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
@@ -168,6 +172,7 @@ public class DataLoader {
                 Log.i("CHARLIST", "failed to send requesT???");
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
@@ -176,11 +181,6 @@ public class DataLoader {
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                try {
-                    System.out.println(responseBody.getJSONObject(1).getString("7"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
 
@@ -208,6 +208,7 @@ public class DataLoader {
                 context.startActivity(intent);
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
@@ -225,6 +226,7 @@ public class DataLoader {
                 Log.i("DataLoader", "Failed to post campaign");
             }
         });
+        goToWaitScreen(context);
     }
 
     public static void storeCharSheet(Context context, CharacterSheet c){
@@ -252,47 +254,40 @@ public class DataLoader {
         }
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private static void showProgress(final boolean show, Context context) {
-        // IMPORTANT: THIS COMPILES BUT DOESN'T WORK. DO NOT USE THIS YET
-        // We may have to do a minor overhaul on our layouts to get this to work
-        Activity activity = (Activity) context;
-        final View rootView = ((Activity) context).getWindow().getDecorView().getRootView();
-        final View progressView = activity.findViewById(R.id.login_progress);
-        Log.i("Progress", activity.toString());
-        Log.i("Progress", rootView.toString());
-        Log.i("Progress", progressView.toString());
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
+    public static void readyInvitesThenStart(final Context context, final Intent intent) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+        cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                Log.i("DataLoader", responseBody.toString());
 
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-            rootView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+                ArrayList<String> invites = new ArrayList<>();
 
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                try {
+                    JSONArray inviteJSON = responseBody.getJSONObject(0).names();
+
+                    for (int i = 0; i < inviteJSON.length(); i++) {
+                        invites.add(responseBody.getJSONObject(0).getString(inviteJSON.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            rootView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+
+                intent.putExtra("INVITES", invites);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject object) {
+                Log.i("DataLoader", object.toString());
+            }
+        });
+        goToWaitScreen(context);
+    }
+
+    private static void goToWaitScreen(Context context){
+        Intent loadingScreenIntent = new Intent(context, WaitingActivity.class);
+        context.startActivity(loadingScreenIntent);
     }
 }

@@ -39,28 +39,13 @@ public class CampaignsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campaigns);
 
-        // ---------------------------------------
-        // ADD TO DMCampaigns THE RESPONSE FROM SERVER
-        // ---------------------------------------
         Intent intent = getIntent();
         DMCampaigns = intent.getStringArrayListExtra("DMCampaignList");
         PCCampaigns = intent.getStringArrayListExtra("PCCampaignList");
 
-        // ---------------------------------------
-        // GET THE CAMPAIGN LIST VIEW:
-        // ---------------------------------------
         campaignListView = (ListView)findViewById(R.id.DMCampaignListView);
         playerCampaignsView = (ListView)findViewById(R.id.PlayerCampaignListView);
 
-        // ---------------------------------------------------------------------------------------
-        // CREATE AN ADAPTER FOR ARRAY LISTS
-        // This adapter will keep track of the DMCampaigns array and call some built in functions like
-        // 'notifyDataSetChanged' when we call the .add() method on DMCampaigns, which makes it update our list.
-        // If it wouldn't call the method by default, we could just make sure to call adapter.notifyDataSetChanged() each time something changes.
-        // ----------------------------------------------------------------------------------------------------------
-        // Important: We can easily make use of some of the abstract adapter classes that android
-        // has to offer to suit our needs if we need to do something more complicated than this.
-        // ----------------------------------------------------------------------------------------
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, DMCampaigns);
         adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
@@ -72,16 +57,9 @@ public class CampaignsActivity extends AppCompatActivity {
 
         campaignListView.addFooterView(addButtonView);
 
-        // ---------------------------------------
-        // ADD THE ADAPTER TO LIST VIEW
-        // -----------------------------------
         campaignListView.setAdapter(adapter);
         playerCampaignsView.setAdapter(adapter2);
 
-        // -------------------------------------------------------------------------------
-        // CLICK LISTENER TO LIST VIEW
-        // Lets add something the DMCampaigns on each click, just to see that the list expands.
-        // --------------------------------------------------------------------------------
         campaignListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,

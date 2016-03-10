@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.ui.fragments.AboutFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
@@ -89,8 +91,6 @@ public class CharacterActivity extends FragmentActivity {
         // of each fragment on top
         pagerTabs.onPageScrolled(INITIAL_PAGE, 0, 0); // should not be needed
 
-        // ------------------------------------------------------------------------------------------
-
     }
 
     @Override
@@ -140,6 +140,97 @@ public class CharacterActivity extends FragmentActivity {
         @Override
         public int getCount() {
             return this.fragments.size();
+        }
+    }
+
+    /**
+     * Functions for updating a specified field of the underlying character-sheet
+     *
+     */
+    private void updateField(String id, int val){
+        switch (id.toLowerCase()){
+            case "hp":
+                character.updateHP(val);
+                return;
+            case "ac":
+                character.updateAC(val);
+                return;
+            case "fort":
+                character.updateFort(val);
+                return;
+            case "ref":
+                character.updateRef(val);
+                return;
+            case "will":
+                character.updateWill(val);
+                return;
+            case "str":
+                character.updateAbility(AbilityID.STR, val);
+                return;
+            case "dex":
+                character.updateAbility(AbilityID.DEX, val);
+                return;
+            case "con":
+                character.updateAbility(AbilityID.CON, val);
+                return;
+            case "int":
+                character.updateAbility(AbilityID.INT, val);
+                return;
+            case "wis":
+                character.updateAbility(AbilityID.WIS, val);
+                return;
+            case "cha":
+                character.updateAbility(AbilityID.CHA, val);
+                return;
+            case "lvl":
+                character.setLevel(val);
+                return;
+            case "speed":
+                character.setSpeed(val);
+                return;
+            default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
+        }
+    }
+
+    private void updateField(String id, String val){
+        switch (id.toLowerCase()){
+            case "name":
+                character.setName(val);
+                return;
+            case "race":
+                character.setRace(val);
+                return;
+            case "alignment":
+                character.setAlignment(val);
+                return;
+            case "class":
+                character.setCharacterClass(val);
+                return;
+            case "gender":
+                character.setGender(val);
+                return;
+            case "deity":
+                character.setDeity(val);
+                return;
+            case "eyes":
+                character.setEyes(val);
+                return;
+            case "hair":
+                character.setHair(val);
+                return;
+            case "height":
+                character.setHeight(val);
+                return;
+            case "weight":
+                character.setWeight(val);
+                return;
+            case "size":
+                character.setSize(val);
+                return;
+            case "skin":
+                character.setSkin(val);
+                return;
+            default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
         }
     }
 

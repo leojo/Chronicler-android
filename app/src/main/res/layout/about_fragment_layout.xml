@@ -33,6 +33,7 @@
                     custom:editable="true"
                     custom:name="Name"
                     custom:value="Legolas"
+                    custom:integerField="false"
                     android:id="@+id/charNameView"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -47,6 +48,7 @@
                     custom:editable="true"
                     custom:name="Race"
                     custom:value="Elf"
+                    custom:integerField="false"
                     android:id="@+id/raceView"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -61,6 +63,7 @@
                     custom:editable="true"
                     custom:name="Alignment"
                     custom:value="NG"
+                    custom:integerField="false"
                     android:id="@+id/alignView"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -122,6 +125,7 @@
                     custom:compEditable="true"
                     custom:compName="Gender"
                     custom:compValue="Undecided"
+                    custom:compIntegerField="false"
                     android:id="@+id/genderView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -131,6 +135,7 @@
                     custom:compEditable="true"
                     custom:compName="Deity"
                     custom:compValue="Noodles"
+                    custom:compIntegerField="false"
                     android:id="@+id/deityView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -140,6 +145,7 @@
                     custom:compEditable="true"
                     custom:compName="Eyes"
                     custom:compValue="Silver"
+                    custom:compIntegerField="false"
                     android:id="@+id/eyesView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -149,6 +155,7 @@
                     custom:compEditable="true"
                     custom:compName="Hair"
                     custom:compValue="Black"
+                    custom:compIntegerField="false"
                     android:id="@+id/hairView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -158,6 +165,7 @@
                     custom:compEditable="true"
                     custom:compName="Height"
                     custom:compValue="5\'3\'\'"
+                    custom:compIntegerField="false"
                     android:id="@+id/heightView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -167,6 +175,7 @@
                     custom:compEditable="true"
                     custom:compName="Weight"
                     custom:compValue="120 lbs"
+                    custom:compIntegerField="false"
                     android:id="@+id/weightView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
@@ -176,16 +185,17 @@
                     custom:compEditable="true"
                     custom:compName="Size"
                     custom:compValue="Small"
+                    custom:compIntegerField="false"
                     android:id="@+id/sizeView"
                     android:background="@drawable/border_right_bottom"/>
                 <com.android.chronicler.util.CompactContentView
-
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1111"
                     custom:compEditable="true"
                     custom:compName="Skin"
                     custom:compValue="Green"
+                    custom:compIntegerField="false"
                     android:id="@+id/skinView"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -206,6 +216,7 @@
                     custom:editable="true"
                     custom:name="Strength"
                     custom:value="10"
+                    custom:integerField="true"
                     android:id="@+id/strView"
                     android:background="@drawable/border_bottom"/>
 
@@ -218,6 +229,7 @@
                     custom:editable="true"
                     custom:name="Constitution"
                     custom:value="12"
+                    custom:integerField="true"
                     android:id="@+id/conView"
                     android:background="@drawable/border_bottom"/>
 
@@ -229,6 +241,7 @@
                     custom:editable="true"
                     custom:name="Dexterity Score"
                     custom:value="8"
+                    custom:integerField="true"
                     android:id="@+id/dexView"
                     android:background="@drawable/border_bottom"
                     android:orientation="horizontal" />
@@ -241,6 +254,7 @@
                     custom:editable="true"
                     custom:name="Intelligence"
                     custom:value="15"
+                    custom:integerField="true"
                     android:id="@+id/intView"
                     android:background="@drawable/border_bottom"
                     android:orientation="horizontal" />
@@ -253,6 +267,7 @@
                     custom:editable="true"
                     custom:name="Wisdom"
                     custom:value="17"
+                    custom:integerField="true"
                     android:id="@+id/wisView"
                     android:background="@drawable/border_bottom"
                     android:orientation="horizontal" />
@@ -265,6 +280,7 @@
                     custom:editable="true"
                     custom:name="Charisma"
                     custom:value="10"
+                    custom:integerField="true"
                     android:id="@+id/chaView"
                     android:background="@drawable/border_bottom"
                     android:orientation="horizontal" />
@@ -286,6 +302,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+4"
+                    custom:integerField="true"
                     android:id="@+id/strMod"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -298,6 +315,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+7"
+                    custom:integerField="true"
                     android:id="@+id/conMod"
                     android:background="@drawable/border_right_bottom"/>
 
@@ -309,6 +327,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+3"
+                    custom:integerField="true"
                     android:id="@+id/dexMod"
                     android:background="@drawable/border_right_bottom"
                     android:orientation="horizontal" />
@@ -321,6 +340,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+3"
+                    custom:integerField="true"
                     android:id="@+id/intMod"
                     android:background="@drawable/border_right_bottom"
                     android:orientation="horizontal" />
@@ -333,6 +353,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+3"
+                    custom:integerField="true"
                     android:id="@+id/wisMod"
                     android:background="@drawable/border_right_bottom"
                     android:orientation="horizontal" />
@@ -345,6 +366,7 @@
                     custom:editable="true"
                     custom:name="Modifier"
                     custom:value="+3"
+                    custom:integerField="true"
                     android:id="@+id/chaMod"
                     android:background="@drawable/border_right_bottom"
                     android:orientation="horizontal" />
