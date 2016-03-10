@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.android.chronicler.R;
 
 /**
+ * Fragment for the CharacterActivity: This is the character's list of feats.
+ *
  * Created by andrea on 26.2.2016.
  */
 public class FeatFragment extends SheetFragment {

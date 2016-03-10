@@ -23,6 +23,10 @@ import com.android.chronicler.util.DataLoader;
 import java.lang.reflect.Array;
 import java.util.List;
 
+/**
+ * Activity with list of invites that the user can either accept (And then choose the character
+ * he/she wants to add to the campaign) or decline the invite.
+ */
 public class InvitesActivity extends AppCompatActivity {
     final int SELECT_CHARACTER = 1;
     List<String> invites;
@@ -36,7 +40,7 @@ public class InvitesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_invites);
 
         Intent intent = getIntent();
-        invites = intent.getStringArrayListExtra("invites");
+        invites = intent.getStringArrayListExtra("INVITES");
 
         Log.i("Invites", invites.toString());
 
@@ -46,6 +50,7 @@ public class InvitesActivity extends AppCompatActivity {
 
         inviteListView.setAdapter(adapter);
 
+        // Activate popup when an invite is clicked
         inviteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -55,6 +60,8 @@ public class InvitesActivity extends AppCompatActivity {
         });
     }
 
+    // Pop-up for accepting or declining invites: Will later be replaced with buttons
+    // nested inside the list elements for accepting and declining.
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.menu_invite_options);
@@ -80,6 +87,8 @@ public class InvitesActivity extends AppCompatActivity {
         popup.show();
     }
 
+    // Get a result back from the create a character activity
+    // so that we can add the new character to the campaign
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("Result!", data.getStringExtra("CHARACTER_NAME"));

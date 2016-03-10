@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import com.android.chronicler.R;
 
 /**
+ * Fragment for the CharacterActivity: This is the character's inventory. It will list both
+ * items in the character's backpack and equipped items.
+ *
  * Created by andrea on 4.3.2016.
  */
 public class InventoryFragment extends SheetFragment {

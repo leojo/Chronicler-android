@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.android.chronicler.R;
 
 /**
+ * Fragment for the CharacterActivity: This is the screen that includes all information about
+ * the character that doesn't fall into any of the other categories.
+ *
  * Created by andrea on 26.2.2016.
  */
 public class AboutFragment extends SheetFragment {

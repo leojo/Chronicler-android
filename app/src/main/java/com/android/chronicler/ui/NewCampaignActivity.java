@@ -33,6 +33,8 @@ public class NewCampaignActivity extends AppCompatActivity {
         });
     }
 
+    // Add campaign by using the data loader to post the request to
+    // the server with the name of the campaign.
     public void addCampaign(String campaignName) {
         DataLoader loader = new DataLoader();
         Intent intent = new Intent(this, CampaignActivity.class);

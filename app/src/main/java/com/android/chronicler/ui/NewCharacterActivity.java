@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 /**
  * Created by leo on 4.3.2016.
+ *
+ * An activity to create a new character.
  */
 public class NewCharacterActivity extends AppCompatActivity {
     Spinner raceSp, classSp;
@@ -34,6 +36,7 @@ public class NewCharacterActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_new_character);
         Intent intent = getIntent();
+        // Get array list extras, that is the list of races and classes available for a new character
         final ArrayList<String> raceList = intent.getStringArrayListExtra("raceList");
         final ArrayList<String> classList = intent.getStringArrayListExtra("classList");
 
@@ -45,6 +48,7 @@ public class NewCharacterActivity extends AppCompatActivity {
         previewText = getString(R.string.new_character_preview_text);
         buttonText = getString(R.string.new_character_button_text);
 
+        // Set adapters so the list gets populated
         ArrayAdapter<String> raceSpAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, raceList);
         raceSp.setAdapter(raceSpAdapter);
         
@@ -59,6 +63,8 @@ public class NewCharacterActivity extends AppCompatActivity {
         createButton.setText(String.format(buttonText, name));
 
         // LISTENERS ====================================
+        // Listeners for the lists so we can update the descriptive string
+        //          " You will roll a gnome cleric..."
         raceSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -86,6 +92,7 @@ public class NewCharacterActivity extends AppCompatActivity {
             }
         });
 
+        //  Listener to update the name field of our descriptive text.
         nameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,6 +120,8 @@ public class NewCharacterActivity extends AppCompatActivity {
         });
     }
 
+    // Data loader is used to request character creation when name, race and class
+    // have been picked out.
     public void makeChar(){
         Intent intent = new Intent(this,CharacterActivity.class);
         DataLoader.readyNewSheetThenStart(this, intent, name, race, className);
