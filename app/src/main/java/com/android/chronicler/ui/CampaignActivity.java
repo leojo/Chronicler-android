@@ -17,6 +17,14 @@ import com.loopj.android.http.RequestParams;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * Created by bjorn.
+ *
+ * An overview activity for the campaign: Should include the players and
+ * their characters with an option to view character sheet if the user is the DM.
+ * Should include an option to invite users to campaign as well.
+ */
+
 public class CampaignActivity extends AppCompatActivity {
     private String campaignName;
 
@@ -37,6 +45,7 @@ public class CampaignActivity extends AppCompatActivity {
         });
     }
 
+    // Uses the RestClient to post an invite to a specific user.
     private void inviteToCampaign(String user) {
         ChroniclerRestClient cli = new ChroniclerRestClient(this);
         RequestParams params = new RequestParams();

@@ -15,6 +15,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * Fragment for the CharacterActivity: This is the character's skill list.
+ *
+ *
  * Created by andrea on 26.2.2016.
  */
 public class SkillFragment extends SheetFragment {
@@ -22,10 +25,6 @@ public class SkillFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i("SKILLFRAG","Created");
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.skill_fragment_layout, container, false);
-        //if(rootView.findViewById(R.id.tabID) == null) Log.d("SKILLFRAG", "tabID view is null");
-        //if(getArguments().getString("ID") == null) Log.d("SKILLFRAG","ID is null");
-        // This is where we should input stuff, by using getArguments().get....
-        //((TextView)rootView.findViewById(R.id.tabID)).setText(getArguments().getString("ID"));
 
         skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
         skillsView.setAdapter(new SkillsAdapter(getContext(), (Skills)getArguments().getSerializable("SKILLS")));

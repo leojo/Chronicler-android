@@ -14,48 +14,13 @@ import com.android.chronicler.R;
 import com.android.chronicler.util.ContentView;
 
 /**
+ * Fragment for the CharacterActivity: This is the character's combat information.
+ *
  * Created by andrea on 26.2.2016.
  */
 public class CombatFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.combat_fragment_layout, container, false);
-
-        /*int n = rootView.getChildCount();
-        for(int i=0; i<n; i++) {
-            View v = rootView.getChildAt(i);
-            if(v instanceof ContentView && ((ContentView)v).isEditable()) {
-                Log.i("EDITABLE", "Setting an onClickListener ");
-                final TextView valView = (TextView)v.findViewById(R.id.valueView);
-                Log.i("EDITABLE", "CLICK! Should be making this editable");
-                valView.setFocusable(true);
-                valView.setFocusableInTouchMode(true);
-                valView.requestFocus();
-                valView.setCursorVisible(true);
-                valView.setInputType(InputType.TYPE_CLASS_TEXT);
-
-                valView.invalidate();
-                Log.i("EDITABLE", "This is the value of valView "+valView.getText());
-                Log.i("EDITABLE", "CLICK! Should now be editable");
-
-                ((ContentView)v).setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        Log.i("EDITABLE", "CLICK! Should be making this editable");
-                        valView.setFocusable(true);
-                        valView.setFocusableInTouchMode(true);
-
-                        valView.setCursorVisible(true);
-                        valView.setInputType(InputType.TYPE_CLASS_TEXT);
-                        valView.requestFocus();
-                        valView.invalidate();
-                        Log.i("EDITABLE", "This is the value of valView "+valView.getText());
-                        Log.i("EDITABLE", "CLICK! Should now be editable");
-                    }
-                });
-            }
-        }*/
-
-
         return rootView;
     }
 

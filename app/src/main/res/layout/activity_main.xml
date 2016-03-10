@@ -7,6 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.android.chronicler.MainActivity"
     android:id="@+id/MainActivityLayout"
+    android:background="@drawable/action_bar_background"
     android:weightSum="1">
 
     <Space
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="Characters"
         android:id="@+id/button"
-        style="@style/MainButtonStyle"
+        style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openCharacters"/>
 
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:text="Campaigns"
         android:id="@+id/button2"
-        style="@style/MainButtonStyle"
+        style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openCampaigns" />
 
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="My Account"
         android:id="@+id/button3"
-        style="@style/MainButtonStyle"
+        style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="openMyAccount"/>
 
@@ -61,7 +62,7 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/button4"
-        style="@style/MainButtonStyle"
+        style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
         android:onClick="logout"/>
 

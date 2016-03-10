@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Checks whether there is an unexpired cookie in the cookie store
     public boolean userInSession(List<Cookie> cookies) {
         Cookie userCookie = new BasicClientCookie("user", null);
         for(Cookie c : cookies) {
@@ -68,27 +69,31 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Redirect to login screen whenever the cookie expires
     public void redirectToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
+    // Open a list of the user's characters; uses dataloader to fire the async request
     public void openCharacters(View view) {
         Intent intent = new Intent(this, CharactersActivity.class);
         DataLoader.readyCharlistThenStart(this, intent);
     }
-
+    // Opens a list of the user's campaigns; uses dataloader to fire async request
     public void openCampaigns(View view) {
         final Intent intent = new Intent(this, CampaignsActivity.class);
         DataLoader.readyCampaignlistThenStart(this, intent);
     }
 
+    // opens my account page
     public void openMyAccount(View view) {
         Intent intent = new Intent(this, MyAccountActivity.class);
         startActivity(intent);
     }
 
+    // logout user: clear his session
     public void logout(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

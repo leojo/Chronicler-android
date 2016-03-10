@@ -42,6 +42,7 @@ public class CharactersActivity extends AppCompatActivity {
         characterListView = (ListView)findViewById(R.id.CharacterListView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
 
+        // This butten is used for adding new characters
         Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
         ImageView addButtonView = new ImageView(this);
         addButtonView.setPadding(20, 20, 20, 20);
@@ -74,25 +75,23 @@ public class CharactersActivity extends AppCompatActivity {
                         finish();
                     }
                 }
-                //adapter.add("You just clicked item number "+position);
 
             }
         });
     }
 
+    // Opens the character sheet. This will load the JSON of the character
+    // selected and populate the sheet with his information. This is as of now incomplete.
     public void openSheet() {
         Intent intent = new Intent(this, CharacterActivity.class);
         DataLoader.readySheetThenStart(this, intent);
     }
 
+    // Opens the character creation screen. Uses the data loader to request
+    // lists of races and classes needed for character creation.
     public void newSheet() {
         Intent intent = new Intent(this, NewCharacterActivity.class);
         DataLoader.readyCreateCharThenStart(this, intent);
-    }
-
-    public void newCharacter(View view, String name, String race, String charClass) {
-        Intent intent = new Intent(this, NewCharacterActivity.class);
-        DataLoader.readyNewSheetThenStart(this, intent, name, race, charClass);
     }
 
 

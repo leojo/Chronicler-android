@@ -9,6 +9,9 @@ import com.android.chronicler.R;
 
 import java.util.ArrayList;
 
+/**
+ * My account activity for information about your account, pending invites to campaigns, etc.
+ */
 public class MyAccountActivity extends AppCompatActivity {
 
     @Override
@@ -17,6 +20,8 @@ public class MyAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_account);
     }
 
+    // Opens the list of invites. For now it is a hard-coded test vector,
+    // this will however use the dataloader to get the list of invites.
     public void openInvites(View view) {
         Intent intent = new Intent(this, InvitesActivity.class);
         ArrayList<String> test = new ArrayList<>();
@@ -28,6 +33,7 @@ public class MyAccountActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Empty for now; the app has no settings atm.
     public void openSettings(View view) {
         return;
     }

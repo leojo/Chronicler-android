@@ -39,8 +39,6 @@ public class CharacterActivity extends FragmentActivity {
     // like) or perhaps we could add a banner up top with name, class, level....
 
     private CharacterSheet character;
-    ListView skillsView;
-    private SkillsAdapter adapter;
 
     // For fragment view stuff
     private ViewPager mPager;
@@ -60,6 +58,7 @@ public class CharacterActivity extends FragmentActivity {
         pagerTabs.addTabLabels(R.string.charactersheet_about_tab, R.string.charactersheet_combat_tab,
                 R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_inventory_tab, R.string.charactersheet_skills_tab);
 
+        // Get the character sheet from the intent so we can populate the fragments
         character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
@@ -85,37 +84,20 @@ public class CharacterActivity extends FragmentActivity {
         mPager.setCurrentItem(INITIAL_PAGE);
         mPager.setPageMargin(2);
         mPager.setPageMarginDrawable(R.color.tabs_color);
+
+        // Pager tabs are the small tabs that scroll the fragments and have the names
+        // of each fragment on top
         pagerTabs.onPageScrolled(INITIAL_PAGE, 0, 0); // should not be needed
 
         // ------------------------------------------------------------------------------------------
 
-        // LEO STUFF
-        /* skillsView = (ListView)findViewById(R.id.skillsView);
-        character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
-        skillsView.setAdapter(new SkillsAdapter(this, character.getSkills()));
-
-        ((TextView)this.findViewById(R.id.charName)).setText(character.getName());
-        ((TextView)this.findViewById(R.id.classLevels)).setText(character.getCharacterClass());
-        ((TextView)this.findViewById(R.id.strInfo)).setText("STR: "+character.getAbilityScores().get(AbilityID.STR).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.STR).getModifier());
-        ((TextView)this.findViewById(R.id.dexInfo)).setText("DEX: "+character.getAbilityScores().get(AbilityID.DEX).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.DEX).getModifier());
-        ((TextView)this.findViewById(R.id.conInfo)).setText("CON: "+character.getAbilityScores().get(AbilityID.CON).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CON).getModifier());
-        ((TextView)this.findViewById(R.id.intInfo)).setText("INT: "+character.getAbilityScores().get(AbilityID.INT).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.INT).getModifier());
-        ((TextView)this.findViewById(R.id.wisInfo)).setText("WIS: "+character.getAbilityScores().get(AbilityID.WIS).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.WIS).getModifier());
-        ((TextView)this.findViewById(R.id.chaInfo)).setText("CHA: "+character.getAbilityScores().get(AbilityID.CHA).getTotalValue()+"  -  Mod: "+character.getAbilityScores().get(AbilityID.CHA).getModifier());
-        ((TextView)this.findViewById(R.id.hpInfo)).setText("HP: To be added");*/
     }
-
-// ------------------------- FRAGMENT RELATED
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         int currIndex = mPager.getCurrentItem();
         savedInstanceState.putInt("INDEX", currIndex);
     }
-
-
-
-    // ----------------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,7 +120,6 @@ public class CharacterActivity extends FragmentActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     /**
      * A simple pager adapter for our fragments
