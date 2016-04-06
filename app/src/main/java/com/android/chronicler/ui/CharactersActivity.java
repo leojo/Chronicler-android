@@ -42,11 +42,10 @@ public class CharactersActivity extends AppCompatActivity {
         characterListView = (ListView)findViewById(R.id.CharacterListView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
 
-        // This butten is used for adding new characters
-        Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
+        // This button is used for adding new characters
         ImageView addButtonView = new ImageView(this);
         addButtonView.setPadding(20, 20, 20, 20);
-        addButtonView.setImageDrawable(addButtonDrawable);
+        addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
 
         characterListView.addFooterView(addButtonView);
 
