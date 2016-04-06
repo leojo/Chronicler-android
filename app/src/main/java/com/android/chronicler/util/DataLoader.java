@@ -283,10 +283,10 @@ public class DataLoader {
                 ArrayList<String> invites = new ArrayList<>();
 
                 try {
-                    JSONArray inviteJSON = responseBody;//;.getJSONObject(0).names();
+                    JSONArray inviteJSON = responseBody.getJSONObject(0).names();
 
                     for (int i = 0; i < inviteJSON.length(); i++) {
-                        invites.add(inviteJSON.getString(i));
+                        invites.add(responseBody.getJSONObject(0).getString(inviteJSON.getString(i)));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
