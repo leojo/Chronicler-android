@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.feat.FeatList;
 
 /**
  * Fragment for the CharacterActivity: This is the character's list of feats.
@@ -23,7 +24,7 @@ public class FeatFragment extends SheetFragment {
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static FeatFragment newInstance(String type) {
+    public static FeatFragment newInstance(String type, FeatList feats) {
         Bundle args = new Bundle();
         args.putString("ID", type);
         FeatFragment featFrag = new FeatFragment();

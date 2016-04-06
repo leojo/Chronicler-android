@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.spell.SpellSlots;
 
 /**
  * Fragment for the CharacterActivity: This is the character's spell list. The character should
@@ -26,7 +27,7 @@ public class SpellFragment extends SheetFragment {
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static SpellFragment newInstance(String type) {
+    public static SpellFragment newInstance(String type, SpellSlots spellslots) {
         Bundle args = new Bundle();
         args.putString("ID", type);
         SpellFragment spellFrag = new SpellFragment();
