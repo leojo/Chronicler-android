@@ -50,10 +50,9 @@ public class CampaignsActivity extends AppCompatActivity {
         adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, PCCampaigns);
 
         // Set add button to footer
-        Drawable addButtonDrawable = getDrawable(R.drawable.ic_add_circle_24dp);
         ImageView addButtonView = new ImageView(this);
         addButtonView.setPadding(20, 20, 20, 20);
-        addButtonView.setImageDrawable(addButtonDrawable);
+        addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
 
         campaignListView.addFooterView(addButtonView);
 

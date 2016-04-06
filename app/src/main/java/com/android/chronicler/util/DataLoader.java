@@ -183,7 +183,7 @@ public class DataLoader {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.i("CHARLIST", "failed to send requesT???");
+                Log.i("CHARLIST", "failed to send request???");
             }
         });
         goToWaitScreen(context);

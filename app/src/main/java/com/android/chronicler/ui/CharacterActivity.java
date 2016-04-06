@@ -234,4 +234,8 @@ public class CharacterActivity extends FragmentActivity {
         }
     }
 
+    private void populateField(String id){
+
+    }
+
 }
