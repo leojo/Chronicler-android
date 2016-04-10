@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.item.Inventory;
 
 /**
  * Fragment for the CharacterActivity: This is the character's inventory. It will list both
@@ -24,7 +25,7 @@ public class InventoryFragment extends SheetFragment {
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static InventoryFragment newInstance(String type) {
+    public static InventoryFragment newInstance(String type, Inventory invt) {
         Bundle args = new Bundle();
         args.putString("ID", type);
         InventoryFragment invFrag = new InventoryFragment();

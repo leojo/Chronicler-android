@@ -68,9 +68,9 @@ public class CharacterActivity extends FragmentActivity {
         // Call new instance and include a string 'type' to identify each fragment
         fragments.add(AboutFragment.newInstance("ABOUT",character));
         fragments.add(CombatFragment.newInstance("COMBAT"));
-        fragments.add(SpellFragment.newInstance("SPELLS"));
-        fragments.add(FeatFragment.newInstance("FEATS"));
-        fragments.add(InventoryFragment.newInstance("INVENTORY"));
+        fragments.add(SpellFragment.newInstance("SPELLS", character.getSpellSlots()));
+        fragments.add(FeatFragment.newInstance("FEATS", character.getFeats()));
+        fragments.add(InventoryFragment.newInstance("INVENTORY", character.getInventory()));
         fragments.add(SkillFragment.newInstance("SKILLS",character.getSkills()));
 
 
