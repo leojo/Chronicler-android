@@ -196,7 +196,6 @@ public class DataLoader {
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                Log.i("Campaigns", responseBody.toString());
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
 
@@ -212,7 +211,6 @@ public class DataLoader {
 
                 try {
                     JSONArray PCResponse = responseBody.getJSONObject(1).names();
-                    Log.i("Campaigns", responseBody.getJSONObject(1).toString());
                     for (int i = 0; i < PCResponse.length(); i++) {
                         PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
                     }
