@@ -33,6 +33,7 @@ public class InvitesActivity extends AppCompatActivity {
     ListView inviteListView;
     ArrayAdapter<String> adapter;
     String selectedItem;
+    int selectedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,15 @@ public class InvitesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedItem = invites.get(position);
-                showPopup(view);
+                selectedPosition = position;
+                showPopup(view, position);
             }
         });
     }
 
     // Pop-up for accepting or declining invites: Will later be replaced with buttons
     // nested inside the list elements for accepting and declining.
-    public void showPopup(View v) {
+    public void showPopup(View v, final int position) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.menu_invite_options);
         final Activity thisActivity = this;
@@ -77,6 +79,7 @@ public class InvitesActivity extends AppCompatActivity {
                         break;
                     case "Decline":
                         adapter.remove(selectedItem);
+                        DataLoader.respondToInvite(thisActivity, intent, position, null);
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
@@ -91,7 +94,9 @@ public class InvitesActivity extends AppCompatActivity {
     // so that we can add the new character to the campaign
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("Result!", data.getStringExtra("CHARACTER_NAME"));
+        String selectedCharacter = data.getStringExtra("CHARACTER_NAME");
         adapter.remove(selectedItem);
+
+        DataLoader.respondToInvite(this, new Intent(this, CharactersActivity.class), selectedPosition, selectedCharacter);
     }
 }

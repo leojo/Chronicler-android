@@ -49,7 +49,7 @@ public class CampaignActivity extends AppCompatActivity {
     private void inviteToCampaign(String user) {
         ChroniclerRestClient cli = new ChroniclerRestClient(this);
         RequestParams params = new RequestParams();
-        params.put("Campaign", "Awesome campaign!");
+        params.put("Campaign", campaignName);
         params.put("User", user);
         cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
             @Override
