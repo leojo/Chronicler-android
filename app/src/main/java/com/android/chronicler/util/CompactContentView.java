@@ -21,9 +21,11 @@ import com.android.chronicler.R;
 public class CompactContentView extends LinearLayout {
     final boolean intField;
     final String name;
-    String value;
-    boolean editable;
+    public final String id;
+    public String value;
+    public boolean editable;
     int border;
+    public TextView valueView;
 
     public CompactContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -37,6 +39,7 @@ public class CompactContentView extends LinearLayout {
         try {
             intField = a.getBoolean(R.styleable.CompactContentView_compIntegerField, false);
             name = a.getString(R.styleable.CompactContentView_compName);
+            id = a.getString(R.styleable.CompactContentView_compId);
             value = a.getString(R.styleable.CompactContentView_compValue);
             editable = a.getBoolean(R.styleable.CompactContentView_compEditable, false);
             border = a.getInt(R.styleable.CompactContentView_compBorder, 0);
@@ -54,12 +57,17 @@ public class CompactContentView extends LinearLayout {
         Log.i("ContentView", "init");
         inflate(getContext(), R.layout.compact_content_view, this);
         TextView nameView = (TextView)findViewById(R.id.compNameView);
-        TextView valueView = (TextView)findViewById(R.id.compValueView);
+        valueView = (TextView)findViewById(R.id.compValueView);
         nameView.setText(name);
         valueView.setText(value);
         if(border != 0) this.setBackgroundResource(border);
         if(editable) setEditable();
-        Log.i("ContentView", "Ready, the name is "+name);
+        Log.i("ContentView", "Ready, the name is " + name);
+    }
+
+    public void updateText(String newText){
+        value = newText;
+        valueView.setText(value);
     }
 
     private void setEditable() {

@@ -77,19 +77,23 @@ public class AbilityScores implements Serializable{
     }
 
     @JsonIgnore
-    public ArrayList<Integer> getAbilityScoreTotals(){
-        ArrayList<Integer> abScoresTotal = new ArrayList<>();
+    public int[] getAbilityScoreTotals(){
+        int[] abScoresTotal = new int[6];
+        int i=0;
         for(AbilityID id : AbilityID.values()){
-            abScoresTotal.add(abilityScores.get(id).getTotalValue());
+            abScoresTotal[i]=(abilityScores.get(id).getTotalValue());
+            i++;
         }
         return abScoresTotal;
     }
 
     @JsonIgnore
-    public ArrayList<Integer> getAbilityScoreMods() {
-        ArrayList<Integer> mods = new ArrayList<>();
+    public int[] getAbilityScoreMods() {
+        int[] mods = new int[6];
+        int i=0;
         for(AbilityID id : AbilityID.values()){
-            mods.add(abilityScores.get(id).getModifier());
+            mods[i]=(abilityScores.get(id).getModifier());
+            i++;
         }
         return mods;
     }

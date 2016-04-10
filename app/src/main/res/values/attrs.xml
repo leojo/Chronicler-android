@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="ContentView">
         <attr name="name" format="string"></attr>
+        <attr name="id" format="string"></attr>
         <attr name="value" format="string"></attr>
         <attr name="editable" format="boolean"></attr>
         <attr name="border" format="integer">
@@ -13,6 +14,7 @@
     </declare-styleable>
     <declare-styleable name="CompactContentView">
         <attr name="compName" format="string"></attr>
+        <attr name="compId" format="string"></attr>
         <attr name="compValue" format="string"></attr>
         <attr name="compEditable" format="boolean"></attr>
         <attr name="compBorder" format="integer"></attr>

@@ -18,6 +18,7 @@ import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellList;
 import com.android.chronicler.character.spell.SpellSlots;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -89,8 +90,8 @@ public class CharacterSheet implements Serializable{
     // =================
 
     //<editor-fold desc="HP stuff">
-    public void updateHP(int newHP){
-        hp = newHP;
+    public void updateHP(String newHP){
+        hp = updateInt(hp,newHP);
     }
 
     public void setHP(int currentHP){
@@ -115,9 +116,9 @@ public class CharacterSheet implements Serializable{
     //</editor-fold>
 
     //<editor-fold desc="AC stuff">
-    public void updateAC(int newAC){
+    public void updateAC(String newAC){
         // FIXME: 8.3.2016 This is a naive temporary implementation, this is not a final version of this function
-        ac = newAC;
+        ac = updateInt(ac,newAC);
         int dex = abilityScores.get(AbilityID.DEX).getModifier();
         ff = ac - dex;
         touch = 10 + dex;
@@ -125,28 +126,18 @@ public class CharacterSheet implements Serializable{
     //</editor-fold>
 
     //<editor-fold desc="Save stuff">
-    public void updateFort(int val){
-        saves.getSaves().get(SavingThrowID.FORT).setBase(val);
-        saves.update(abilityScores);
-    }
-
-
-    public void updateRef(int val){
-        saves.getSaves().get(SavingThrowID.REF).setBase(val);
-        saves.update(abilityScores);
-    }
-
-
-    public void updateWill(int val){
-        saves.getSaves().get(SavingThrowID.WILL).setBase(val);
+    public void updateSave(SavingThrowID id, String val){
+        int oldVal = saves.getSaves().get(id).getBase();
+        saves.getSaves().get(id).setBase(updateInt(oldVal,val));
         saves.update(abilityScores);
     }
     //</editor-fold>
 
     //<editor-fold desc="Ability score stuff">
 
-    public void updateAbility(AbilityID id, int val){
-        abilityScores.get(id).setBonus(AbilityScore.baseBonusName,val);
+    public void updateAbility(AbilityID id, String val){
+        int oldScore = abilityScores.get(id).getBase();
+        abilityScores.get(id).setBase(updateInt(oldScore, val));
     }
 
     //</editor-fold>
@@ -189,6 +180,95 @@ public class CharacterSheet implements Serializable{
     public static CharacterSheet fromJSON(String CharacterSheetJSON) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(CharacterSheetJSON, CharacterSheet.class);
+    }
+
+    // =====================
+    // SYNCHRONIZATION STUFF
+    // =====================
+
+    /**
+     * Functions for updating a specified field of the underlying character-sheet
+     *
+     */
+    public void updateField(String id, String val){
+        switch (id.toLowerCase()){
+            case "hp":
+                updateHP(val);
+                return;
+            case "ac":
+                updateAC(val);
+                return;
+            case "fort":
+                updateSave(SavingThrowID.FORT, val);
+                return;
+            case "ref":
+                updateSave(SavingThrowID.REF, val);
+                return;
+            case "will":
+                updateSave(SavingThrowID.WILL, val);
+                return;
+            case "str":
+                updateAbility(AbilityID.STR, val);
+                return;
+            case "dex":
+                updateAbility(AbilityID.DEX, val);
+                return;
+            case "con":
+                updateAbility(AbilityID.CON, val);
+                return;
+            case "int":
+                updateAbility(AbilityID.INT, val);
+                return;
+            case "wis":
+                updateAbility(AbilityID.WIS, val);
+                return;
+            case "cha":
+                updateAbility(AbilityID.CHA, val);
+                return;
+            case "lvl":
+                setLevel(val);
+                return;
+            case "speed":
+                setSpeed(val);
+                return;
+            case "name":
+                setName(val);
+                return;
+            case "race":
+                setRace(val);
+                return;
+            case "align":
+                setAlignment(val);
+                return;
+            case "class":
+                setCharacterClass(val);
+                return;
+            case "gender":
+                setGender(val);
+                return;
+            case "deity":
+                setDeity(val);
+                return;
+            case "eyes":
+                setEyes(val);
+                return;
+            case "hair":
+                setHair(val);
+                return;
+            case "height":
+                setHeight(val);
+                return;
+            case "weight":
+                setWeight(val);
+                return;
+            case "size":
+                setSize(val);
+                return;
+            case "skin":
+                setSkin(val);
+                return;
+            default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
+        }
     }
 
     //<editor-fold desc="Getters and Setters">
@@ -278,6 +358,11 @@ public class CharacterSheet implements Serializable{
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    @JsonIgnore
+    public void setLevel(String level) {
+        this.level = updateInt(this.level, level);
     }
 
     public int getHp() {
@@ -404,8 +489,18 @@ public class CharacterSheet implements Serializable{
         return speed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setSpeed(String speed) {
+        this.speed = updateInt(this.speed, speed);
+    }
+
+    private int updateInt(int i, String s){
+        try{
+            i = Integer.parseInt(s);
+            return i;
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        return i;
     }
 
     //</editor-fold>

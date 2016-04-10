@@ -67,7 +67,7 @@ public class AbilityScore implements Serializable{
 	public void update() {
 		this.totalValue = sum(this.bonuses.values());
 		this.modifier = (this.totalValue / 2) - 5;
-        Log.d("ABILITY", "Updating " + shortName + ". Base score is "+bonuses.get("Base Score")+", total is now " + totalValue);
+        Log.d("ABILITY", "Updating " + shortName + ". Base score is " + bonuses.get("Base Score") + ", total is now " + totalValue);
 
 	}
 
@@ -82,6 +82,16 @@ public class AbilityScore implements Serializable{
 		this.update();
 		return existingBonus;
 	}
+
+    @JsonIgnore
+    public boolean setBase(int value){
+        return setBonus(baseBonusName, value);
+    }
+
+    @JsonIgnore
+    public int getBase(){
+        return bonuses.get(baseBonusName);
+    }
 
 	public boolean incrementBonus(String key){
 		boolean existingBonus = this.bonuses.containsKey(key);
