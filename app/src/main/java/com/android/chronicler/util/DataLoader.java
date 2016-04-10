@@ -278,13 +278,10 @@ public class DataLoader {
         cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                Log.i("DataLoader", responseBody.toString());
-
                 ArrayList<String> invites = new ArrayList<>();
 
                 try {
                     JSONArray inviteJSON = new JSONArray(responseBody.getString(0));
-                    Log.i("inviteJSON", inviteJSON.toString());
 
                     for (int i = 0; i < inviteJSON.length(); i++) {
                         invites.add(inviteJSON.getString(i));
