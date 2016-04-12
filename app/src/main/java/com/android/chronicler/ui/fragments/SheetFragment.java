@@ -21,7 +21,7 @@ import com.android.chronicler.character.skill.Skills;
  *      Inventory
  *      About
  */
-public class SheetFragment extends Fragment {
+public class    SheetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.sheet_fragment_layout, container, false);
 
