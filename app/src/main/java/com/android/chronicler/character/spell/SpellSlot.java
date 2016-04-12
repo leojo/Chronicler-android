@@ -1,5 +1,6 @@
 package com.android.chronicler.character.spell;
 
+import com.android.chronicler.character.SheetObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  *
  * This class represents a single spell slot
  */
-public class SpellSlot implements Serializable {
+public class SpellSlot extends SheetObject implements Serializable {
     private Spell spell;
     private boolean available = true;
     private int level;
@@ -50,6 +51,12 @@ public class SpellSlot implements Serializable {
     // Returns a human readable string describing the class and lvl of the spell-slot.
     @JsonIgnore
     public String getType() {return ""+this.className+this.level;}
+
+    @JsonIgnore
+    public String getName() {
+        if(this.spell == null) return "Empty";
+        return this.spell.getName();
+    }
 
     // Given a spell-list returns a list of all spells this spell-slot can hold
     @JsonIgnore

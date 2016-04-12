@@ -12,7 +12,7 @@ import java.util.HashMap;
  * Class that represents the collection of spell slots for a single character.
  */
 public class SpellSlots  implements Serializable {
-    private ArrayList<SpellSlot> spellSlots;
+    private ArrayList<SpellSlot> spellSlots = new ArrayList<>();
 
     public void add(SpellSlot ss){
         this.spellSlots.add(ss);
