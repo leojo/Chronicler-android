@@ -16,7 +16,6 @@ public class UserLocalStore {
 
     public static final String SP_NAME = "userDetails";
     SharedPreferences userLocalDatabase = null;
-
     public UserLocalStore(Context context) {
         this.userLocalDatabase = context.getSharedPreferences(SP_NAME, 0);
     }

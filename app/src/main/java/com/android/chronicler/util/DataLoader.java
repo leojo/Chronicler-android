@@ -43,14 +43,23 @@ public class DataLoader {
 
     // Function to ready an existing character-sheet and then start the characterActivity
     // INCOMPLETE: needs to be reworked (Doesn't load a character sheet from the database)
-    public static void readySheetThenStart(final Context context, final Intent intent) {
+    public static void readySheetThenStart(final Context context, final Intent intent, int id) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+        cli.getUserData("/getCharacterJSON?id="+id, null, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
+                String characterJSON = new String(responseBody);
+                CharacterSheet character = null;
+                try {
+                    character = CharacterSheet.fromJSON(characterJSON);
+                } catch (IOException e) {
+                    Log.e("LOAD_CHARACTER", "Failure reading charactersheet from JSON");
+                    Log.e("LOAD_CHARACTER", new String(responseBody));
+                    e.printStackTrace();
+                    return;
+                }
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
             }
@@ -58,11 +67,10 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody==null?"Empty response":new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("LOAD_CHARACTER", "Failure fetching character data: " + response);
             }
         });
         goToWaitScreen(context);
-
     }
 
     // Function to ready a fresh character-sheet and then start the characterActivity.
@@ -157,7 +165,7 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String JSONresponse = new String(responseBody);
                 ArrayList<String> content = new ArrayList<String>();
-
+                ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
 
                     JSONObject jObject = new JSONObject(JSONresponse);
@@ -166,12 +174,14 @@ public class DataLoader {
                     while (keys.hasNext()) {
                         String key = (String) keys.next();
                         content.add(jObject.get(key).toString());
+                        ids.add(Integer.parseInt(key));
                     }
                 } catch (JSONException e) {
                     Log.i("CHARLIST", "JSON EXCEPTION");
                 }
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
+                intent.putExtra("CharacterIds", ids);
                 if (getResult) {
                     ((Activity) context).startActivityForResult(intent, code);
                 } else {
@@ -221,12 +231,15 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
+                Log.i("CAMPAIGNS", responseBody.toString());
 
                 try {
                     JSONArray DMResponse = responseBody.getJSONObject(0).names();
 
-                    for (int i = 0; i < DMResponse.length(); i++) {
-                        DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                    if (DMResponse != null) {
+                        for (int i = 0; i < DMResponse.length(); i++) {
+                            DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -234,8 +247,10 @@ public class DataLoader {
 
                 try {
                     JSONArray PCResponse = responseBody.getJSONObject(1).names();
-                    for (int i = 0; i < PCResponse.length(); i++) {
-                        PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
+                    if (PCResponse != null) {
+                        for (int i = 0; i < PCResponse.length(); i++) {
+                            PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -247,6 +262,24 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void inviteToCampaign(final Context context, String campaignName, String user) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("Campaign", campaignName);
+        params.put("User", user);
+        cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully invited player to campaign: " + responseBody);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to invite player to campaign");
+            }
+        });
     }
 
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
@@ -263,6 +296,36 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("DataLoader", "Failed to post campaign");
+            }
+        });
+        goToWaitScreen(context);
+    }
+
+    public static void getCampaignDetailsThenOpen(final Context context, final Intent intent, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+
+        cli.getUserData("/campaignDetails", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                ArrayList<String> characters = new ArrayList<>();
+
+                Log.i("CAMPAIGN_DATA", responseBody.toString());
+                try {
+                    JSONArray campaignCharacters = responseBody.getJSONObject(0).names();
+
+                    for (int i = 0; i < campaignCharacters.length(); i++) {
+                        characters.add(responseBody.getJSONObject(0).getString(campaignCharacters.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("campaign_characters", characters);
+                context.startActivity(intent);
             }
         });
         goToWaitScreen(context);

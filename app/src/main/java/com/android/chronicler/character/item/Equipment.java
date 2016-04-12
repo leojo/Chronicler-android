@@ -1,10 +1,20 @@
 package com.android.chronicler.character.item;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.*;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.*;
+
 /**
  * Created by leo on 23.2.2016.
  *
  * Abstract class for the shared properties of all equippable items.
  */
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @Type(value = ArmorShield.class),
+        @Type(value = Weapon.class)
+})
 public abstract class Equipment extends Item{
     private boolean equipped;
     private boolean masterwork;

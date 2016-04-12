@@ -1,5 +1,9 @@
 package com.android.chronicler.character.item;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.*;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.*;
 
 import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.enums.SizeCategory;
@@ -12,6 +16,13 @@ import java.io.Serializable;
  * Abstract class for a single item. Each item should belong to one of the item subcategories,
  * each with it's own class.
  */
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @Type(value = Equipment.class),
+        @Type(value = MundaneItem.class),
+        @Type(value = Projectile.class),
+        @Type(value = Reagent.class)
+})
 public abstract class Item  extends SheetObject implements Serializable, Comparable {
     private String name = "";
     private String cost;

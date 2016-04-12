@@ -28,6 +28,7 @@ public class CharactersActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     ListView characterListView;
     public List<String> CONTENT;
+    public List<Integer> IDS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class CharactersActivity extends AppCompatActivity {
         // ---------------------------------------
         Intent intent = getIntent();
         CONTENT = intent.getStringArrayListExtra("CharacterList");
+        IDS = intent.getIntegerArrayListExtra("CharacterIds");
         characterListView = (ListView)findViewById(R.id.CharacterListView);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
 
         // This button is used for adding new characters
         ImageView addButtonView = new ImageView(this);
@@ -61,7 +63,7 @@ public class CharactersActivity extends AppCompatActivity {
                     if (position == adapter.getCount()) {
                         newSheet();
                     } else {
-                        openSheet();
+                        openSheet(IDS.get(position));
                     }
                 } else {
                     // If called with startActivityForResult
@@ -81,9 +83,9 @@ public class CharactersActivity extends AppCompatActivity {
 
     // Opens the character sheet. This will load the JSON of the character
     // selected and populate the sheet with his information. This is as of now incomplete.
-    public void openSheet() {
+    public void openSheet(int id) {
         Intent intent = new Intent(this, CharacterActivity.class);
-        DataLoader.readySheetThenStart(this, intent);
+        DataLoader.readySheetThenStart(this, intent, id);
     }
 
     // Opens the character creation screen. Uses the data loader to request
