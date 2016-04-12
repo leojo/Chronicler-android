@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -26,7 +27,9 @@ import android.widget.TextView;
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,10 +41,12 @@ public class CampaignPlayersFragment extends SheetFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PLAYER_LIST = "PLAYER_LIST";
+    private static final String PLAYER_IDS = "PLAYER_IDS";
     private static final String CAMPAIGN_NAME = "CAMPAIGN_NAME";
 
     // TODO: Rename and change types of parameters
     private ArrayList<String> playerList;
+    private ArrayList<String> playerIDs;
     private String campaignName;
     private ListAdapter playerAdapter;
 
@@ -57,10 +62,13 @@ public class CampaignPlayersFragment extends SheetFragment {
      * @return A new instance of fragment CampaignPlayersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CampaignPlayersFragment newInstance(String campaignName, ArrayList<String> playerList) {
+    public static CampaignPlayersFragment newInstance(String campaignName,
+                                                      ArrayList<String> playerList,
+                                                      ArrayList<String> characterIDs) {
         CampaignPlayersFragment fragment = new CampaignPlayersFragment();
         Bundle args = new Bundle();
         args.putStringArrayList(PLAYER_LIST, playerList);
+        args.putStringArrayList(PLAYER_IDS, characterIDs);
         args.putString(CAMPAIGN_NAME, campaignName);
         fragment.setArguments(args);
         return fragment;
@@ -71,6 +79,7 @@ public class CampaignPlayersFragment extends SheetFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             playerList = getArguments().getStringArrayList(PLAYER_LIST);
+            playerIDs = getArguments().getStringArrayList(PLAYER_IDS);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
         }
     }
@@ -83,7 +92,9 @@ public class CampaignPlayersFragment extends SheetFragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_campaign_players, container, false);
 
         ListView playerListView = (ListView) rootView.findViewById(R.id.player_list);
-        playerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, playerList);
+        playerAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_expandable_list_item_1,
+                playerList);
 
 
         // Set add button to footer
@@ -110,7 +121,7 @@ public class CampaignPlayersFragment extends SheetFragment {
                     dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.i("Invite", "Inviting player "+input.getText()+" to campaign "+campaignName);
+                            Log.i("Invite", "Inviting player " + input.getText() + " to campaign " + campaignName);
                             DataLoader.inviteToCampaign(getActivity(), campaignName, input.getText().toString());
                         }
                     });
@@ -121,9 +132,11 @@ public class CampaignPlayersFragment extends SheetFragment {
                         }
                     });
                     dialogBuilder.show();
-                    //DataLoader.inviteToCampaign(getActivity(), campaignName, user);
                 } else {
-                    Log.i("CampaignPlayer", "Selected character "+position);
+                    Log.i("CampaignPlayer", "Inviting character with id "+playerIDs.get(position));
+                    DataLoader.readySheetThenStart(getActivity(),
+                            new Intent(getActivity(), CampaignPlayersFragment.class),
+                            Integer.parseInt(playerIDs.get(position)));
                 }
             }
         });

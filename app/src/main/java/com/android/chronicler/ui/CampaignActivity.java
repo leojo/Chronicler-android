@@ -31,6 +31,7 @@ import com.loopj.android.http.RequestParams;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -58,6 +59,7 @@ public class CampaignActivity extends FragmentActivity {
 
     private String campaignName;
     private ArrayList<String> campaignCharacters;
+    private ArrayList<String> campaignCharacterIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class CampaignActivity extends FragmentActivity {
         Intent intent = getIntent();
         campaignName = intent.getStringExtra("CAMPAIGN_NAME");
         campaignCharacters = intent.getStringArrayListExtra("campaign_characters");
+        campaignCharacterIDs = intent.getStringArrayListExtra("campaign_character_ids");
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
@@ -77,7 +80,7 @@ public class CampaignActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
 
-        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters));
+        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
         //fragments.add(AboutFragment.newInstance("ABOUT",character));
 
 
