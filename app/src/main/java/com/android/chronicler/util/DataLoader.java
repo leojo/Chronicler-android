@@ -278,15 +278,13 @@ public class DataLoader {
         cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                Log.i("DataLoader", responseBody.toString());
-
                 ArrayList<String> invites = new ArrayList<>();
 
                 try {
-                    JSONArray inviteJSON = responseBody.getJSONObject(0).names();
+                    JSONArray inviteJSON = new JSONArray(responseBody.getString(0));
 
                     for (int i = 0; i < inviteJSON.length(); i++) {
-                        invites.add(responseBody.getJSONObject(0).getString(inviteJSON.getString(i)));
+                        invites.add(inviteJSON.getString(i));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -304,9 +302,45 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+
+    public static void respondToInvite(final Context context, final Intent intent, int index, String characterName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.put("Character", characterName);
+        params.put("CampaignIndex", index);
+
+        cli.postUserData("/respondToInvite", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                ArrayList<String> invites = new ArrayList<>();
+
+                try {
+                    JSONArray inviteJSON = new JSONArray(responseBody.getString(0));
+
+                    for (int i = 0; i < inviteJSON.length(); i++) {
+                        invites.add(inviteJSON.getString(i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("INVITES", invites);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable error, JSONObject object) {
+                Log.i("DataLoader", object.toString());
+            }
+        });
+    }
+
     // Displays a spinning wheel waiting screen while the user waits for an async http request.
     private static void goToWaitScreen(Context context){
         Intent loadingScreenIntent = new Intent(context, WaitingActivity.class);
         context.startActivity(loadingScreenIntent);
     }
+
 }

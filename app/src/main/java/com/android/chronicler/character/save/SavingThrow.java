@@ -65,7 +65,7 @@ public class SavingThrow  implements Serializable {
 	public void update(AbilityScores abilityScores) {
 		// TODO: A function that updates the ability scores of the saving thows.
 		this.baseSkill = abilityScores.get(abilityID);
-		setBonus(abilityBonusName,baseSkill.getModifier());
+		setBonus(abilityBonusName, baseSkill.getModifier());
 	}
 
 	public void recalculate(){
@@ -106,6 +106,11 @@ public class SavingThrow  implements Serializable {
 	public boolean setBase(int value){
 		return setBonus(baseBonusName,value);
 	}
+
+    @JsonIgnore
+    public int getBase(){
+        return bonuses.get(baseBonusName);
+    }
 
 	public boolean removeBonus(String key){
 		if(this.bonuses.containsKey(key)){

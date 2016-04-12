@@ -40,5 +40,6 @@
     <string name="action_accept_invite">Accept</string>
     <string name="action_decline_invite">Decline</string>
     <string name="title_activity_waiting">WaitingActivity</string>
+    <string name="campaign_player_list">Players</string>
 
 </resources>
