@@ -2,7 +2,6 @@ package com.android.chronicler.character;
 
 import android.util.Log;
 
-import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.character.enums.SavingThrowID;
@@ -94,16 +93,8 @@ public class CharacterSheet implements Serializable{
         hp = updateInt(hp,newHP);
     }
 
-    public void setHP(int currentHP){
-        //TODO: Implement setHP
-    }
-
     public void healBySpell(int healthRegained){
         //TODO: Implement healBySpell
-    }
-
-    public void setNonLethalDamage(int totalNonLethalDamage){
-        //TODO: Implement setNonLethalDamage
     }
 
     public void addNonLethalDamage(int nonLethalDamage){

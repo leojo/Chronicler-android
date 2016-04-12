@@ -43,14 +43,23 @@ public class DataLoader {
 
     // Function to ready an existing character-sheet and then start the characterActivity
     // INCOMPLETE: needs to be reworked (Doesn't load a character sheet from the database)
-    public static void readySheetThenStart(final Context context, final Intent intent) {
+    public static void readySheetThenStart(final Context context, final Intent intent, int id) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+        cli.getUserData("/getCharacterJSON?id="+id, null, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                CharacterSheet character = new CharacterSheet("Bob", "Elf", "Barbarian", new String(responseBody));
+                String characterJSON = new String(responseBody);
+                CharacterSheet character = null;
+                try {
+                    character = CharacterSheet.fromJSON(characterJSON);
+                } catch (IOException e) {
+                    Log.e("LOAD_CHARACTER", "Failure reading charactersheet from JSON");
+                    Log.e("LOAD_CHARACTER", new String(responseBody));
+                    e.printStackTrace();
+                    return;
+                }
                 intent.putExtra("CharacterSheet", character);
                 context.startActivity(intent);
             }
@@ -58,11 +67,10 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody==null?"Empty response":new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("LOAD_CHARACTER", "Failure fetching character data: " + response);
             }
         });
         goToWaitScreen(context);
-
     }
 
     // Function to ready a fresh character-sheet and then start the characterActivity.
@@ -157,7 +165,7 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String JSONresponse = new String(responseBody);
                 ArrayList<String> content = new ArrayList<String>();
-
+                ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
 
                     JSONObject jObject = new JSONObject(JSONresponse);
@@ -166,12 +174,14 @@ public class DataLoader {
                     while (keys.hasNext()) {
                         String key = (String) keys.next();
                         content.add(jObject.get(key).toString());
+                        ids.add(Integer.parseInt(key));
                     }
                 } catch (JSONException e) {
                     Log.i("CHARLIST", "JSON EXCEPTION");
                 }
                 // Finally start the activity with 'content' as extra:
                 intent.putExtra("CharacterList", content);
+                intent.putExtra("CharacterIds", ids);
                 if (getResult) {
                     ((Activity) context).startActivityForResult(intent, code);
                 } else {
