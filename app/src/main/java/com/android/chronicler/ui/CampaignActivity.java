@@ -77,7 +77,7 @@ public class CampaignActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
 
-        fragments.add(CampaignPlayersFragment.newInstance(campaignCharacters));
+        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters));
         //fragments.add(AboutFragment.newInstance("ABOUT",character));
 
 
@@ -100,24 +100,6 @@ public class CampaignActivity extends FragmentActivity {
 
     }
 
-    // Uses the RestClient to post an invite to a specific user.
-    private void inviteToCampaign(String user) {
-        ChroniclerRestClient cli = new ChroniclerRestClient(this);
-        RequestParams params = new RequestParams();
-        params.put("Campaign", campaignName);
-        params.put("User", user);
-        cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.i("Campaign", "Successfully invited player to campaign: "+responseBody);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.i("Campaign", "Failed to invite player to campaign");
-            }
-        });
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

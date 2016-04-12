@@ -231,6 +231,24 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    public static void inviteToCampaign(final Context context, String campaignName, String user) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("Campaign", campaignName);
+        params.put("User", user);
+        cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully invited player to campaign: " + responseBody);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to invite player to campaign");
+            }
+        });
+    }
+
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
