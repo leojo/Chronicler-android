@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class CampaignsActivity extends AppCompatActivity {
     public void openCampaign(String name) {
         Intent intent = new Intent(this, CampaignActivity.class);
         intent.putExtra("CAMPAIGN_NAME", name);
-        startActivity(intent);
+        DataLoader.getCampaignDetailsThenOpen(this, intent, name);
     }
 
 

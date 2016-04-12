@@ -1,5 +1,8 @@
 package com.android.chronicler.character.feat;
 
+import com.android.chronicler.character.SheetObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +10,7 @@ import java.util.Collections;
 /**
  * Created by leo on 28.11.2015.
  */
-public class FeatSlot  implements Serializable {
+public class FeatSlot extends SheetObject implements Serializable {
     private String type;
     private Feat feat;
 
@@ -25,6 +28,12 @@ public class FeatSlot  implements Serializable {
         }
         Collections.sort(feats);
         return feats;
+    }
+
+    @JsonIgnore
+    public String getName() {
+        if(feat == null) return "Empty";
+        return feat.getName();
     }
 
     //<editor-fold desc="Getters and Setters">

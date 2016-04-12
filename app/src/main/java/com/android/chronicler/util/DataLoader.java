@@ -208,12 +208,15 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
+                Log.i("CAMPAIGNS", responseBody.toString());
 
                 try {
                     JSONArray DMResponse = responseBody.getJSONObject(0).names();
 
-                    for (int i = 0; i < DMResponse.length(); i++) {
-                        DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                    if (DMResponse != null) {
+                        for (int i = 0; i < DMResponse.length(); i++) {
+                            DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -221,8 +224,10 @@ public class DataLoader {
 
                 try {
                     JSONArray PCResponse = responseBody.getJSONObject(1).names();
-                    for (int i = 0; i < PCResponse.length(); i++) {
-                        PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
+                    if (PCResponse != null) {
+                        for (int i = 0; i < PCResponse.length(); i++) {
+                            PCCampaigns.add(responseBody.getJSONObject(1).getString(PCResponse.getString(i)));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -234,6 +239,24 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void inviteToCampaign(final Context context, String campaignName, String user) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("Campaign", campaignName);
+        params.put("User", user);
+        cli.postUserData("/inviteToCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully invited player to campaign: " + responseBody);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to invite player to campaign");
+            }
+        });
     }
 
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
@@ -250,6 +273,36 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Log.i("DataLoader", "Failed to post campaign");
+            }
+        });
+        goToWaitScreen(context);
+    }
+
+    public static void getCampaignDetailsThenOpen(final Context context, final Intent intent, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+
+        cli.getUserData("/campaignDetails", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+                ArrayList<String> characters = new ArrayList<>();
+
+                Log.i("CAMPAIGN_DATA", responseBody.toString());
+                try {
+                    JSONArray campaignCharacters = responseBody.getJSONObject(0).names();
+
+                    for (int i = 0; i < campaignCharacters.length(); i++) {
+                        characters.add(responseBody.getJSONObject(0).getString(campaignCharacters.getString(i)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                intent.putExtra("campaign_characters", characters);
+                context.startActivity(intent);
             }
         });
         goToWaitScreen(context);

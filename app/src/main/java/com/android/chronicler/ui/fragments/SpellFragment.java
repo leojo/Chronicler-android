@@ -1,13 +1,21 @@
 package com.android.chronicler.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.character.spell.SpellSlots;
+import com.android.chronicler.util.SheetAdapter;
+import com.android.chronicler.util.SkillsAdapter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Fragment for the CharacterActivity: This is the character's spell list. The character should
@@ -21,6 +29,14 @@ public class SpellFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.spell_fragment_layout, container, false);
 
+        ListView spellsView = (ListView)(rootView.findViewById(R.id.spellsView));
+        // Set add button to footer
+        ImageView addButtonView = new ImageView(getContext());
+        addButtonView.setPadding(20, 20, 20, 20);
+        addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
+        spellsView.addFooterView(addButtonView);
+        spellsView.setAdapter(new SheetAdapter(getContext(), (SpellSlots) getArguments().getSerializable("SPELLS")));
+
         return rootView;
     }
 
@@ -30,6 +46,7 @@ public class SpellFragment extends SheetFragment {
     public static SpellFragment newInstance(String type, SpellSlots spellslots) {
         Bundle args = new Bundle();
         args.putString("ID", type);
+        args.putSerializable("SPELLS", spellslots);
         SpellFragment spellFrag = new SpellFragment();
         spellFrag.setArguments(args);
 

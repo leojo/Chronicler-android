@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.*;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.*;
+
+import com.android.chronicler.character.SheetObject;
+import com.android.chronicler.character.enums.SizeCategory;
+
 import java.io.Serializable;
 
 /**
@@ -19,7 +23,7 @@ import java.io.Serializable;
         @Type(value = Projectile.class),
         @Type(value = Reagent.class)
 })
-public abstract class Item implements Serializable, Comparable {
+public abstract class Item  extends SheetObject implements Serializable, Comparable {
     private String name = "";
     private String cost;
     private String weight;
