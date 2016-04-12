@@ -29,6 +29,7 @@ import com.android.chronicler.util.ViewPagerTabs;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -56,6 +57,7 @@ public class CampaignActivity extends FragmentActivity {
     private static final int INITIAL_PAGE = 1;
 
     private String campaignName;
+    private ArrayList<String> campaignCharacters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class CampaignActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         campaignName = intent.getStringExtra("CAMPAIGN_NAME");
+        campaignCharacters = intent.getStringArrayListExtra("campaign_characters");
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
@@ -73,12 +76,8 @@ public class CampaignActivity extends FragmentActivity {
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
-        ArrayList<String> demoList = new ArrayList<>();
-        demoList.add("player1");
-        demoList.add("player2");
-        demoList.add("player3");
-        demoList.add("player4");
-        fragments.add(CampaignPlayersFragment.newInstance(demoList));
+
+        fragments.add(CampaignPlayersFragment.newInstance(campaignCharacters));
         //fragments.add(AboutFragment.newInstance("ABOUT",character));
 
 

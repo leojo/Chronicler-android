@@ -263,15 +263,15 @@ public class DataLoader {
                 ArrayList<String> characters = new ArrayList<>();
 
                 Log.i("CAMPAIGN_DATA", responseBody.toString());
-                /*try {
-                    JSONArray  = responseBody.getJSONObject(0).names();
+                try {
+                    JSONArray campaignCharacters = responseBody.getJSONObject(0).names();
 
-                    for (int i = 0; i < DMResponse.length(); i++) {
-                        DMCampaigns.add(responseBody.getJSONObject(0).getString(DMResponse.getString(i)));
+                    for (int i = 0; i < campaignCharacters.length(); i++) {
+                        characters.add(responseBody.getJSONObject(0).getString(campaignCharacters.getString(i)));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }*/
+                }
 
                 intent.putExtra("campaign_characters", characters);
                 context.startActivity(intent);
