@@ -188,6 +188,29 @@ public class DataLoader {
         });
         goToWaitScreen(context);
     }
+/*
+    public static void readyResultsThenStart(final Context context, final Intent intent, final boolean getResult, final int code) {
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Create a new character sheet object
+                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
+                storeCharSheet(context, character);
+                intent.putExtra("CharacterSheet", character);
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String response = (responseBody==null?"Empty response":new String(responseBody));
+                Log.i("SKILLS", "Failure fetching skill data: " + response);
+            }
+        });
+        goToWaitScreen(context);
+    }
+
+*/
 
     // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {

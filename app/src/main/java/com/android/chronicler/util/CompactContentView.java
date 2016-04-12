@@ -54,7 +54,7 @@ public class CompactContentView extends LinearLayout {
     }
 
     private void init() {
-        Log.i("ContentView", "init");
+        Log.i("ContentView", "init, value is "+value);
         inflate(getContext(), R.layout.compact_content_view, this);
         TextView nameView = (TextView)findViewById(R.id.compNameView);
         valueView = (TextView)findViewById(R.id.compValueView);
@@ -63,9 +63,12 @@ public class CompactContentView extends LinearLayout {
         if(border != 0) this.setBackgroundResource(border);
         if(editable) setEditable();
         Log.i("ContentView", "Ready, the name is " + name);
+
+        Log.i("ContentView", "Text of value view is certainly "+valueView.getText());
     }
 
     public void updateText(String newText){
+        Log.i("ContentView", "Calling update text for "+name+" with value " +value);
         value = newText;
         valueView.setText(value);
     }
