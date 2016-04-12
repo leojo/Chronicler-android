@@ -14,7 +14,9 @@ import android.view.View;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.WaitingActivity;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -278,16 +281,21 @@ public class DataLoader {
         cli.getUserData("/campaignDetails", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
-                ArrayList<String> characters = new ArrayList<>();
+                //ArrayList<String> characters = new ArrayList<>();
+                HashMap<Integer, String> characters = new HashMap<Integer, String>();
 
                 Log.i("CAMPAIGN_DATA", responseBody.toString());
                 try {
+                    characters = new ObjectMapper().readValue(responseBody.getString(0), HashMap.class);
+                    Log.i("CAMPAIGN_DATA", characters.toString());
                     JSONArray campaignCharacters = responseBody.getJSONObject(0).names();
-
-                    for (int i = 0; i < campaignCharacters.length(); i++) {
-                        characters.add(responseBody.getJSONObject(0).getString(campaignCharacters.getString(i)));
-                    }
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (JsonMappingException e) {
+                    e.printStackTrace();
+                } catch (JsonParseException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 

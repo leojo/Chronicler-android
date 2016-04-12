@@ -27,6 +27,7 @@ import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class CampaignPlayersFragment extends SheetFragment {
     private static final String CAMPAIGN_NAME = "CAMPAIGN_NAME";
 
     // TODO: Rename and change types of parameters
-    private ArrayList<String> playerList;
+    private HashMap<Integer, String> playerList;
     private String campaignName;
     private ListAdapter playerAdapter;
 
@@ -57,10 +58,10 @@ public class CampaignPlayersFragment extends SheetFragment {
      * @return A new instance of fragment CampaignPlayersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CampaignPlayersFragment newInstance(String campaignName, ArrayList<String> playerList) {
+    public static CampaignPlayersFragment newInstance(String campaignName, HashMap<Integer, String> playerList) {
         CampaignPlayersFragment fragment = new CampaignPlayersFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(PLAYER_LIST, playerList);
+        args.putSerializable(PLAYER_LIST, playerList);
         args.putString(CAMPAIGN_NAME, campaignName);
         fragment.setArguments(args);
         return fragment;
@@ -70,7 +71,7 @@ public class CampaignPlayersFragment extends SheetFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            playerList = getArguments().getStringArrayList(PLAYER_LIST);
+            playerList = (HashMap<Integer, String>)getArguments().getSerializable(PLAYER_LIST);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
         }
     }
@@ -83,7 +84,9 @@ public class CampaignPlayersFragment extends SheetFragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_campaign_players, container, false);
 
         ListView playerListView = (ListView) rootView.findViewById(R.id.player_list);
-        playerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, playerList);
+        playerAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_expandable_list_item_1,
+                new ArrayList<String>(playerList.values()));
 
 
         // Set add button to footer
@@ -110,7 +113,7 @@ public class CampaignPlayersFragment extends SheetFragment {
                     dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.i("Invite", "Inviting player "+input.getText()+" to campaign "+campaignName);
+                            Log.i("Invite", "Inviting player " + input.getText() + " to campaign " + campaignName);
                             DataLoader.inviteToCampaign(getActivity(), campaignName, input.getText().toString());
                         }
                     });
@@ -121,7 +124,6 @@ public class CampaignPlayersFragment extends SheetFragment {
                         }
                     });
                     dialogBuilder.show();
-                    //DataLoader.inviteToCampaign(getActivity(), campaignName, user);
                 } else {
                     Log.i("CampaignPlayer", "Selected character "+position);
                 }
