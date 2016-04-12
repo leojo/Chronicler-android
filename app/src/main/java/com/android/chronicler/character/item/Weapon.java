@@ -1,11 +1,13 @@
 package com.android.chronicler.character.item;
 
+import com.android.chronicler.character.item.Equipment;
+
 /**
  * Created by leo on 23.2.2016.
  *
  * A weapon
  */
-public class Weapon extends Equipment{
+public class Weapon extends Equipment {
 
     private boolean twoHand, oneHand, ranged, thrown, light;
     private String damageTypes, damage, crit, wepCat, type, rangeIncr;

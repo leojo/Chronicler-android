@@ -32,6 +32,7 @@ public class InventoryFragment extends SheetFragment {
         invtView.setAdapter(new SheetAdapter(getContext(), (Inventory)getArguments().getSerializable("INVENTORY")));
 
 
+
         return rootView;
     }
 

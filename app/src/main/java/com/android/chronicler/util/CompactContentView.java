@@ -54,7 +54,7 @@ public class CompactContentView extends LinearLayout {
     }
 
     private void init() {
-        Log.i("ContentView", "init");
+        Log.i("ContentView", "init, value is "+value);
         inflate(getContext(), R.layout.compact_content_view, this);
         TextView nameView = (TextView)findViewById(R.id.compNameView);
         valueView = (TextView)findViewById(R.id.compValueView);
@@ -63,44 +63,35 @@ public class CompactContentView extends LinearLayout {
         if(border != 0) this.setBackgroundResource(border);
         if(editable) setEditable();
         Log.i("ContentView", "Ready, the name is " + name);
+
+        Log.i("ContentView", "Text of value view is certainly "+valueView.getText());
     }
 
     public void updateText(String newText){
+        Log.i("ContentView", "Calling update text for "+name+" with value " +value);
         value = newText;
         valueView.setText(value);
     }
 
     private void setEditable() {
         Log.i("EDITABLE", "Setting editable");
-        this.setOnClickListener(new OnClickListener(){
+        final TextView valView = (TextView) this.findViewById(R.id.compValueView);
+
+        // Do editable magics!!!!
+        valView.setFocusable(true);
+        valView.setFocusableInTouchMode(true);
+        valView.setClickable(true);
+        valView.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        Log.i("EDITABLE", "This is the value of our field " + valView.getText());
+        Log.i("EDITABLE", "CLICK! Should now be editable");
+
+        this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("EDITABLE", "CLICK! Should be making this editable");
-
-                final TextView valView = (TextView)v.findViewById(R.id.compValueView);
-                valView.setFocusable(true);
-                valView.setFocusableInTouchMode(true);
-                valView.setClickable(true);
                 valView.setCursorVisible(true);
-                valView.setInputType(InputType.TYPE_CLASS_TEXT);
                 valView.requestFocus();
                 valView.invalidate();
-                valView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        String val = valView.getText().toString();
-                        if (intField) {
-                            Log.i("SHEET_EDIT", "You just clicked an integer valued field");
-                            Log.i("SHEET_EDIT", "The value on click was: " + val.replaceAll("[^\\d.]", ""));
-                        } else {
-                            Log.i("SHEET_EDIT", "You just clicked a string valued field");
-                            Log.i("SHEET_EDIT", "The value on click was: " + val);
-                        }
-                        return false;
-                    }
-                });
-                Log.i("EDITABLE", "This is the value of our field "+valView.getText());
-                Log.i("EDITABLE", "CLICK! Should now be editable");
             }
         });
     }

@@ -34,7 +34,7 @@ import java.util.Vector;
  * stats, their spells, feats and skills and a generic "about" fragment containing information
  * such as name, alignment, hair color etc.
  **/
-public class CharacterActivity extends FragmentActivity {
+public class CharacterActivity extends AppCompatActivity {//FragmentActivity {
     // We have to decide whether we want to extend AppCompatActivity, thereby keeping the action bar
     // and perhaps using it somehow, e.g. putting the name and class and level of our character there
     // or instead extend FragmentActivity, in which case the fragment fills the whole screen (if we

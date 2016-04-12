@@ -1,6 +1,7 @@
 package com.android.chronicler.character.item;
 
 import com.android.chronicler.character.enums.ArmorType;
+import com.android.chronicler.character.item.Equipment;
 
 import java.io.Serializable;
 
