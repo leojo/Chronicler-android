@@ -25,6 +25,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.ui.CharacterActivity;
 import com.android.chronicler.util.DataLoader;
 
 import java.lang.reflect.Array;
@@ -135,7 +136,7 @@ public class CampaignPlayersFragment extends SheetFragment {
                 } else {
                     Log.i("CampaignPlayer", "Inviting character with id "+playerIDs.get(position));
                     DataLoader.readySheetThenStart(getActivity(),
-                            new Intent(getActivity(), CampaignPlayersFragment.class),
+                            new Intent(getActivity(), CharacterActivity.class),
                             Integer.parseInt(playerIDs.get(position)));
                 }
             }
