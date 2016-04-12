@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.android.chronicler.R;
 
@@ -77,7 +79,7 @@ public class CampaignPlayersFragment extends SheetFragment {
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("PLAYER_FRAGMENT", "Clicked item at position "+position);
+                Log.i("PLAYER_FRAGMENT", "Clicked item at position " + position);
             }
         });
 
