@@ -38,7 +38,6 @@ public class SkillFragment extends SheetFragment {
         return rootView;
     }
 
-
     ListView skillsView;
     private SkillsAdapter adapter;
 
