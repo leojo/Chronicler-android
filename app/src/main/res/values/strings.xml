@@ -44,5 +44,6 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Fireball</string>
     <string name="campaign_private_notes">Private Notes</string>
+    <string name="title_activity_campaign_note">CampaignNoteActivity</string>
 
 </resources>
