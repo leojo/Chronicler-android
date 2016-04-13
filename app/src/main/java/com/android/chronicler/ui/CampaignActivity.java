@@ -20,6 +20,7 @@ import com.android.chronicler.ui.fragments.CampaignPlayersFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
 import com.android.chronicler.ui.fragments.InventoryFragment;
+import com.android.chronicler.ui.fragments.PrivateNotesFragment;
 import com.android.chronicler.ui.fragments.SheetFragment;
 import com.android.chronicler.ui.fragments.SkillFragment;
 import com.android.chronicler.ui.fragments.SpellFragment;
@@ -58,7 +59,8 @@ public class CampaignActivity extends FragmentActivity {
     private static final int INITIAL_PAGE = 1;
 
     private String campaignName;
-    private HashMap<Integer, String> campaignCharacters;
+    private ArrayList<String> campaignCharacters;
+    private ArrayList<String> campaignCharacterIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +69,24 @@ public class CampaignActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         campaignName = intent.getStringExtra("CAMPAIGN_NAME");
-        campaignCharacters = (HashMap<Integer, String>)intent.getSerializableExtra("campaign_characters");
+        campaignCharacters = intent.getStringArrayListExtra("campaign_characters");
+        campaignCharacterIDs = intent.getStringArrayListExtra("campaign_character_ids");
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
         final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
-        pagerTabs.addTabLabels(R.string.campaign_player_list);
+        pagerTabs.addTabLabels(R.string.campaign_player_list, R.string.campaign_private_notes);
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
 
-        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters));
+        ArrayList<String> demoNotes = new ArrayList<>();
+        demoNotes.add(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan consequat sollicitudin. Nunc in diam iaculis, placerat augue nec, scelerisque eros. Vivamus rutrum ultricies enim, quis rhoncus nisl congue nec. Sed mollis ipsum nec viverra gravida. Integer a nisi id diam sodales dictum et et orci. Aliquam sit amet vulputate metus. Pellentesque quis diam ut massa tempus aliquet et et mauris. ");
+        demoNotes.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra. ");
+        demoNotes.add("Nulla volutpat neque ac purus condimentum, sed vehicula mauris lacinia. Sed in venenatis urna. Pellentesque convallis est vel est pretium, id tristique dui tincidunt. Donec tempus quam nulla, ut sagittis lectus interdum tincidunt. Nullam risus dui, placerat a neque in, accumsan ultrices elit. Aliquam quis mi nec leo luctus maximus. Phasellus eleifend nisi diam, sit amet tincidunt orci scelerisque in. Duis ultricies vel purus sit amet facilisis. Maecenas id consequat odio, tempor sagittis libero. Aliquam a elit eu augue rhoncus auctor id a tellus. Phasellus ut tortor sit amet justo bibendum euismod. In magna orci, aliquam non suscipit eget, imperdiet rhoncus enim. Morbi auctor, felis non ultrices condimentum, dui nisi bibendum nisi, nec feugiat mauris erat non augue. Ut lobortis tortor nibh, at molestie risus interdum eget. In egestas eu nulla a commodo. ");
+        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
+        fragments.add(PrivateNotesFragment.newInstance(campaignName, demoNotes));
         //fragments.add(AboutFragment.newInstance("ABOUT",character));
 
 

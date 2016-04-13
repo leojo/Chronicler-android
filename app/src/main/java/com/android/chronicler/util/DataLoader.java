@@ -49,7 +49,7 @@ public class DataLoader {
     public static void readySheetThenStart(final Context context, final Intent intent, int id) {
 
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.getUserData("/getCharacterJSON?id="+id, null, new AsyncHttpResponseHandler() {
+        cli.getUserData("/getCharacterJSON?id=" + id, null, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -69,7 +69,7 @@ public class DataLoader {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                String response = (responseBody==null?"Empty response":new String(responseBody));
+                String response = (responseBody == null ? "Empty response" : new String(responseBody));
                 Log.i("LOAD_CHARACTER", "Failure fetching character data: " + response);
             }
         });
@@ -315,24 +315,27 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 //ArrayList<String> characters = new ArrayList<>();
-                HashMap<Integer, String> characters = new HashMap<Integer, String>();
+                ArrayList<String> characterNames = new ArrayList<>();
+                ArrayList<String> characterIDs = new ArrayList<>();
 
                 Log.i("CAMPAIGN_DATA", responseBody.toString());
                 try {
-                    characters = new ObjectMapper().readValue(responseBody.getString(0), HashMap.class);
-                    Log.i("CAMPAIGN_DATA", characters.toString());
-                    JSONArray campaignCharacters = responseBody.getJSONObject(0).names();
+                    JSONArray JCharacterIDs = responseBody.getJSONObject(0).names();
+                    if (JCharacterIDs != null) {
+                        for (int i=0; i<JCharacterIDs.length(); i++) {
+                            characterIDs.add(JCharacterIDs.getString(i));
+                            characterNames.add(responseBody.getJSONObject(0).getString(JCharacterIDs.getString(i)));
+                        }
+                    }
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (JsonMappingException e) {
-                    e.printStackTrace();
-                } catch (JsonParseException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                intent.putExtra("campaign_characters", characters);
+                Log.i("CAMPAIGN_DATA", "Received characters: "+characterNames);
+                Log.i("CAMPAIGN_DATA", "Received character IDs: "+characterIDs);
+
+                intent.putExtra("campaign_characters", characterNames);
+                intent.putExtra("campaign_character_ids", characterIDs);
                 context.startActivity(intent);
             }
         });
