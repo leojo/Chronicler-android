@@ -47,5 +47,7 @@
     <string name="title_activity_campaign_note">CampaignNoteActivity</string>
     <string name="title_activity_public_notes">PublicNotesActivity</string>
     <string name="campaign_public_notes">Public Notes</string>
+    <string name="campaign_journal">Journal</string>
+    <string name="title_activity_edit_journal">EditJournalActivity</string>
 
 </resources>

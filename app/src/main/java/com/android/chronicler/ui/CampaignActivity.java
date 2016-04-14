@@ -20,6 +20,7 @@ import com.android.chronicler.ui.fragments.CampaignPlayersFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
 import com.android.chronicler.ui.fragments.InventoryFragment;
+import com.android.chronicler.ui.fragments.JournalFragment;
 import com.android.chronicler.ui.fragments.PrivateNotesFragment;
 import com.android.chronicler.ui.fragments.PublicNotesFragment;
 import com.android.chronicler.ui.fragments.SheetFragment;
@@ -76,7 +77,11 @@ public class CampaignActivity extends FragmentActivity {
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
         final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
-        pagerTabs.addTabLabels(R.string.campaign_player_list, R.string.campaign_private_notes, R.string.campaign_public_notes);
+        pagerTabs.addTabLabels(
+                R.string.campaign_player_list,
+                R.string.campaign_private_notes,
+                R.string.campaign_public_notes,
+                R.string.campaign_journal);
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
@@ -89,6 +94,15 @@ public class CampaignActivity extends FragmentActivity {
         fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
         fragments.add(PrivateNotesFragment.newInstance(campaignName, demoNotes));
         fragments.add(PublicNotesFragment.newInstance(campaignName, demoNotes));
+
+        ArrayList<ArrayList<String>> demoJournal = new ArrayList<>();
+        ArrayList<String> entry1 = new ArrayList<>();
+        entry1.add("Lorem ipsum");
+        entry1.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan consequat sollicitudin. Nunc in diam iaculis, placerat augue nec, scelerisque eros. Vivamus rutrum ultricies enim, quis rhoncus nisl congue nec. Sed mollis ipsum nec viverra gravida. Integer a nisi id diam sodales dictum et et orci. Aliquam sit amet vulputate metus. Pellentesque quis diam ut massa tempus aliquet et et mauris. ");
+        ArrayList<String> entry2 = new ArrayList<>();
+        entry2.add("Sed at solli");
+        entry2.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra.");
+        fragments.add(JournalFragment.newInstance(campaignName, demoJournal));
 
 
         // The view pager is an element that can shift through views by swiping right and left

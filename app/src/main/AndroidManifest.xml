@@ -86,9 +86,10 @@
             android:label="@string/title_activity_campaign_note"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.PublicNotesActivity"
-            android:label="@string/title_activity_public_notes"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".ui.EditJournalActivity"
+            android:label="@string/title_activity_edit_journal"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>
