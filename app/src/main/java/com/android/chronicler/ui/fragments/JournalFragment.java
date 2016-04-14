@@ -32,6 +32,7 @@ public class JournalFragment extends SheetFragment {
     private static final int maxItemLength = 35;
     private String campaignName;
     private ArrayList<ArrayList<String>> entries;
+    private ArrayList<String> titles;
     private ArrayAdapter<String> adapter;
 
     public JournalFragment() {
@@ -45,6 +46,7 @@ public class JournalFragment extends SheetFragment {
         Bundle args = new Bundle();
         args.putSerializable(PUBLIC_NOTES, notes);
         args.putString(CAMPAIGN_NAME, campaignName);
+        Log.i("Journal", notes.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,6 +57,7 @@ public class JournalFragment extends SheetFragment {
         if (getArguments() != null) {
             entries = (ArrayList<ArrayList<String>>) getArguments().getSerializable(PUBLIC_NOTES);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
+            setupTitles();
         }
     }
 
@@ -67,7 +70,7 @@ public class JournalFragment extends SheetFragment {
         ListView journalView = (ListView) rootView.findViewById(R.id.journal_entry_list);
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
-                getTitles());
+                titles);
 
 
         // Set add button to footer
@@ -112,11 +115,13 @@ public class JournalFragment extends SheetFragment {
         newEntry.add(1, data.getStringExtra("TEXT"));
         if (requestCode < entries.size()) {
             entries.set(requestCode, newEntry);
-            adapter.insert(newEntry.get(0), requestCode);
+            titles.set(requestCode, data.getStringExtra("TITLE"));
         } else {
             entries.add(requestCode, newEntry);
-            adapter.add(newEntry.get(0));
+            titles.add(data.getStringExtra("TITLE"));
         }
+        Log.i("Journal", titles.toString());
+        adapter.notifyDataSetChanged();
     }
 
     private String trimToLength(String str) {
@@ -127,12 +132,10 @@ public class JournalFragment extends SheetFragment {
         }
     }
 
-    private ArrayList<String> getTitles() {
-        ArrayList<String> titles = new ArrayList<>();
+    private void setupTitles() {
+        titles = new ArrayList<>();
         for (ArrayList<String> entry : entries) {
             titles.add(entry.get(0));
         }
-
-        return titles;
     }
 }

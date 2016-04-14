@@ -27,7 +27,6 @@ public class EditJournalActivity extends AppCompatActivity {
 
         titleField = (EditText) findViewById(R.id.entry_title);
         titleField.setText(title);
-        titleField.setText("asdfadsas");
 
         bodyField = (EditText) findViewById(R.id.entry_body);
         bodyField.setText(body);

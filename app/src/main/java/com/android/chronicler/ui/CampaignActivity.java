@@ -99,9 +99,11 @@ public class CampaignActivity extends FragmentActivity {
         ArrayList<String> entry1 = new ArrayList<>();
         entry1.add("Lorem ipsum");
         entry1.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan consequat sollicitudin. Nunc in diam iaculis, placerat augue nec, scelerisque eros. Vivamus rutrum ultricies enim, quis rhoncus nisl congue nec. Sed mollis ipsum nec viverra gravida. Integer a nisi id diam sodales dictum et et orci. Aliquam sit amet vulputate metus. Pellentesque quis diam ut massa tempus aliquet et et mauris. ");
+        demoJournal.add(entry1);
         ArrayList<String> entry2 = new ArrayList<>();
         entry2.add("Sed at solli");
         entry2.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra.");
+        demoJournal.add(entry2);
         fragments.add(JournalFragment.newInstance(campaignName, demoJournal));
 
 
