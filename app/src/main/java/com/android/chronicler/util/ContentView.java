@@ -73,6 +73,7 @@ public class ContentView extends LinearLayout {
         Log.d("POPULATE", "Setting " + this.id + " to " + newText);
         value = newText;
         valueView.setText(value);
+        valueView.invalidate();
     }
 
     public String getText(){
