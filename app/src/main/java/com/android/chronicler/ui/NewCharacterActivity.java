@@ -123,7 +123,16 @@ public class NewCharacterActivity extends AppCompatActivity {
     // Data loader is used to request character creation when name, race and class
     // have been picked out.
     public void makeChar(){
-        Intent intent = new Intent(this,CharacterActivity.class);
-        DataLoader.readyNewSheetThenStart(this, intent, name, race, className);
+        if (getCallingActivity() == null) {
+            // If called with startActivity
+            Intent intent = new Intent(this,CharacterActivity.class);
+            DataLoader.readyNewSheetThenStart(this, intent, name, race, className);
+        } else {
+            // If called with startActivityForResult
+            Intent intent = new Intent();
+            intent.putExtra("CHARACTER_NAME", name);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 }

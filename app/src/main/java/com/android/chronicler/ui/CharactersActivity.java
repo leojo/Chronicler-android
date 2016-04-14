@@ -68,7 +68,7 @@ public class CharactersActivity extends AppCompatActivity {
                 } else {
                     // If called with startActivityForResult
                     if (position == adapter.getCount()) {
-                        //TODO: Make this return new character sheet
+                        newSheetForResult(42);
                     } else {
                         Intent intent = new Intent();
                         intent.putExtra("CHARACTER_NAME", adapter.getItem(position));
@@ -95,6 +95,13 @@ public class CharactersActivity extends AppCompatActivity {
         DataLoader.readyCreateCharThenStart(this, intent);
     }
 
+    // Opens the character creation screen. Uses the data loader to request
+    // lists of races and classes needed for character creation.
+    public void newSheetForResult(int code) {
+        Intent intent = new Intent(this, NewCharacterActivity.class);
+        DataLoader.readyCreateCharThenStartForResult(this, intent, code);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,5 +123,13 @@ public class CharactersActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Intent intent = new Intent();
+        intent.putExtra("CHARACTER_NAME", data.getStringExtra("CHARACTER_NAME"));
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

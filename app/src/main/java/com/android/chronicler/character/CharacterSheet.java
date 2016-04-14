@@ -37,7 +37,7 @@ public class CharacterSheet implements Serializable{
     private Saves saves;
     private AbilityScores abilityScores;
     private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
-    private int level, hp, tempHp, nonlethalDamage, ac, touch, ff, speed;
+    private String level, hp, tempHp, nonlethalDamage, ac, touch, ff, speed, initiative;
 
     //TODO: Add functions and variables as they become needed, don't try to foresee every possible need beforehand. Focus on the scalability of the class so that adding new functions will be easy in the future.
 
@@ -47,13 +47,12 @@ public class CharacterSheet implements Serializable{
     public CharacterSheet(){ /* Empty constructor for JSON conversion*/}
 
     public CharacterSheet(String name, String race, String characterClass, String skillsJSON){
-        level = 1;
+        level = "1";
         this.characterClass = characterClass;
         this.name = name;
         this.race = race;
-        this.hp = 10;
-        this.tempHp = 3;
-        this.nonlethalDamage = 0;
+        this.tempHp = "3";
+        this.nonlethalDamage = "0";
         ObjectMapper mapper = new ObjectMapper();
         try {
             Item sword = mapper.readValue("{\"name\":\"Sword, short\",\"cost\":\"10 gp\",\"weight\":\"2 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"\",\"twoHand\":false,\"oneHand\":false,\"ranged\":false,\"thrown\":false,\"light\":true,\"damageTypes\":\"Piercing\",\"damage\":\"1d6\",\"crit\":\"19-20/x2\",\"wepCat\":\"Martial Weapons\",\"type\":null,\"rangeIncr\":\"-\"}",Weapon.class);
@@ -78,6 +77,12 @@ public class CharacterSheet implements Serializable{
         abilityScores = new AbilityScores();
         saves = new Saves(abilityScores);
         skills = new Skills(abilityScores, skillsJSON);
+        ac = (abilityScores.get(AbilityID.DEX).getModifier()+10)+"";
+        touch = ac;
+        ff = 10+"";
+        initiative = abilityScores.get(AbilityID.DEX).getModifier()+"";
+        speed = "30 ft.";
+        this.hp = (8+abilityScores.get(AbilityID.CON).getModifier())+"";
     }
 
     public void initAbilityScores(int[] StartingAbilityScores){
@@ -90,7 +95,7 @@ public class CharacterSheet implements Serializable{
 
     //<editor-fold desc="HP stuff">
     public void updateHP(String newHP){
-        hp = updateInt(hp,newHP);
+        hp = newHP;
     }
 
     public void healBySpell(int healthRegained){
@@ -109,10 +114,15 @@ public class CharacterSheet implements Serializable{
     //<editor-fold desc="AC stuff">
     public void updateAC(String newAC){
         // FIXME: 8.3.2016 This is a naive temporary implementation, this is not a final version of this function
-        ac = updateInt(ac,newAC);
-        int dex = abilityScores.get(AbilityID.DEX).getModifier();
-        ff = ac - dex;
-        touch = 10 + dex;
+        ac = newAC;
+    }
+
+    public void updateTouch(String newTouch){
+        touch = newTouch;
+    }
+
+    public void updateFF(String newFF){
+        ff = newFF;
     }
     //</editor-fold>
 
@@ -129,6 +139,16 @@ public class CharacterSheet implements Serializable{
     public void updateAbility(AbilityID id, String val){
         int oldScore = abilityScores.get(id).getBase();
         abilityScores.get(id).setBase(updateInt(oldScore, val));
+        abilityScores.update();
+        saves.update(abilityScores);
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Initiative stuff">
+
+    public void updateInitiative(String newInit){
+        initiative = newInit;
     }
 
     //</editor-fold>
@@ -188,6 +208,15 @@ public class CharacterSheet implements Serializable{
                 return;
             case "ac":
                 updateAC(val);
+                return;
+            case "touch":
+                updateTouch(val);
+                return;
+            case "ff":
+                updateFF(val);
+                return;
+            case "init":
+                updateInitiative(val);
                 return;
             case "fort":
                 updateSave(SavingThrowID.FORT, val);
@@ -260,6 +289,86 @@ public class CharacterSheet implements Serializable{
                 return;
             default: Log.e("UPDATE_FIELD", "Unrecognized id: "+id);
         }
+    }
+
+    /**
+     * Functions for updating a specified field of the underlying character-sheet
+     *
+     */
+    @JsonIgnore
+    public String getField(String id, String defaultVal){
+        switch (id.toLowerCase()){
+            case "hp":
+                return hp;
+            case "ac":
+                return ac;
+            case "touch":
+                return touch;
+            case "ff":
+                return ff;
+            case "init":
+                return initiative;
+            case "fort":
+                return saves.getSaves().get(SavingThrowID.FORT).getTotal()+"";
+            case "ref":
+                return saves.getSaves().get(SavingThrowID.REF).getTotal()+"";
+            case "will":
+                return saves.getSaves().get(SavingThrowID.WILL).getTotal()+"";
+            case "str":
+                return abilityScores.get(AbilityID.STR).getTotalValue()+"";
+            case "dex":
+                return abilityScores.get(AbilityID.DEX).getTotalValue()+"";
+            case "con":
+                return abilityScores.get(AbilityID.CON).getTotalValue()+"";
+            case "int":
+                return abilityScores.get(AbilityID.INT).getTotalValue()+"";
+            case "wis":
+                return abilityScores.get(AbilityID.WIS).getTotalValue()+"";
+            case "cha":
+                return abilityScores.get(AbilityID.CHA).getTotalValue()+"";
+            case "strmod":
+                return abilityScores.get(AbilityID.STR).getModifier()+"";
+            case "dexmod":
+                return abilityScores.get(AbilityID.DEX).getModifier() + "";
+            case "conmod":
+                return abilityScores.get(AbilityID.CON).getModifier() + "";
+            case "intmod":
+                return abilityScores.get(AbilityID.INT).getModifier()+"";
+            case "wismod":
+                return abilityScores.get(AbilityID.WIS).getModifier() + "";
+            case "chamod":
+                return abilityScores.get(AbilityID.CHA).getModifier() + "";
+            case "lvl":
+                return level;
+            case "speed":
+                return speed;
+            case "name":
+                return name;
+            case "race":
+                return race;
+            case "align":
+                return alignment;
+            case "class":
+                return characterClass;
+            case "gender":
+                return gender;
+            case "deity":
+                return deity;
+            case "eyes":
+                return eyes;
+            case "hair":
+                return hair;
+            case "height":
+                return height;
+            case "weight":
+                return weight;
+            case "size":
+                return size;
+            case "skin":
+                return skin;
+            default: Log.e("GET_FIELD", "Unrecognized id: "+id);
+        }
+        return defaultVal;
     }
 
     //<editor-fold desc="Getters and Setters">
@@ -343,64 +452,67 @@ public class CharacterSheet implements Serializable{
         this.characterClass = characterClass;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 
-    @JsonIgnore
-    public void setLevel(String level) {
-        this.level = updateInt(this.level, level);
-    }
-
-    public int getHp() {
+    public String getHp() {
         return hp;
     }
 
-    public void setHp(int hp) {
+    public void setHp(String hp) {
         this.hp = hp;
     }
 
-    public int getTempHp() {
+    public String getInitiative() {
+        return initiative;
+    }
+
+    public void setInitiative(String initiative) {
+        this.initiative = initiative;
+    }
+
+    public String getTempHp() {
         return tempHp;
     }
 
-    public void setTempHp(int tempHp) {
+    public void setTempHp(String tempHp) {
         this.tempHp = tempHp;
     }
 
-    public int getNonlethalDamage() {
+    public String getNonlethalDamage() {
         return nonlethalDamage;
     }
 
-    public void setNonlethalDamage(int nonlethalDamage) {
+    public void setNonlethalDamage(String nonlethalDamage) {
         this.nonlethalDamage = nonlethalDamage;
     }
 
-    public int getAc() {
+    public String getAc() {
         return ac;
     }
 
-    public void setAc(int ac) {
+    public void setAc(String ac) {
         this.ac = ac;
     }
 
-    public int getTouch() {
+    public String getTouch() {
         return touch;
     }
 
-    public void setTouch(int touch) {
+    public void setTouch(String touch) {
         this.touch = touch;
     }
 
-    public int getFf() {
+    public String getFf() {
         return ff;
     }
 
-    public void setFf(int ff) {
+    public void setFf(String ff) {
         this.ff = ff;
     }
 
@@ -476,12 +588,12 @@ public class CharacterSheet implements Serializable{
         this.skin = skin;
     }
 
-    public int getSpeed() {
+    public String getSpeed() {
         return speed;
     }
 
     public void setSpeed(String speed) {
-        this.speed = updateInt(this.speed, speed);
+        this.speed = speed;
     }
 
     private int updateInt(int i, String s){

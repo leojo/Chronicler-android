@@ -45,9 +45,7 @@ public class CharacterActivity extends FragmentActivity {
     // For fragment view stuff
     private ViewPager mPager;
     private SheetPagerAdapter mPagerAdapter;
-    private static final int INITIAL_PAGE = 1;
-
-
+    private static final int INITIAL_PAGE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +65,7 @@ public class CharacterActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
         fragments.add(AboutFragment.newInstance("ABOUT",character));
-        fragments.add(CombatFragment.newInstance("COMBAT"));
+        fragments.add(CombatFragment.newInstance("COMBAT",character));
         fragments.add(SpellFragment.newInstance("SPELLS", character.getSpellSlots()));
         fragments.add(FeatFragment.newInstance("FEATS", character.getFeats()));
         fragments.add(InventoryFragment.newInstance("INVENTORY", character.getInventory()));

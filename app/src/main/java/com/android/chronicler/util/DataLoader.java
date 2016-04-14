@@ -76,8 +76,19 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
-    // Function to ready a fresh character-sheet and then start the characterActivity.
+
+
+    //Wrapper functions for readyCreateCharThenStart
     public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass){
+        readyNewSheetThenStart(context, intent, name, race, charClass, false, 0);
+    }
+
+    public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass, int code){
+        readyNewSheetThenStart(context, intent, name, race, charClass, true, code);
+    }
+
+    // Function to ready a fresh character-sheet and then start the characterActivity.
+    public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass, final boolean getResult, final int code){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
             @Override
@@ -86,21 +97,53 @@ public class DataLoader {
                 CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
                 storeCharSheet(context, character);
                 intent.putExtra("CharacterSheet", character);
-                context.startActivity(intent);
+                if(getResult){
+                    ((Activity) context).startActivityForResult(intent, code);
+                } else {
+                    context.startActivity(intent);
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                String response = (responseBody==null?"Empty response":new String(responseBody));
+                String response = (responseBody == null ? "Empty response" : new String(responseBody));
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
         goToWaitScreen(context);
     }
 
+    // Function to ready a fresh character-sheet in the background.
+    public static void readyNewSheet(final Context context,final String name, final String race, final String charClass){
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Create a new character sheet object
+                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
+                storeCharSheet(context, character);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                Log.i("SKILLS", "Failure fetching skill data: " + response);
+            }
+        });
+    }
+
+    //Wrapper functions for readyCreateCharThenStart
+    public static void readyCreateCharThenStart(final Context context, final Intent intent){
+        readyCreateCharThenStart(context, intent, false, 0);
+    }
+
+    public static void readyCreateCharThenStartForResult(final Context context, final Intent intent, int code){
+        readyCreateCharThenStart(context, intent, true, code);
+    }
+
     // Function to fetch data for dropdown menus and then start the NewCharActivity
     // FIXME: 10.3.2016 This class could take more advantage of the asynch nature of the requests.
-    public static void readyCreateCharThenStart(final Context context, final Intent intent){
+    public static void readyCreateCharThenStart(final Context context, final Intent intent, final boolean getResult, final int code){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         final ObjectMapper mapper = new ObjectMapper();
         // First fetch the raceList
@@ -131,7 +174,11 @@ public class DataLoader {
                         }
                         // Attach to the intent and then start the activity.
                         intent.putStringArrayListExtra("classList", classList);
-                        context.startActivity(intent);
+                        if(getResult){
+                            ((Activity) context).startActivityForResult(intent, code);
+                        } else {
+                            context.startActivity(intent);
+                        }
                     }
 
                     @Override

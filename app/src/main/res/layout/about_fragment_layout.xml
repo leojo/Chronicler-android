@@ -233,20 +233,6 @@
                     android:background="@drawable/border_bottom"/>
 
                 <com.android.chronicler.util.ContentView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.30"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    custom:editable="true"
-                    custom:name="Constitution"
-                    custom:id="con"
-                    custom:value="12"
-                    custom:integerField="true"
-                    android:id="@+id/conView"
-                    android:background="@drawable/border_bottom"/>
-
-                <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.30"
@@ -259,6 +245,20 @@
                     android:id="@+id/dexView"
                     android:background="@drawable/border_bottom"
                     android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="true"
+                    custom:name="Constitution"
+                    custom:id="con"
+                    custom:value="12"
+                    custom:integerField="true"
+                    android:id="@+id/conView"
+                    android:background="@drawable/border_bottom"/>
 
                 <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
@@ -325,20 +325,6 @@
                     android:background="@drawable/border_right_bottom"/>
 
                 <com.android.chronicler.util.ContentView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.30"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    custom:editable="false"
-                    custom:name="Modifier"
-                    custom:id="conmod"
-                    custom:value="+7"
-                    custom:integerField="true"
-                    android:id="@+id/conMod"
-                    android:background="@drawable/border_right_bottom"/>
-
-                <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.30"
@@ -351,6 +337,20 @@
                     android:id="@+id/dexMod"
                     android:background="@drawable/border_right_bottom"
                     android:orientation="horizontal" />
+
+                <com.android.chronicler.util.ContentView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.30"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    custom:editable="false"
+                    custom:name="Modifier"
+                    custom:id="conmod"
+                    custom:value="+7"
+                    custom:integerField="true"
+                    android:id="@+id/conMod"
+                    android:background="@drawable/border_right_bottom"/>
 
                 <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
