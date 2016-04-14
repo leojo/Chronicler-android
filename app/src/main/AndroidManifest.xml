@@ -63,7 +63,7 @@
         <activity
             android:name=".ui.NewCharacterActivity"
             android:label="NewCharacterActivity"
-            android:noHistory="true"></activity>
+            android:noHistory="true" />
         <activity
             android:name=".ui.CampaignsActivity"
             android:label="@string/title_activity_campaign" />
@@ -80,11 +80,16 @@
             android:name=".ui.WaitingActivity"
             android:label="@string/title_activity_waiting"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.CampaignNoteActivity"
             android:label="@string/title_activity_campaign_note"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.EditJournalActivity"
+            android:label="@string/title_activity_edit_journal"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

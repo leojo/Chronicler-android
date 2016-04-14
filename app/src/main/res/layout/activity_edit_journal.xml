@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.android.chronicler.ui.EditJournalActivity">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/entry_title"
+        android:hint="Entry title"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/abc_text_size_display_1_material"
+        android:typeface="serif"
+        android:enabled="true"
+        android:editable="true"
+        android:clickable="true"
+        android:elegantTextHeight="false"
+        android:inputType="text"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/entry_body"
+        android:typeface="serif"
+        android:padding="@dimen/abc_button_padding_horizontal_material"
+        android:background="#00ffffff"
+        android:hint="Describe your adventures..."
+        android:editable="true"
+        android:enabled="true" />
+</LinearLayout>
