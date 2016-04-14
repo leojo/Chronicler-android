@@ -21,11 +21,11 @@ import com.android.chronicler.R;
 public class CompactContentView extends LinearLayout {
     final boolean intField;
     final String name;
-    public final String id;
-    public String value;
-    public boolean editable;
+    final String id;
+    String value;
+    boolean editable;
     int border;
-    public TextView valueView;
+    TextView valueView;
 
     public CompactContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,7 +54,7 @@ public class CompactContentView extends LinearLayout {
     }
 
     private void init() {
-        Log.i("ContentView", "init, value is "+value);
+        Log.i("ContentView", "init, value is " + value);
         inflate(getContext(), R.layout.compact_content_view, this);
         TextView nameView = (TextView)findViewById(R.id.compNameView);
         valueView = (TextView)findViewById(R.id.compValueView);
@@ -64,13 +64,17 @@ public class CompactContentView extends LinearLayout {
         if(editable) setEditable();
         Log.i("ContentView", "Ready, the name is " + name);
 
-        Log.i("ContentView", "Text of value view is certainly "+valueView.getText());
+        Log.i("ContentView", "Text of value view is certainly " + valueView.getText());
     }
 
     public void updateText(String newText){
-        Log.i("ContentView", "Calling update text for "+name+" with value " +value);
+        Log.d("POPULATE", "Setting " + this.id + " to " + newText);
         value = newText;
         valueView.setText(value);
+    }
+
+    public String getText(){
+        return valueView.getText().toString();
     }
 
     private void setEditable() {
@@ -96,4 +100,27 @@ public class CompactContentView extends LinearLayout {
         });
     }
 
+    public boolean isIntField() {
+        return intField;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCustomId() {
+        return id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setValueViewOnFocusChangeListener(OnFocusChangeListener listener){
+        valueView.setOnFocusChangeListener(listener);
+    }
 }

@@ -29,7 +29,6 @@ public class AboutFragment extends SheetFragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.about_fragment_layout, container, false);
         HashMap<String,String> aboutVals = getVals(cs);
         populate(rootView,aboutVals);
-
         return rootView;
     }
 
@@ -38,46 +37,51 @@ public class AboutFragment extends SheetFragment {
             final View v = rootView.getChildAt(i);
 
             if(v instanceof ContentView){
-                Log.d("POPULATE", "Setting " + ((ContentView) v).id);
-                ((ContentView) v).updateText(aboutVals.get(((ContentView) v).id.toLowerCase()));
-                Log.d("POPULATE", "set to " + ((ContentView) v).value);
+                Log.d("POPULATE", "Setting " + ((ContentView) v).getCustomId());
+                ((ContentView) v).updateText(aboutVals.get(((ContentView) v).getCustomId().toLowerCase()));
+                Log.d("POPULATE", "set to " + ((ContentView) v).getText());
 
-                if(((ContentView) v).editable){
-                    ((ContentView) v).valueView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                if(((ContentView) v).isEditable()){
+                    ((ContentView) v).setValueViewOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
-                                String newVal = ((ContentView) v).valueView.getText().toString();
-                                Log.d("UPDATE_FIELD", ((ContentView) v).id + " lost focus! Should store now! Value: " + newVal);
-                                cs.updateField(((ContentView) v).id, newVal);
-                                ((ContentView) v).value=newVal;
-                                Log.d("UPDATE_FIELD", "Value in characterSheet alignment is now: " + cs.getAlignment());
-                            }
-                            else
-                            Log.d("UPDATE_FIELD", ((ContentView) v).id + " gained focus!");
+                                String newVal = ((ContentView) v).getText();
+                                Log.d("UPDATE_FIELD", ((ContentView) v).getCustomId() + " lost focus! Should store now! Value: " + newVal);
+                                Log.d("UPDATE_FIELD", "The id we are updating is actually " + ((ContentView) v).getCustomId());
+                                cs.updateField(((ContentView) v).getCustomId(), newVal);
+                                ((ContentView) v).updateText(newVal);
+                            } else
+                                Log.d("UPDATE_FIELD", ((ContentView) v).getCustomId() + " gained focus! value = " + ((ContentView) v).getValue() + " and text = " + ((ContentView) v).getText());
                         }
                     });
                 }
             }
             else if(v instanceof CompactContentView){
-                Log.d("POPULATE","Setting "+((CompactContentView) v).id);
-                ((CompactContentView) v).updateText(aboutVals.get(((CompactContentView) v).id.toLowerCase()));
-                Log.d("POPULATE","set to "+((CompactContentView) v).value);
+                Log.d("POPULATE","Setting "+((CompactContentView) v).getCustomId());
+                ((CompactContentView) v).updateText(aboutVals.get(((CompactContentView) v).getCustomId().toLowerCase()));
+                Log.d("POPULATE", "set to " + ((CompactContentView) v).getText());
+                Log.d("POPULATE", "value = " + ((CompactContentView) v).getValue() + ", valueView.getText = " + ((CompactContentView) v).getText());
 
-                if(((CompactContentView) v).editable){
-                    ((CompactContentView) v).valueView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                if(i>0){
+                    for(int j=i; j>0; j--){
+                        View v2 = rootView.getChildAt(j-1);
+                        Log.d("POP_BACKLOG", "----Text of " + ((CompactContentView) v2).getCustomId() + " is now " + ((CompactContentView) v2).getText());
+                    }
+                }
+
+                if(((CompactContentView) v).isEditable()){
+                    ((CompactContentView) v).setValueViewOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
-                                String newVal = ((CompactContentView) v).valueView.getText().toString();
-                                Log.d("UPDATE_FIELD", ((CompactContentView) v).id + " lost focus! Should store now! Value: " + newVal);
-                                Log.d("UPDATE_FIELD", "The id we are updating is actually "+((CompactContentView) v).id);
-                                cs.updateField(((CompactContentView) v).id, newVal);
-                                ((CompactContentView) v).value=newVal;
-                                Log.d("UPDATE_FIELD", "Value in characterSheet alignment is now: " + cs.getAlignment());
-                            }
-                            else
-                                Log.d("UPDATE_FIELD", ((CompactContentView) v).id + " gained focus!");
+                                String newVal = ((CompactContentView) v).getText();
+                                Log.d("UPDATE_FIELD", ((CompactContentView) v).getCustomId() + " lost focus! Should store now! Value: " + newVal);
+                                Log.d("UPDATE_FIELD", "The id we are updating is actually " + ((CompactContentView) v).getCustomId());
+                                cs.updateField(((CompactContentView) v).getCustomId(), newVal);
+                                ((CompactContentView) v).updateText(newVal);
+                            } else
+                                Log.d("UPDATE_FIELD", ((CompactContentView) v).getCustomId() + " gained focus! value = " + ((CompactContentView) v).getValue() + " and text = " + ((CompactContentView) v).getText());
                         }
                     });
                 }
@@ -98,7 +102,6 @@ public class AboutFragment extends SheetFragment {
         args.putString("ID", type);
         AboutFragment aboutFrag = new AboutFragment();
         aboutFrag.setArguments(args);
-
         return aboutFrag;
     }
 

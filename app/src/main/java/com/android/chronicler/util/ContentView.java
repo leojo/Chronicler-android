@@ -24,11 +24,11 @@ import com.android.chronicler.character.CharacterSheet;
 public class ContentView extends LinearLayout {
     final boolean intField;
     final String name;
-    public String value;
-    public boolean editable;
+    String value;
+    boolean editable;
     int border;
-    public final String id;
-    public TextView valueView;
+    final String id;
+    TextView valueView;
 
     public ContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -70,8 +70,13 @@ public class ContentView extends LinearLayout {
     }
 
     public void updateText(String newText){
+        Log.d("POPULATE", "Setting " + this.id + " to " + newText);
         value = newText;
         valueView.setText(value);
+    }
+
+    public String getText(){
+        return valueView.getText().toString();
     }
 
     // This function detects when the view is clicked and emulates the EditField 
@@ -81,7 +86,6 @@ public class ContentView extends LinearLayout {
     // TODO: 10.3.2016 This is still buggy, and has not yet been fully implemented.
     private void setEditable() {
         Log.i("EDITABLE", "Setting editable");
-
         final TextView valView = (TextView) this.findViewById(R.id.valueView);
 
         // Do editable magics!!!!
@@ -101,5 +105,29 @@ public class ContentView extends LinearLayout {
                 valView.invalidate();
             }
         });
+    }
+
+    public boolean isIntField() {
+        return intField;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCustomId() {
+        return id;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setValueViewOnFocusChangeListener(OnFocusChangeListener listener){
+        valueView.setOnFocusChangeListener(listener);
     }
 }
