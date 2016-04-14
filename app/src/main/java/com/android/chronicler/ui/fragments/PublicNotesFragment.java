@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.android.chronicler.R;
@@ -21,27 +19,29 @@ import com.android.chronicler.ui.CampaignNoteActivity;
 import java.util.ArrayList;
 
 /**
- * A simple {@link SheetFragment} subclass.
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PublicNotesFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class PrivateNotesFragment extends SheetFragment {
-    private static final String PRIVATE_NOTES = "PRIVATE_NOTES";
+public class PublicNotesFragment extends SheetFragment {
+    private static final String PUBLIC_NOTES = "PUBLIC_NOTES";
     private static final String CAMPAIGN_NAME = "CAMPAIGN_NAME";
 
     private static final int maxItemLength = 35;
     private String campaignName;
-    private ArrayList<String> privateNotes;
+    private ArrayList<String> publicNotes;
     private ArrayList<String> shortNotes;
     private ArrayAdapter<String> adapter;
 
-    public PrivateNotesFragment() {
+    public PublicNotesFragment() {
         // Required empty public constructor
     }
 
-    public static PrivateNotesFragment newInstance(String campaignName,
-                                                      ArrayList<String> notes) {
-        PrivateNotesFragment fragment = new PrivateNotesFragment();
+    public static PublicNotesFragment newInstance(String campaignName,
+                                                   ArrayList<String> notes) {
+        PublicNotesFragment fragment = new PublicNotesFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(PRIVATE_NOTES, notes);
+        args.putStringArrayList(PUBLIC_NOTES, notes);
         args.putString(CAMPAIGN_NAME, campaignName);
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +51,7 @@ public class PrivateNotesFragment extends SheetFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            privateNotes = getArguments().getStringArrayList(PRIVATE_NOTES);
+            publicNotes = getArguments().getStringArrayList(PUBLIC_NOTES);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
         }
     }
@@ -60,15 +60,15 @@ public class PrivateNotesFragment extends SheetFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_private_notes, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_public_notes, container, false);
 
         // TODO: Possibly filter out new lines here as well
         shortNotes = new ArrayList<>();
-        for (String privateNote : privateNotes) {
+        for (String privateNote : publicNotes) {
             shortNotes.add(trimToLength(privateNote));
         }
 
-        ListView noteListView = (ListView) rootView.findViewById(R.id.private_notes_list);
+        ListView noteListView = (ListView) rootView.findViewById(R.id.public_notes_list);
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
                 shortNotes);
@@ -89,7 +89,7 @@ public class PrivateNotesFragment extends SheetFragment {
                 if (position == adapter.getCount()) {
                     openNote("", position);
                 } else {
-                    openNote(privateNotes.get(position), position);
+                    openNote(publicNotes.get(position), position);
                 }
             }
         });
@@ -107,11 +107,11 @@ public class PrivateNotesFragment extends SheetFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("Notes", "Received text: " + data.getStringExtra("TEXT"));
         String newNote = data.getStringExtra("TEXT");
-        if (requestCode < privateNotes.size()) {
-            privateNotes.set(requestCode, newNote);
+        if (requestCode < publicNotes.size()) {
+            publicNotes.set(requestCode, newNote);
             shortNotes.set(requestCode, trimToLength(newNote));
         } else {
-            privateNotes.add(requestCode, newNote);
+            publicNotes.add(requestCode, newNote);
             shortNotes.add(requestCode, trimToLength(newNote));
         }
         adapter.notifyDataSetChanged();
@@ -124,5 +124,4 @@ public class PrivateNotesFragment extends SheetFragment {
             return str;
         }
     }
-
 }

@@ -45,5 +45,7 @@
     <string name="search_hint">Fireball</string>
     <string name="campaign_private_notes">Private Notes</string>
     <string name="title_activity_campaign_note">CampaignNoteActivity</string>
+    <string name="title_activity_public_notes">PublicNotesActivity</string>
+    <string name="campaign_public_notes">Public Notes</string>
 
 </resources>
