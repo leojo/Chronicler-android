@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ArmorShield extends Equipment {
     private String ACbonus, maxDex, arcaneSpellFailure, armorCheckPen;
     private String speed20, speed30;
-    private ArmorType type;
+    private String type;
 
     //<editor-fold desc="Getters and Setters">
     public String getACbonus() {
@@ -64,11 +64,11 @@ public class ArmorShield extends Equipment {
         this.speed30 = speed30;
     }
 
-    public ArmorType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ArmorType type) {
+    public void setType(String type) {
         this.type = type;
     }
     //</editor-fold>
