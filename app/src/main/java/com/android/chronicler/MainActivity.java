@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         store = new UserLocalStore(getApplicationContext());
         cookieStore = new PersistentCookieStore(this);
         boolean inSession = userInSession(cookieStore.getCookies());
+        getSupportActionBar().hide();
         if(!inSession) {
             redirectToLogin();
         }
