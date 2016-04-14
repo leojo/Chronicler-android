@@ -47,6 +47,7 @@ public class FeatFragment extends SheetFragment {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra("TYPE", "feat");
                     getActivity().startActivity(intent);
 
                 } else {
