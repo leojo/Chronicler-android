@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="I will roll a dwarf rogue named Jimminybillybob"
+            android:text="I Will Roll a Dwarf Rogue Named Jimminybillybob"
             android:id="@+id/previewText"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
