@@ -19,10 +19,14 @@ import com.android.chronicler.character.spell.SpellList;
 import com.android.chronicler.character.spell.SpellSlots;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class CharacterSheet implements Serializable{
 
@@ -36,18 +40,20 @@ public class CharacterSheet implements Serializable{
     private Skills skills;
     private Saves saves;
     private AbilityScores abilityScores;
+    private List<HashMap<String,String>> advancementTable;
     private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
-    private String level, hp, tempHp, nonlethalDamage, ac, touch, ff, speed, initiative;
+    private String hp, tempHp, nonlethalDamage, ac, touch, ff, speed, initiative;
+    private int level;
 
     //TODO: Add functions and variables as they become needed, don't try to foresee every possible need beforehand. Focus on the scalability of the class so that adding new functions will be easy in the future.
 
     // =====================
     // CHARACTER SETUP STUFF
     // =====================
-    public CharacterSheet(){ /* Empty constructor for JSON conversion*/}
+    public CharacterSheet(){ /* Empty constructor for JSON conversion */}
 
-    public CharacterSheet(String name, String race, String characterClass, String skillsJSON){
-        level = "1";
+    public CharacterSheet(String name, String race, String characterClass, String skillsJSON, String advTableJSON){
+        level = 1;
         this.characterClass = characterClass;
         this.name = name;
         this.race = race;
@@ -77,16 +83,21 @@ public class CharacterSheet implements Serializable{
         abilityScores = new AbilityScores();
         saves = new Saves(abilityScores);
         skills = new Skills(abilityScores, skillsJSON);
+        try {
+            advancementTable = mapper.readValue(advTableJSON, new TypeReference<List<HashMap<String,String>>>() { });
+            for (int i = 0; i < advancementTable.size() ; i++) {
+                Log.i("ADVANCEMENT_TABLE", Arrays.toString(advancementTable.get(i).values().toArray()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            advancementTable = null;
+        }
         ac = (abilityScores.get(AbilityID.DEX).getModifier()+10)+"";
         touch = ac;
         ff = 10+"";
         initiative = abilityScores.get(AbilityID.DEX).getModifier()+"";
         speed = "30 ft.";
         this.hp = (8+abilityScores.get(AbilityID.CON).getModifier())+"";
-    }
-
-    public void initAbilityScores(int[] StartingAbilityScores){
-        //TODO: Implement initAbilityScores
     }
 
     // =================
@@ -175,6 +186,10 @@ public class CharacterSheet implements Serializable{
         //TODO: Implement rest
     }
 
+    public void levelUp(){
+        //TODO: Implement levelUp
+    }
+
     // ===============
     // SPECIAL ACTIONS
     // ===============
@@ -245,9 +260,6 @@ public class CharacterSheet implements Serializable{
             case "cha":
                 updateAbility(AbilityID.CHA, val);
                 return;
-            case "lvl":
-                setLevel(val);
-                return;
             case "speed":
                 setSpeed(val);
                 return;
@@ -259,9 +271,6 @@ public class CharacterSheet implements Serializable{
                 return;
             case "align":
                 setAlignment(val);
-                return;
-            case "class":
-                setCharacterClass(val);
                 return;
             case "gender":
                 setGender(val);
@@ -338,8 +347,6 @@ public class CharacterSheet implements Serializable{
                 return abilityScores.get(AbilityID.WIS).getModifier() + "";
             case "chamod":
                 return abilityScores.get(AbilityID.CHA).getModifier() + "";
-            case "lvl":
-                return level;
             case "speed":
                 return speed;
             case "name":
@@ -348,8 +355,6 @@ public class CharacterSheet implements Serializable{
                 return race;
             case "align":
                 return alignment;
-            case "class":
-                return characterClass;
             case "gender":
                 return gender;
             case "deity":
@@ -372,6 +377,16 @@ public class CharacterSheet implements Serializable{
     }
 
     //<editor-fold desc="Getters and Setters">
+
+
+    public List<HashMap<String, String>> getAdvancementTable() {
+        return advancementTable;
+    }
+
+    public void setAdvancementTable(List<HashMap<String, String>> advancementTable) {
+        this.advancementTable = advancementTable;
+    }
+
     public SpellSlots getSpellSlots() {
         return spellSlots;
     }
@@ -452,11 +467,11 @@ public class CharacterSheet implements Serializable{
         this.characterClass = characterClass;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 

@@ -83,7 +83,7 @@ public class DataLoader {
         readyNewSheetThenStart(context, intent, name, race, charClass, false, 0);
     }
 
-    public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass, int code){
+    public static void readyNewSheetThenStartForResult(final Context context, final Intent intent, final String name, final String race, final String charClass, int code){
         readyNewSheetThenStart(context, intent, name, race, charClass, true, code);
     }
 
@@ -94,20 +94,32 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
-                intent.putExtra("CharacterSheet", character);
-                if(getResult){
-                    ((Activity) context).startActivityForResult(intent, code);
-                } else {
-                    context.startActivity(intent);
-                }
+                final String skillData = new String(responseBody);
+                cli.get("/classData?s=" + charClass, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        CharacterSheet character = new CharacterSheet(name, race, charClass, skillData, new String(responseBody));
+                        storeCharSheet(context, character);
+                        intent.putExtra("CharacterSheet", character);
+                        if(getResult){
+                            ((Activity) context).startActivityForResult(intent, code);
+                        } else {
+                            context.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                        Log.i("CHARACTER_CREATE", "Failure fetching class data: " + response);
+                    }
+                });
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("CHARACTER_CREATE", "Failure fetching skill data: " + response);
             }
         });
         goToWaitScreen(context);
@@ -120,14 +132,26 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
+                final String skillData = new String(responseBody);
+                cli.get("/classData?s=" + race, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        CharacterSheet character = new CharacterSheet(name, race, charClass, skillData, new String(responseBody));
+                        storeCharSheet(context, character);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                        Log.i("CHARACTER_CREATE", "Failure fetching class data: " + response);
+                    }
+                });
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("CHARACTER_CREATE", "Failure fetching skill data: " + response);
             }
         });
     }
