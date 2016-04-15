@@ -39,6 +39,8 @@
     <string name="new_character_button_text" formatted="false">Create %s!</string>
     <string name="action_accept_invite">Accept</string>
     <string name="action_decline_invite">Decline</string>
+    <string name="action_delete_character">Delete</string>
+
     <string name="title_activity_waiting">WaitingActivity</string>
     <string name="campaign_player_list">Players</string>
     <string name="search_title">Search</string>
