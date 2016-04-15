@@ -25,7 +25,7 @@ public class AbilityScores implements Serializable{
         abilityScores.put(AbilityID.CON, new AbilityScore(AbilityID.CON));
         abilityScores.put(AbilityID.INT,new AbilityScore(AbilityID.INT));
         abilityScores.put(AbilityID.WIS,new AbilityScore(AbilityID.WIS));
-        abilityScores.put(AbilityID.CHA,new AbilityScore(AbilityID.CHA));
+        abilityScores.put(AbilityID.CHA, new AbilityScore(AbilityID.CHA));
         // Assign a randomly rolled ability score (using the standard 4d6 drop lowest method)
         setBase(AbilityID.STR,roll4d6dropLowest());
         setBase(AbilityID.DEX,roll4d6dropLowest());
