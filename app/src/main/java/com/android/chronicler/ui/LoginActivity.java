@@ -33,6 +33,9 @@ import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button refuseRegisterBtn;
     private static String username;
 
     @Override
@@ -92,11 +96,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        refuseRegisterBtn = (Button)findViewById(R.id.refuseRegister);
+        refuseRegisterBtn.setVisibility(View.GONE);
+        refuseRegisterBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToLogin();
+            }
+        });
     }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
+
 
 
     /**
@@ -172,7 +186,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.i("LOGIN", "This is the response: "+new String(response));
                 // called when response HTTP status is "200 OK"
+                try {
+                    JSONObject res = new JSONObject(new String(response));
+                    String code = res.getString("code");
+                    if(code.equals("success")) {
+                        handleSuccess();
+                    } else if(code.equals("nouser")) {
+                        showMessage(res.getString("message"));
+                        offerRegister();
+                    } else if(code.equals("failure")) {
+                        showMessage(res.getString("message"));
+                    } else {
+                        showMessage("This should never happen. Something went horribly wrong.");
+                    }
+                }catch(JSONException e) {
+                        showMessage("Invalid JSON response from server");
+                }
+
+                /*Log.i("LOGIN", "this is the response "+new String(response));
                 String cookie = "";
                 // FIXME: DEPRECATED:  asynchttpclient automatically stores cookies in a persistent cookie store,
                 //              we don't need to get the cookie anymore.
@@ -183,13 +216,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         cookie = h.getValue().split(";")[0];
                     }
                 }
-                handleSuccess(cookie);
+                handleSuccess(cookie);*/
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                 Log.i("LOGIN", "Failed to send the http request");
+                showMessage("Failed to send request to server. Please try again later");
             }
 
             @Override
@@ -199,13 +233,118 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
+    private void showMessage(String message) {
+        showProgress(false);
+        ((TextView)findViewById(R.id.messageView)).setText(message);
+    }
+
+    private void offerRegister() {
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+        refuseRegisterBtn.setVisibility(View.VISIBLE);
+
+        // Store values at the time of the login attempt.
+        username = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
+
+        Button signInButton = (Button) findViewById(R.id.email_sign_in_button);
+        signInButton.setText("Register");
+        signInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performRegister(username, password);
+            }
+        });
+    }
+
+    private void backToLogin() {
+
+        refuseRegisterBtn.setVisibility(View.GONE);
+
+
+        // Store values at the time of the login attempt.
+        username = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
+
+        Button signInButton = (Button) findViewById(R.id.email_sign_in_button);
+        signInButton.setText("Signin Or Register");
+        signInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                performLogin(username, password);
+            }
+        });
+    }
+
+    private void performRegister(String username, String password) {
+        Log.i("REGISTER", "Is register really running???");
+        ChroniclerRestClient client = new ChroniclerRestClient(this);
+
+        RequestParams user_data = new RequestParams();
+        // Pass the parameters, TODO: Hash password ?
+        user_data.put("username", username);
+        user_data.put("password", password);
+        client.post("/androidRegister", user_data, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // called when response HTTP status is "200 OK"
+                try {
+                    JSONObject res = new JSONObject(new String(response));
+                    String code = res.getString("code");
+                    if(code.equals("success")) {
+                        handleSuccess();
+                    } else if(code.equals("failure")) {
+                        showMessage(res.getString("message"));
+                    } else {
+                        showMessage("This should never happen. Something went horribly wrong.");
+                    }
+                }catch(JSONException e) {
+                    showMessage("Invalid JSON response from server");
+                }
+
+                /*Log.i("LOGIN", "this is the response "+new String(response));
+                String cookie = "";
+                // FIXME: DEPRECATED:  asynchttpclient automatically stores cookies in a persistent cookie store,
+                //              we don't need to get the cookie anymore.
+                // Get the cookie response so we can store it in a cookie store.
+                for(Header h : headers) {
+                    Log.i("LOGIN", h.toString());
+                    if (h.getName().equals("Set-Cookie") && h.getValue().contains("user")) {
+                        cookie = h.getValue().split(";")[0];
+                    }
+                }
+                handleSuccess(cookie);*/
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                Log.i("REGISTER", "Failed to send the http request");
+                showMessage("Failed to send request to server. Please try again later");
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+            }
+        });
+
+    }
+
     // Stores the cookie in the cookie store and starts the next activity.
-    private void handleSuccess(String cookie) {
-        // FIXME: DEPRECATED: asynchttpclient automatically stores cookies in a persistent cookie store.
+    private void handleSuccess() {
+        /*// FIXME: DEPRECATED: asynchttpclient automatically stores cookies in a persistent cookie store.
         Log.i("LOGIN_COOKIE", cookie);
         UserLocalStore store = new UserLocalStore(getApplicationContext());
         store.storeUserData(username, cookie);
-
+*/
         // Redirect to main screen:
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -294,6 +433,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
+
+
+    // Redirect to login screen whenever the cookie expires
+    public void redirectToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 
     // Default function to autocomplete emails
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {

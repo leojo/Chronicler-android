@@ -63,6 +63,6 @@
         android:id="@+id/button4"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
-        android:onClick="logout"/>
+        />
 
 </LinearLayout>
