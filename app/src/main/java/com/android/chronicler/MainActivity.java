@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
     // Redirect to login screen whenever the cookie expires
     public void redirectToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+        this.finish();
     }
 
     // Open a list of the user's characters; uses dataloader to fire the async request
@@ -96,9 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
     // logout user: clear his session
     public void logout(View view) {
+        cookieStore.clear();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        cookieStore.clear();
+        this.finish();
     }
 
 

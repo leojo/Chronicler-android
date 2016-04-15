@@ -10,9 +10,11 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -272,17 +274,33 @@ public class DataLoader {
         });
         goToWaitScreen(context);
     }
-/*
-    public static void readyResultsThenStart(final Context context, final Intent intent, final boolean getResult, final int code) {
+
+    public static void handleSearchQuery(final Context context, final Intent intent, String searchtype, String searchtext) {
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+        String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
+        cli.get(queryURL, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
-                intent.putExtra("CharacterSheet", character);
-                context.startActivity(intent);
+                String JSONresponse = new String(responseBody);
+                // This response will be:
+                //  { 0 : [id: , name: , fullText: ,...], 1: [id: , name: , fullText: ,...]
+
+                ArrayList<String> content = new ArrayList<String>();
+                ArrayList<Integer> ids = new ArrayList<Integer>();
+                try {
+                    JSONArray allResults = new JSONArray(JSONresponse);
+                    //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
+                    for(int i = 0; i<allResults.length(); i++) {
+                        JSONObject result = allResults.getJSONObject(i);
+                        content.add(result.get("name").toString());
+                        //ids.add(Integer.parseInt(key));
+
+                    }
+                    (SearchActivity.adapter).clear();
+                    (SearchActivity.adapter).addAll(content);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -291,10 +309,8 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
-        goToWaitScreen(context);
     }
 
-*/
 
     // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {

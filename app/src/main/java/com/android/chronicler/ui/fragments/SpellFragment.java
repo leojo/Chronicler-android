@@ -1,10 +1,12 @@
 package com.android.chronicler.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.character.spell.SpellSlots;
+import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.util.SheetAdapter;
 import com.android.chronicler.util.SkillsAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,10 +38,29 @@ public class SpellFragment extends SheetFragment {
         addButtonView.setPadding(20, 20, 20, 20);
         addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
         spellsView.addFooterView(addButtonView);
-        spellsView.setAdapter(new SheetAdapter(getContext(), (SpellSlots) getArguments().getSerializable("SPELLS")));
+        adapter = new SheetAdapter(getContext(), (SpellSlots) getArguments().getSerializable("SPELLS"));
+        spellsView.setAdapter(adapter);
 
+        spellsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
+                if (position == adapter.getCount()) {
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra("TYPE", "spell");
+                    getActivity().startActivity(intent);
+
+                } else {
+                    return;
+                }
+            };
+            // --------------------------------------
+        });
         return rootView;
     }
+
+    private SheetAdapter adapter;
 
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)

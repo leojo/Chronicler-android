@@ -1,15 +1,19 @@
 package com.android.chronicler.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.feat.FeatList;
 import com.android.chronicler.character.item.Inventory;
+import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.util.SheetAdapter;
 
 /**
@@ -29,13 +33,30 @@ public class InventoryFragment extends SheetFragment {
         addButtonView.setPadding(20, 20, 20, 20);
         addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
         invtView.addFooterView(addButtonView);
-        invtView.setAdapter(new SheetAdapter(getContext(), (Inventory)getArguments().getSerializable("INVENTORY")));
+        adapter = new SheetAdapter(getContext(), (Inventory)getArguments().getSerializable("INVENTORY"));
+        invtView.setAdapter(adapter);
 
+        invtView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
+                if (position == adapter.getCount()) {
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra("TYPE", "item");
+                    getActivity().startActivity(intent);
 
+                } else {
+                    return;
+                }
+            };
+            // --------------------------------------
+        });
 
         return rootView;
     }
 
+    private SheetAdapter adapter;
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
