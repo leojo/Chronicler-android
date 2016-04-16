@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.42" />
+
+    <Button
+        android:layout_width="221dp"
+        android:layout_height="wrap_content"
+        android:text="Rest"
+        android:id="@+id/restBtn"
+        style="@style/LoginButtonStyle"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="221dp"
+        android:layout_height="wrap_content"
+        android:text="Level Up"
+        android:id="@+id/lvlBtn"
+        style="@style/LoginButtonStyle"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="221dp"
+        android:layout_height="wrap_content"
+        android:text="View Class Table"
+        android:id="@+id/classTblBtn"
+        style="@style/LoginButtonStyle"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
