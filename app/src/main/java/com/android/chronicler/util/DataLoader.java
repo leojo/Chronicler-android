@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -224,6 +225,44 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    public static void deleteCharacter(final Context context,final int charID, final int charPosition) {
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+
+        RequestParams params = new RequestParams();
+        params.put("charID", charID);
+        // First fetch the raceList
+        cli.getUserData("/deleteChar", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.i("LOGIN", "This is the response: "+new String(response));
+                // called when response HTTP status is "200 OK"
+                try {
+                    JSONObject res = new JSONObject(new String(response));
+                    String code = res.getString("code");
+                    if(code.equals("success")) {
+                        // Needs to be this way because CONTENT and IDS don't talk to each other
+                        // so if we simply did adapter.remove, we would remove the first character
+                        // with a specific name but maybe not the one we meant to remove.
+                        // For this reason we will remove by index from both CONTENT and IDS and then
+                        // tell the adapter that something changed.
+                        CharactersActivity.CONTENT.remove(charPosition);
+                        CharactersActivity.IDS.remove(charPosition);
+                        CharactersActivity.adapter.notifyDataSetChanged();
+                    } else if(code.equals("failure")) {
+                        Log.d("CHARACTER DELETE", res.getString("message"));
+                    }
+                }catch(JSONException e) {
+                    Log.d("CHARACTER DELETE", "Invalid JSON response from server");
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
     // These functions are used to get a list of character the user has to populate
     // a list before starting the activity with the list.
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
@@ -430,7 +469,7 @@ public class DataLoader {
     }
 
     // Stores a given character sheet in the server-side database.
-    public static void storeCharSheet(Context context, CharacterSheet c){
+    public static void storeCharSheet(Context context, final CharacterSheet c){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
         try {
@@ -442,8 +481,23 @@ public class DataLoader {
         if(charEntity!= null) {
             cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Log.i("STORECHAR", "Success: "+new String(responseBody));
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    Log.i("STORECHAR", "Success: "+new String(response));
+                    try {
+                        JSONObject res = new JSONObject(new String(response));
+                        String code = res.getString("code");
+                        if(code.equals("success")) {
+                            // Could add to CONTENT and notify adapter as with remove but this is fine too
+                            CharactersActivity.IDS.add(Integer.parseInt(res.getString("message")));
+                            CharactersActivity.adapter.add(c.getName());
+                        } else if(code.equals("failure")) {
+                            Log.d("STORECHAR", res.getString("message"));
+                        } else {
+                            Log.d("STORECHAR", "This should never happen. Something went horribly wrong.");
+                        }
+                    }catch(JSONException e) {
+                        Log.d("STORECHAR", "This should never happen. ");
+                    }
                 }
 
                 @Override

@@ -35,10 +35,12 @@
     <string name="charactersheet_skills_tab">Skills</string>
 
     <!-- String related to making a new character -->
-    <string name="new_character_preview_text" formatted="false">I will roll a %s %s named %s</string>
+    <string name="new_character_preview_text" formatted="false">I Will Roll a %s %s Named %s</string>
     <string name="new_character_button_text" formatted="false">Create %s!</string>
     <string name="action_accept_invite">Accept</string>
     <string name="action_decline_invite">Decline</string>
+    <string name="action_delete_character">Delete</string>
+
     <string name="title_activity_waiting">WaitingActivity</string>
     <string name="campaign_player_list">Players</string>
     <string name="search_title">Search</string>
