@@ -111,8 +111,11 @@ public class CharacterSheet implements Serializable{
     // =================
 
     //<editor-fold desc="HP stuff">
+    public void updateHP(int newHP){
+        hp = Math.min(maxHp,newHP);
+    }
     public void updateHP(String newHP){
-        hp = updateInt(hp, newHP);
+        updateHP(updateInt(hp, newHP));
     }
 
     public void healBySpell(int healthRegained){
@@ -193,9 +196,8 @@ public class CharacterSheet implements Serializable{
     // ===============
 
     public void rest(){
-        tempHp = 0;
         nonlethalDamage = 0;
-        hp += level;
+        updateHP(hp+level);
 
         spellSlots.refresh();
     }
@@ -231,7 +233,7 @@ public class CharacterSheet implements Serializable{
         Log.i("LEVEL_UP","Rolled a "+hdRoll+" on a d"+hitDie+" hit die.");
         int extraHP = hdRoll+abilityScores.get(AbilityID.CON).getModifier();
         maxHp = maxHp + extraHP;
-        hp += extraHP;
+        updateHP(hp+extraHP);
     }
 
     public String toJSON() throws JsonProcessingException {
@@ -344,7 +346,7 @@ public class CharacterSheet implements Serializable{
     public String getField(String id, String defaultVal){
         switch (id.toLowerCase()){
             case "hp":
-                return hp+"";
+                return (hp+tempHp)+"";
             case "ac":
                 return ac;
             case "touch":

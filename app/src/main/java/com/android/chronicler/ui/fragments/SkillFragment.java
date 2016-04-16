@@ -28,7 +28,6 @@ public class SkillFragment extends SheetFragment {
 
         ListView skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
         skillsView.setAdapter(new SkillsAdapter(getContext(), (Skills)getArguments().getSerializable("SKILLS")));
-
         try {
             Log.d("SKILLFRAG", new ObjectMapper().writeValueAsString((Skills)getArguments().getSerializable("SKILLS")));
         } catch (JsonProcessingException e) {
