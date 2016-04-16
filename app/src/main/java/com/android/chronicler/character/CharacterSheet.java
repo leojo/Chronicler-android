@@ -488,7 +488,29 @@ public class CharacterSheet implements Serializable{
     }
 
     //<editor-fold desc="Getters and Setters">
+    public String getBaB() {
+        return BaB;
+    }
 
+    public void setBaB(String baB) {
+        BaB = baB;
+    }
+
+    public int getHitDie() {
+        return hitDie;
+    }
+
+    public void setHitDie(int hitDie) {
+        this.hitDie = hitDie;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
 
     public List<HashMap<String, String>> getAdvancementTable() {
         return advancementTable;
