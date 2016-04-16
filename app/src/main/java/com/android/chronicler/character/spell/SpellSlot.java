@@ -38,6 +38,10 @@ public class SpellSlot extends SheetObject implements Serializable {
         return this.spell;
     }
 
+    public void refresh() {
+        this.available = true;
+    }
+
     // This may be redundant
     @JsonIgnore
     public String getStatus(){ return (this.available ? "available" : "spent");}

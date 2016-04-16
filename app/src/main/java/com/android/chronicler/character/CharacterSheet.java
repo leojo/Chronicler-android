@@ -45,8 +45,8 @@ public class CharacterSheet implements Serializable{
     private AbilityScores abilityScores;
     private List<HashMap<String,String>> advancementTable;
     private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
-    private String BaB, hp, tempHp, nonlethalDamage, ac, touch, ff, speed, initiative;
-    private int level, hitDie, maxHp;
+    private String BaB, ac, touch, ff, speed, initiative;
+    private int level, hitDie, maxHp, hp, tempHp, nonlethalDamage;
 
     //TODO: Add functions and variables as they become needed, don't try to foresee every possible need beforehand. Focus on the scalability of the class so that adding new functions will be easy in the future.
 
@@ -59,8 +59,8 @@ public class CharacterSheet implements Serializable{
         this.characterClass = characterClass;
         this.name = name;
         this.race = race;
-        this.tempHp = "0";
-        this.nonlethalDamage = "0";
+        this.tempHp = 0;
+        this.nonlethalDamage = 0;
         ObjectMapper mapper = new ObjectMapper();
         try {
             Item sword = mapper.readValue("{\"name\":\"Sword, short\",\"cost\":\"10 gp\",\"weight\":\"2 lb.\",\"equipped\":false,\"masterwork\":false,\"slot\":\"Slotless\",\"equipAction\":\"Move Action\",\"description\":\"\",\"twoHand\":false,\"oneHand\":false,\"ranged\":false,\"thrown\":false,\"light\":true,\"damageTypes\":\"Piercing\",\"damage\":\"1d6\",\"crit\":\"19-20/x2\",\"wepCat\":\"Martial Weapons\",\"type\":null,\"rangeIncr\":\"-\"}",Weapon.class);
@@ -101,7 +101,7 @@ public class CharacterSheet implements Serializable{
         speed = "30 ft.";
         level = 0;
         maxHp = 0;
-        hp = "0" ;
+        hp = 0 ;
         this.hitDie = Integer.parseInt(advancementTable.get(0).get("hit_die"));
         levelUp();
         levelUp();
@@ -114,7 +114,7 @@ public class CharacterSheet implements Serializable{
 
     //<editor-fold desc="HP stuff">
     public void updateHP(String newHP){
-        hp = newHP;
+        hp = updateInt(hp, newHP);
     }
 
     public void healBySpell(int healthRegained){
@@ -195,7 +195,11 @@ public class CharacterSheet implements Serializable{
     // ===============
 
     public void rest(){
-        //TODO: Implement rest
+        tempHp = 0;
+        nonlethalDamage = 0;
+        hp += level;
+
+        spellSlots.refresh();
     }
 
     public void levelUp(){
@@ -229,7 +233,7 @@ public class CharacterSheet implements Serializable{
         Log.i("LEVEL_UP","Rolled a "+hdRoll+" on a d"+hitDie+" hit die.");
         int extraHP = hdRoll+abilityScores.get(AbilityID.CON).getModifier();
         maxHp = maxHp + extraHP;
-        hp = (Integer.parseInt(hp)+extraHP)+"";
+        hp += extraHP;
     }
 
     public String toJSON() throws JsonProcessingException {
@@ -342,7 +346,7 @@ public class CharacterSheet implements Serializable{
     public String getField(String id, String defaultVal){
         switch (id.toLowerCase()){
             case "hp":
-                return hp;
+                return hp+"";
             case "ac":
                 return ac;
             case "touch":
@@ -509,11 +513,11 @@ public class CharacterSheet implements Serializable{
         this.level = level;
     }
 
-    public String getHp() {
+    public int getHp() {
         return hp;
     }
 
-    public void setHp(String hp) {
+    public void setHp(int hp) {
         this.hp = hp;
     }
 
@@ -525,19 +529,19 @@ public class CharacterSheet implements Serializable{
         this.initiative = initiative;
     }
 
-    public String getTempHp() {
+    public int getTempHp() {
         return tempHp;
     }
 
-    public void setTempHp(String tempHp) {
+    public void setTempHp(int tempHp) {
         this.tempHp = tempHp;
     }
 
-    public String getNonlethalDamage() {
+    public int getNonlethalDamage() {
         return nonlethalDamage;
     }
 
-    public void setNonlethalDamage(String nonlethalDamage) {
+    public void setNonlethalDamage(int nonlethalDamage) {
         this.nonlethalDamage = nonlethalDamage;
     }
 

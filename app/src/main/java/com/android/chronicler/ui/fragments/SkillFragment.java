@@ -26,7 +26,7 @@ public class SkillFragment extends SheetFragment {
         Log.i("SKILLFRAG","Created");
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.skill_fragment_layout, container, false);
 
-        skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
+        ListView skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
         skillsView.setAdapter(new SkillsAdapter(getContext(), (Skills)getArguments().getSerializable("SKILLS")));
 
         try {
@@ -37,9 +37,6 @@ public class SkillFragment extends SheetFragment {
 
         return rootView;
     }
-
-    ListView skillsView;
-    private SkillsAdapter adapter;
 
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
