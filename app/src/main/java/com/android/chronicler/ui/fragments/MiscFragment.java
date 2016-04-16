@@ -1,21 +1,13 @@
 package com.android.chronicler.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
-import com.android.chronicler.character.feat.FeatList;
-import com.android.chronicler.ui.SearchActivity;
-import com.android.chronicler.util.SheetAdapter;
+import com.android.chronicler.ui.CharacterActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +17,7 @@ import java.util.List;
  */
 public class MiscFragment extends SheetFragment {
     private static CharacterSheet cs;
+    private static CombatFragment goToFrag;
     private static final List<String> abilityFields = Arrays.asList(new String[]{"str", "dex", "con", "int", "wis", "cha"});
 
 
@@ -36,6 +29,8 @@ public class MiscFragment extends SheetFragment {
             @Override
             public void onClick(View v) {
                 cs.rest();
+                ((CharacterActivity)getActivity()).getViewPager().setCurrentItem(1);
+                return;
             }
         });
         Button lvlBtn = (Button)rootView.findViewById(R.id.lvlBtn);
@@ -43,6 +38,8 @@ public class MiscFragment extends SheetFragment {
             @Override
             public void onClick(View v) {
                 cs.levelUp();
+                ((CharacterActivity)getActivity()).getViewPager().setCurrentItem(1);
+                return;
             }
         });
 
@@ -64,8 +61,9 @@ public class MiscFragment extends SheetFragment {
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static MiscFragment newInstance(String type, CharacterSheet characterSheet) {
+    public static MiscFragment newInstance(String type, CharacterSheet characterSheet, CombatFragment combatFrag) {
         cs = characterSheet;
+        goToFrag = combatFrag;
         Bundle args = new Bundle();
         args.putString("ID", type);
         MiscFragment miscFrag = new MiscFragment();

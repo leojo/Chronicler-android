@@ -66,12 +66,13 @@ public class CharacterActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
         fragments.add(AboutFragment.newInstance("ABOUT",character));
-        fragments.add(CombatFragment.newInstance("COMBAT",character));
+        CombatFragment combatFrag = CombatFragment.newInstance("COMBAT",character);
+        fragments.add(combatFrag);
         fragments.add(SpellFragment.newInstance("SPELLS", character.getSpellSlots()));
         fragments.add(FeatFragment.newInstance("FEATS", character.getFeats()));
         fragments.add(InventoryFragment.newInstance("INVENTORY", character.getInventory()));
         fragments.add(SkillFragment.newInstance("SKILLS",character.getSkills()));
-        fragments.add(MiscFragment.newInstance("MISC", character));
+        fragments.add(MiscFragment.newInstance("MISC", character, combatFrag));
 
 
         // The view pager is an element that can shift through views by swiping right and left
@@ -119,6 +120,10 @@ public class CharacterActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public ViewPager getViewPager() {
+        return mPager;
     }
 
     /**

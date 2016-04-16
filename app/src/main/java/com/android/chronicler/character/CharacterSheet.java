@@ -104,8 +104,6 @@ public class CharacterSheet implements Serializable{
         hp = 0 ;
         this.hitDie = Integer.parseInt(advancementTable.get(0).get("hit_die"));
         levelUp();
-        levelUp();
-        levelUp();
     }
 
     // =================
