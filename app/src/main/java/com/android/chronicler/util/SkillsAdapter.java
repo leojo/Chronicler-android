@@ -52,16 +52,27 @@ public class SkillsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View item, ViewGroup parent) {
         Log.i("SKILLS_ADAPTER","Adapter getting view...");
-        String key = skillNames[position];
-        int mod = skills.get(key).getTotalValue();
-        String value = "Bonus: "+(mod>=0?"+":"")+mod;
 
-        if(item == null)
-            item = inflater.inflate(R.layout.skill_list_item, null);
+        String key = skillNames[position];
+        //if(skills.get(key).get)
+        int mod = skills.get(key).getMod();
+        int rank = skills.get(key).getRanks();
+        int total = skills.get(key).getTotalValue();
+        int misc = total-mod-rank;
+
+        if(item == null) item = inflater.inflate(R.layout.skill_list_item, null);
 
 
         TextView nameView = (TextView)item.findViewById(R.id.skillName);
-        nameView.setText(key+"  -  "+value);
+        TextView modView = (TextView)item.findViewById(R.id.skillMod);
+        TextView rankView = (TextView)item.findViewById(R.id.skillRank);
+        TextView miscView = (TextView)item.findViewById(R.id.skillMisc);
+        TextView totalView = (TextView)item.findViewById(R.id.skillTotal);
+        nameView.setText(key);
+        modView.setText(mod+"");
+        rankView.setText(rank+"");
+        miscView.setText(misc+"");
+        totalView.setText(total+"");
 
         return item;
     }

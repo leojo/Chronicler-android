@@ -95,7 +95,7 @@ public class CharacterSheet implements Serializable{
             advancementTable = null;
         }
         ac = (abilityScores.get(AbilityID.DEX).getModifier()+10)+"";
-        touch = ac;
+        touch = ac+"";
         ff = 10+"";
         initiative = abilityScores.get(AbilityID.DEX).getModifier()+"";
         speed = "30 ft.";
@@ -103,8 +103,6 @@ public class CharacterSheet implements Serializable{
         maxHp = 0;
         hp = 0 ;
         this.hitDie = Integer.parseInt(advancementTable.get(0).get("hit_die"));
-        levelUp();
-        levelUp();
         levelUp();
     }
 
@@ -116,6 +114,7 @@ public class CharacterSheet implements Serializable{
     public void updateHP(int newHP){
         hp = Math.min(maxHp,newHP);
     }
+
     public void updateHP(String newHP){
         updateHP(updateInt(hp, newHP));
     }
@@ -135,7 +134,6 @@ public class CharacterSheet implements Serializable{
 
     //<editor-fold desc="AC stuff">
     public void updateAC(String newAC){
-        // FIXME: 8.3.2016 This is a naive temporary implementation, this is not a final version of this function
         ac = newAC;
     }
 
@@ -160,11 +158,44 @@ public class CharacterSheet implements Serializable{
 
     public void updateAbility(AbilityID id, String val){
         int oldScore = abilityScores.get(id).getBase();
-        abilityScores.get(id).setBase(updateInt(oldScore, val));
+        int newScore = updateInt(oldScore, val);
+        int modBefore = abilityScores.get(id).getModifier();
+        abilityScores.get(id).setBase(newScore);
         abilityScores.update();
+        int modAfter = abilityScores.get(id).getModifier();
+        int modDiff = modAfter-modBefore;
+        if(id==AbilityID.CON) {
+            maxHp += modDiff*level;
+            hp += modDiff*level;
+        }
+        if(id==AbilityID.DEX){
+            updateAC(modDiff);
+        }
         saves.update(abilityScores);
+        skills.update(abilityScores);
     }
 
+    public void updateAC(int modDiff){
+        Log.i("DEX_CHANGE","DEX Changed");
+        if(integerParsable(ac)){
+            int oldAC = parseInt(ac);
+            int newAC = oldAC+modDiff;
+            Log.i("DEX_CHANGE", "Updating AC from " + oldAC + " to " + newAC);
+            updateAC(newAC + "");
+        }
+        if(integerParsable(touch)){
+            int oldTouch = parseInt(touch);
+            int newTouch = oldTouch+modDiff;
+            Log.i("DEX_CHANGE", "Updating Touch from " + oldTouch + " to " + newTouch);
+            updateTouch(newTouch + "");
+        }
+        if(integerParsable(initiative)){
+            int oldInit = parseInt(initiative);
+            int newInit = oldInit+modDiff;
+            Log.i("DEX_CHANGE", "Updating Initiative from " + oldInit + " to " + newInit);
+            updateInitiative(newInit + "");
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Initiative stuff">
@@ -246,6 +277,46 @@ public class CharacterSheet implements Serializable{
     public static CharacterSheet fromJSON(String CharacterSheetJSON) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(CharacterSheetJSON, CharacterSheet.class);
+    }
+
+    // =================
+    // UTILITY FUNCTIONS
+    // =================
+
+    private boolean integerParsable(String s){
+        Log.i("PARSEINT","Checking if "+s+" can be parsed as int");
+        DecimalFormat df = new DecimalFormat("+#;-#");
+        try {
+            int i=df.parse(s).intValue();
+            Log.i("PARSEINT", "It can, and should parse to "+i);
+            return true;
+        } catch (ParseException pe) {
+            try{
+                int i = Integer.parseInt(s);
+                Log.i("PARSEINT", "It can, and should parse to "+i);
+                return true;
+            } catch (NumberFormatException nfe) {
+                Log.i("PARSEINT", "It can't");
+                return false;
+            }
+        }
+    }
+
+    private Integer parseInt(String s){
+        DecimalFormat df = new DecimalFormat("+#;-#");
+        try {
+            int i=df.parse(s).intValue();
+            return i;
+        } catch (ParseException pe) {
+            try{
+                int i = Integer.parseInt(s);
+                return i;
+            } catch (NumberFormatException nfe) {
+                Log.i("PARSEINT", "Error parsing "+s,nfe);
+                Log.i("PARSEINT", "Error parsing "+s,pe);
+                return null;
+            }
+        }
     }
 
     // =====================

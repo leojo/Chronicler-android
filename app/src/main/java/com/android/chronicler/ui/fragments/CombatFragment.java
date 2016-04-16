@@ -99,7 +99,9 @@ public class CombatFragment extends SheetFragment {
     private static HashMap<String,String> getVals(CharacterSheet cs){
         HashMap<String,String> vals = new HashMap<>();
         Log.d("POPULATE", "getting values");
-
+        Log.d("DEX_CHANGE","The AC value of the charactersheet is "+cs.getAc());
+        Log.d("DEX_CHANGE","The Touch value of the charactersheet is "+cs.getTouch());
+        Log.d("DEX_CHANGE","The Initiative value of the charactersheet is "+cs.getInitiative());
         vals.put("ac",cs.getAc()+"");
         vals.put("touch",cs.getTouch()+"");
         vals.put("ff",cs.getFf()+"");
