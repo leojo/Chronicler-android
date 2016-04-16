@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
@@ -63,6 +64,10 @@ public class CampaignActivity extends FragmentActivity {
     private String campaignName;
     private ArrayList<String> campaignCharacters;
     private ArrayList<String> campaignCharacterIDs;
+    private ArrayList<String> privateNotes;
+    private ArrayList<String> publicNotes;
+    //This should probably be a ArrayList<ArrayList<String>>
+    private ArrayList<String> journalNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
