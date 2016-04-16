@@ -18,6 +18,7 @@ import com.android.chronicler.ui.fragments.AboutFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
 import com.android.chronicler.ui.fragments.InventoryFragment;
+import com.android.chronicler.ui.fragments.MiscFragment;
 import com.android.chronicler.ui.fragments.SheetFragment;
 import com.android.chronicler.ui.fragments.SkillFragment;
 import com.android.chronicler.ui.fragments.SpellFragment;
@@ -56,7 +57,7 @@ public class CharacterActivity extends FragmentActivity {
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
         final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
         pagerTabs.addTabLabels(R.string.charactersheet_about_tab, R.string.charactersheet_combat_tab,
-                R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_inventory_tab, R.string.charactersheet_skills_tab);
+                R.string.charactersheet_spells_tab, R.string.charactersheet_feats_tab, R.string.charactersheet_inventory_tab, R.string.charactersheet_skills_tab, R.string.charactersheet_misc_tab);
 
         // Get the character sheet from the intent so we can populate the fragments
         character = (CharacterSheet)getIntent().getSerializableExtra("CharacterSheet");
@@ -65,11 +66,13 @@ public class CharacterActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
         fragments.add(AboutFragment.newInstance("ABOUT",character));
-        fragments.add(CombatFragment.newInstance("COMBAT",character));
+        CombatFragment combatFrag = CombatFragment.newInstance("COMBAT",character);
+        fragments.add(combatFrag);
         fragments.add(SpellFragment.newInstance("SPELLS", character.getSpellSlots()));
         fragments.add(FeatFragment.newInstance("FEATS", character.getFeats()));
         fragments.add(InventoryFragment.newInstance("INVENTORY", character.getInventory()));
         fragments.add(SkillFragment.newInstance("SKILLS",character.getSkills()));
+        fragments.add(MiscFragment.newInstance("MISC", character, combatFrag));
 
 
         // The view pager is an element that can shift through views by swiping right and left
@@ -117,6 +120,10 @@ public class CharacterActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public ViewPager getViewPager() {
+        return mPager;
     }
 
     /**

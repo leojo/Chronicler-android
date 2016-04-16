@@ -51,5 +51,6 @@
     <string name="campaign_public_notes">Public Notes</string>
     <string name="campaign_journal">Journal</string>
     <string name="title_activity_edit_journal">EditJournalActivity</string>
+    <string name="charactersheet_misc_tab">Misc</string>
 
 </resources>
