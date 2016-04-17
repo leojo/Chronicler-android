@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class CharacterSheet implements Serializable{
     private Skills skills;
     private Saves saves;
     private AbilityScores abilityScores;
-    private List<HashMap<String,String>> advancementTable;
+    private ArrayList<HashMap<String,String>> advancementTable;
     private String name, race, characterClass, alignment, gender, deity, eyes, hair, height, weight, size, skin;
     private String BaB, ac, touch, ff, speed, initiative;
     private int level, hitDie, maxHp, hp, tempHp, nonlethalDamage;
@@ -86,7 +87,7 @@ public class CharacterSheet implements Serializable{
         saves = new Saves(abilityScores);
         skills = new Skills(abilityScores, skillsJSON);
         try {
-            advancementTable = mapper.readValue(advTableJSON, new TypeReference<List<HashMap<String,String>>>() { });
+            advancementTable = mapper.readValue(advTableJSON, new TypeReference<ArrayList<HashMap<String,String>>>() { });
             for (int i = 0; i < advancementTable.size() ; i++) {
                 Log.i("ADVANCEMENT_TABLE", Arrays.toString(advancementTable.get(i).values().toArray()));
             }
@@ -515,11 +516,11 @@ public class CharacterSheet implements Serializable{
         this.maxHp = maxHp;
     }
 
-    public List<HashMap<String, String>> getAdvancementTable() {
+    public ArrayList<HashMap<String, String>> getAdvancementTable() {
         return advancementTable;
     }
 
-    public void setAdvancementTable(List<HashMap<String, String>> advancementTable) {
+    public void setAdvancementTable(ArrayList<HashMap<String, String>> advancementTable) {
         this.advancementTable = advancementTable;
     }
 
