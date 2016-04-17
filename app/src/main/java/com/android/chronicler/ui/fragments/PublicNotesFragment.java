@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
+import com.android.chronicler.ui.CampaignActivity;
 import com.android.chronicler.ui.CampaignNoteActivity;
 import com.android.chronicler.util.DataLoader;
 
@@ -112,7 +113,7 @@ public class PublicNotesFragment extends SheetFragment {
 
     public void showPopup(View v, final int position) {
         final PopupMenu popup = new PopupMenu(getActivity(), v);
-        popup.inflate(R.menu.menu_character_options);
+        popup.inflate(R.menu.menu_public_notes);
         final Activity thisActivity = getActivity();
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -124,6 +125,14 @@ public class PublicNotesFragment extends SheetFragment {
                         shortNotes.remove(position);
                         adapter.notifyDataSetChanged();
                         DataLoader.deletePublicNote(thisActivity, position, campaignName);
+                        break;
+                    case "Make private":
+                        DataLoader.storePrivateNote(thisActivity, Integer.MAX_VALUE, publicNotes.get(position), campaignName);
+                        DataLoader.deletePublicNote(thisActivity, position, campaignName);
+                        ((CampaignActivity) getActivity()).setNotePrivate(publicNotes.get(position));
+                        publicNotes.remove(position);
+                        shortNotes.remove(position);
+                        adapter.notifyDataSetChanged();
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
@@ -153,6 +162,12 @@ public class PublicNotesFragment extends SheetFragment {
             shortNotes.add(requestCode, trimToLength(newNote));
         }
         DataLoader.storePublicNote(getActivity(), requestCode, newNote, campaignName);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void addNote(String noteText) {
+        publicNotes.add(noteText);
+        shortNotes.add(trimToLength(noteText));
         adapter.notifyDataSetChanged();
     }
 

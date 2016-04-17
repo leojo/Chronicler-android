@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
+import com.android.chronicler.ui.CampaignActivity;
 import com.android.chronicler.ui.CampaignNoteActivity;
 import com.android.chronicler.util.DataLoader;
 
@@ -112,7 +113,7 @@ public class PrivateNotesFragment extends SheetFragment {
 
     public void showPopup(View v, final int position) {
         final PopupMenu popup = new PopupMenu(getActivity(), v);
-        popup.inflate(R.menu.menu_character_options);
+        popup.inflate(R.menu.menu_private_notes);
         final Activity thisActivity = getActivity();
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -125,8 +126,16 @@ public class PrivateNotesFragment extends SheetFragment {
                         adapter.notifyDataSetChanged();
                         DataLoader.deletePrivateNote(thisActivity, position, campaignName);
                         break;
+                    case "Make public":
+                        DataLoader.storePublicNote(thisActivity, Integer.MAX_VALUE, privateNotes.get(position), campaignName);
+                        DataLoader.deletePrivateNote(thisActivity, position, campaignName);
+                        ((CampaignActivity) getActivity()).setNotePublic(privateNotes.get(position));
+                        privateNotes.remove(position);
+                        shortNotes.remove(position);
+                        adapter.notifyDataSetChanged();
+                        break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.i("PopupMenu", "This is weird. Got "+item.getTitle());
                 }
                 return false;
             }
@@ -152,6 +161,12 @@ public class PrivateNotesFragment extends SheetFragment {
             shortNotes.add(requestCode, trimToLength(newNote));
         }
         DataLoader.storePrivateNote(getActivity(), requestCode, newNote, campaignName);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void addNote(String noteText) {
+        privateNotes.add(noteText);
+        shortNotes.add(trimToLength(noteText));
         adapter.notifyDataSetChanged();
     }
 

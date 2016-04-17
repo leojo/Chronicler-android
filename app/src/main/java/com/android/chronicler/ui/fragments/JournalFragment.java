@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  * Use the {@link JournalFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * TODO: Resolve duplicate title issues
  */
 public class JournalFragment extends SheetFragment {
     private static final String PUBLIC_NOTES = "PUBLIC_NOTES";
@@ -115,7 +116,7 @@ public class JournalFragment extends SheetFragment {
 
     public void showPopup(View v, final int position) {
         final PopupMenu popup = new PopupMenu(getActivity(), v);
-        popup.inflate(R.menu.menu_character_options);
+        popup.inflate(R.menu.menu_journal);
         final Activity thisActivity = getActivity();
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

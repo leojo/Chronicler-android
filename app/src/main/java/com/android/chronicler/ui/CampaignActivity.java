@@ -59,7 +59,7 @@ public class CampaignActivity extends FragmentActivity {
     // For fragment view stuff
     private ViewPager mPager;
     private SheetPagerAdapter mPagerAdapter;
-    private static final int INITIAL_PAGE = 1;
+    private static final int INITIAL_PAGE = 0;
 
     private String campaignName;
     private ArrayList<String> campaignCharacters;
@@ -99,23 +99,10 @@ public class CampaignActivity extends FragmentActivity {
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
 
-        ArrayList<String> demoNotes = new ArrayList<>();
-        demoNotes.add(" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan consequat sollicitudin. Nunc in diam iaculis, placerat augue nec, scelerisque eros. Vivamus rutrum ultricies enim, quis rhoncus nisl congue nec. Sed mollis ipsum nec viverra gravida. Integer a nisi id diam sodales dictum et et orci. Aliquam sit amet vulputate metus. Pellentesque quis diam ut massa tempus aliquet et et mauris. ");
-        demoNotes.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra. ");
-        demoNotes.add("Nulla volutpat neque ac purus condimentum, sed vehicula mauris lacinia. Sed in venenatis urna. Pellentesque convallis est vel est pretium, id tristique dui tincidunt. Donec tempus quam nulla, ut sagittis lectus interdum tincidunt. Nullam risus dui, placerat a neque in, accumsan ultrices elit. Aliquam quis mi nec leo luctus maximus. Phasellus eleifend nisi diam, sit amet tincidunt orci scelerisque in. Duis ultricies vel purus sit amet facilisis. Maecenas id consequat odio, tempor sagittis libero. Aliquam a elit eu augue rhoncus auctor id a tellus. Phasellus ut tortor sit amet justo bibendum euismod. In magna orci, aliquam non suscipit eget, imperdiet rhoncus enim. Morbi auctor, felis non ultrices condimentum, dui nisi bibendum nisi, nec feugiat mauris erat non augue. Ut lobortis tortor nibh, at molestie risus interdum eget. In egestas eu nulla a commodo. ");
         fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
         fragments.add(PrivateNotesFragment.newInstance(campaignName, privateNotes));
         fragments.add(PublicNotesFragment.newInstance(campaignName, publicNotes));
 
-        ArrayList<ArrayList<String>> demoJournal = new ArrayList<>();
-        ArrayList<String> entry1 = new ArrayList<>();
-        entry1.add("Lorem ipsum");
-        entry1.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan consequat sollicitudin. Nunc in diam iaculis, placerat augue nec, scelerisque eros. Vivamus rutrum ultricies enim, quis rhoncus nisl congue nec. Sed mollis ipsum nec viverra gravida. Integer a nisi id diam sodales dictum et et orci. Aliquam sit amet vulputate metus. Pellentesque quis diam ut massa tempus aliquet et et mauris. ");
-        demoJournal.add(entry1);
-        ArrayList<String> entry2 = new ArrayList<>();
-        entry2.add("Sed at solli");
-        entry2.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra.");
-        demoJournal.add(entry2);
         fragments.add(JournalFragment.newInstance(campaignName, journalNotes));
 
 
@@ -138,6 +125,13 @@ public class CampaignActivity extends FragmentActivity {
 
     }
 
+    public void setNotePublic(String note) {
+        ((PublicNotesFragment) this.mPagerAdapter.getItem(2)).addNote(note);
+    }
+
+    public void setNotePrivate(String note) {
+        ((PrivateNotesFragment) this.mPagerAdapter.getItem(1)).addNote(note);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

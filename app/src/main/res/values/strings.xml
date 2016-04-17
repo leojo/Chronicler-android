@@ -52,5 +52,8 @@
     <string name="campaign_journal">Journal</string>
     <string name="title_activity_edit_journal">EditJournalActivity</string>
     <string name="charactersheet_misc_tab">Misc</string>
+    <string name="action_delete_item">Delete</string>
+    <string name="make_private">Make private</string>
+    <string name="make_public">Make public</string>
 
 </resources>
