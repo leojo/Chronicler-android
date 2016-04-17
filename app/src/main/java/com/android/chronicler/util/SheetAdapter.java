@@ -64,6 +64,8 @@ public class SheetAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+
+
     public void clearAndAddAll(SpellSlots spells) {
         sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(spells.getSpellSlots());

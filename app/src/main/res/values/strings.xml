@@ -60,6 +60,11 @@
     <string name="action_delete_item">Delete</string>
     <string name="make_private">Make private</string>
     <string name="make_public">Make public</string>
+    <string name="action_delete_spell">Delete</string>
+    <string name="action_view_spell">Overview</string>
+    <string name="action_view_item">Overview</string>
+    <string name="action_view_feat">Overview</string>
+    <string name="action_delete_feat">Delete</string>
 
 
 </resources>
