@@ -2,11 +2,9 @@ package com.android.chronicler.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.util.ChroniclerRestClient;
@@ -27,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -89,14 +85,15 @@ public class CampaignsActivity extends AppCompatActivity {
         campaignListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showPopup(view, DMCampaigns, position);
+                if (position == adapter.getCount()) return false;
+                showDMPopup(view, DMCampaigns, position);
 
                 return true;
             }
         });
     }
 
-    public void showPopup(View v, final ArrayList<String> list, final int position) {
+    public void showDMPopup(View v, final ArrayList<String> list, final int position) {
         final PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.menu_dm_campaign_list);
         final Activity thisActivity = this;
