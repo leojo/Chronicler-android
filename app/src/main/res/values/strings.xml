@@ -65,6 +65,8 @@
     <string name="action_view_item">Overview</string>
     <string name="action_view_feat">Overview</string>
     <string name="action_delete_feat">Delete</string>
+    <string name="leave_campaign">Leave campaign</string>
+
 
 
 </resources>

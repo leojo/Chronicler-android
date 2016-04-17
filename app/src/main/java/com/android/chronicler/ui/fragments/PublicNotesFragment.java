@@ -102,6 +102,7 @@ public class PublicNotesFragment extends SheetFragment {
         noteListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == adapter.getCount()) return false;
                 showPopup(view, position);
 
                 return true;
