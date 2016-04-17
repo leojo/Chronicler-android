@@ -1,9 +1,11 @@
 package com.android.chronicler.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,10 +13,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,10 +29,12 @@ import java.util.List;
 public class CharactersActivity extends AppCompatActivity {
 
 
-    private ArrayAdapter<String> adapter;
+    public static ArrayAdapter<String> adapter;
+
+    //public static ArrayAdapter<String> adapter;
     ListView characterListView;
-    public List<String> CONTENT;
-    public List<Integer> IDS;
+    public static List<String> CONTENT;
+    public static List<Integer> IDS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +47,12 @@ public class CharactersActivity extends AppCompatActivity {
         Intent intent = getIntent();
         CONTENT = intent.getStringArrayListExtra("CharacterList");
         IDS = intent.getIntegerArrayListExtra("CharacterIds");
-        characterListView = (ListView)findViewById(R.id.CharacterListView);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
 
+
+        characterListView = (ListView)findViewById(R.id.CharacterListView);
+
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, CONTENT); // Set add button to footer
         // This button is used for adding new characters
         ImageView addButtonView = new ImageView(this);
         addButtonView.setPadding(20, 20, 20, 20);
@@ -56,8 +65,6 @@ public class CharactersActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                ;
                 if (getCallingActivity() == null) {
                     // If called with startActivity
                     if (position == adapter.getCount()) {
@@ -77,6 +84,18 @@ public class CharactersActivity extends AppCompatActivity {
                     }
                 }
 
+            }
+        });
+
+
+        // Activate popup when an invite is clicked
+        characterListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int charID = IDS.get(position);
+                String charName = CONTENT.get(position);
+                showPopup(view, charID, position);
+                return false;
             }
         });
     }
@@ -101,6 +120,30 @@ public class CharactersActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NewCharacterActivity.class);
         DataLoader.readyCreateCharThenStartForResult(this, intent, code);
     }
+
+    // Pop-up for accepting or declining invites: Will later be replaced with buttons
+    // nested inside the list elements for accepting and declining.
+    public void showPopup(View v, final int charID, final int charPosition) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.menu_character_options);
+        final Activity thisActivity = this;
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Delete":
+                        DataLoader.deleteCharacter(thisActivity, charID, charPosition);
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
+    }
+
 
 
     @Override

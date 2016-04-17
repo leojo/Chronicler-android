@@ -54,6 +54,9 @@ public class AboutFragment extends SheetFragment {
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
                                 String newVal = ((ContentView) v).getText();
+                                if(id.equalsIgnoreCase("dex")){
+                                    Log.i("DEX_CHANGE","Dex is about to be changed to "+newVal+"! The value of AC is "+cs.getAc());
+                                }
                                 cs.updateField(((ContentView) v).getCustomId(), newVal);
                                 String actualNewVal = cs.getField(((ContentView) v).getCustomId(), newVal);
                                 ((ContentView) v).updateText(actualNewVal);
@@ -61,6 +64,9 @@ public class AboutFragment extends SheetFragment {
                                 // If we updated an abilityscore:
                                 if (abilityFields.contains(id)) {
                                     Log.i("UPDATE_MOD", "Should update " + id + "Mod now");
+                                    if(id.equalsIgnoreCase("dex")){
+                                        Log.i("DEX_CHANGE","Dex has just changed to "+newVal+"! The value of AC is "+cs.getAc());
+                                    }
                                     ContentView modView = (ContentView) rootView.findViewById(modId);
                                     String oldMod = modView.getText();
                                     String newMod = cs.getField(modIdString,oldMod);

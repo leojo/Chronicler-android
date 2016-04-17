@@ -14,6 +14,10 @@ import java.util.HashMap;
 public class SpellSlots  implements Serializable {
     private ArrayList<SpellSlot> spellSlots = new ArrayList<>();
 
+    public void refresh() {
+        for(SpellSlot s : spellSlots) s.refresh();
+    }
+
     public void add(SpellSlot ss){
         this.spellSlots.add(ss);
     }

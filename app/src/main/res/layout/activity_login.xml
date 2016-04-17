@@ -9,7 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android.chronicler.ui.LoginActivity"
-    android:background="@drawable/action_bar_background">
+    android:background="@drawable/action_bar_background"
+    android:weightSum="1">
 
     <!-- Login progress -->
     <ProgressBar
@@ -92,12 +93,33 @@
             android:text="@string/action_sign_in"
             android:textStyle="bold" />
 
+        <Button
+            style="@style/LoginButtonStyle"
+            android:id="@+id/refuseRegister"
+            android:layout_width="224dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="16dp"
+            android:text="Take me back to login!"
+            android:textStyle="bold"/>
+
     </LinearLayout>
+
+    <TextView
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/messageView"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_weight="0.54"
+        android:textColor="#FFFFFA"/>
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.33">
 
     </ScrollView>
+
 </LinearLayout>

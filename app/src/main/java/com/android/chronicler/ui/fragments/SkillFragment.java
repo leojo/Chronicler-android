@@ -22,13 +22,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class SkillFragment extends SheetFragment {
 
+    private static Skills skills;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i("SKILLFRAG","Created");
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.skill_fragment_layout, container, false);
 
-        skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
-        skillsView.setAdapter(new SkillsAdapter(getContext(), (Skills)getArguments().getSerializable("SKILLS")));
-
+        ListView skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
+        skillsView.setAdapter(new SkillsAdapter(getContext(), skills));
         try {
             Log.d("SKILLFRAG", new ObjectMapper().writeValueAsString((Skills)getArguments().getSerializable("SKILLS")));
         } catch (JsonProcessingException e) {
@@ -38,16 +39,13 @@ public class SkillFragment extends SheetFragment {
         return rootView;
     }
 
-    ListView skillsView;
-    private SkillsAdapter adapter;
-
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static SkillFragment newInstance(String type, Skills skills) {
+    public static SkillFragment newInstance(String type, Skills s) {
         Bundle args = new Bundle();
         args.putString("ID", type);
-        args.putSerializable("SKILLS", skills);
+        skills = s;
         SkillFragment sheetFrag = new SkillFragment();
         sheetFrag.setArguments(args);
 

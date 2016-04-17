@@ -9,21 +9,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.util.DataLoader;
+
+import java.util.ArrayList;
 
 /**
  * Created by andrea on 10.4.2016.
  */
 public class SearchActivity extends AppCompatActivity {
     // TODO: http://developer.android.com/training/search/setup.html
+    public static ArrayAdapter<String> adapter;
+    private ArrayList<String> searchResults;
+    private String searchType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        handleIntent(getIntent());
+        searchType = getIntent().getStringExtra("TYPE");
+        searchResults = new ArrayList<>();
+        searchResults.add("Dummy result 1");
+        searchResults.add("Dummy result 2");
+        searchResults.add("Dummy result 3");
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, searchResults);
+        ListView resultsView = (ListView)findViewById(R.id.resultsView);
+        resultsView.setAdapter(adapter);
     }
 
     @Override
@@ -34,10 +49,10 @@ public class SearchActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            DataLoader.handleSearchQuery(getApplication(), intent, searchType, query);
             //use the query to search your data somehow
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

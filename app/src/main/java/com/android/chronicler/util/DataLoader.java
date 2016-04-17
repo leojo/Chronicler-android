@@ -10,9 +10,12 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.ui.CharactersActivity;
+import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -83,7 +86,7 @@ public class DataLoader {
         readyNewSheetThenStart(context, intent, name, race, charClass, false, 0);
     }
 
-    public static void readyNewSheetThenStart(final Context context, final Intent intent, final String name, final String race, final String charClass, int code){
+    public static void readyNewSheetThenStartForResult(final Context context, final Intent intent, final String name, final String race, final String charClass, int code){
         readyNewSheetThenStart(context, intent, name, race, charClass, true, code);
     }
 
@@ -94,20 +97,32 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
-                intent.putExtra("CharacterSheet", character);
-                if(getResult){
-                    ((Activity) context).startActivityForResult(intent, code);
-                } else {
-                    context.startActivity(intent);
-                }
+                final String skillData = new String(responseBody);
+                cli.get("/classData?s=" + charClass, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        CharacterSheet character = new CharacterSheet(name, race, charClass, skillData, new String(responseBody));
+                        storeCharSheet(context, character);
+                        intent.putExtra("CharacterSheet", character);
+                        if(getResult){
+                            ((Activity) context).startActivityForResult(intent, code);
+                        } else {
+                            context.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                        Log.i("CHARACTER_CREATE", "Failure fetching class data: " + response);
+                    }
+                });
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("CHARACTER_CREATE", "Failure fetching skill data: " + response);
             }
         });
         goToWaitScreen(context);
@@ -120,14 +135,26 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
+                final String skillData = new String(responseBody);
+                cli.get("/classData?s=" + race, null, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        CharacterSheet character = new CharacterSheet(name, race, charClass, skillData, new String(responseBody));
+                        storeCharSheet(context, character);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String response = (responseBody == null ? "Empty response" : new String(responseBody));
+                        Log.i("CHARACTER_CREATE", "Failure fetching class data: " + response);
+                    }
+                });
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("CHARACTER_CREATE", "Failure fetching skill data: " + response);
             }
         });
     }
@@ -198,6 +225,44 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
+    public static void deleteCharacter(final Context context,final int charID, final int charPosition) {
+        final ChroniclerRestClient cli = new ChroniclerRestClient(context);
+
+        RequestParams params = new RequestParams();
+        params.put("charID", charID);
+        // First fetch the raceList
+        cli.getUserData("/deleteChar", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.i("LOGIN", "This is the response: "+new String(response));
+                // called when response HTTP status is "200 OK"
+                try {
+                    JSONObject res = new JSONObject(new String(response));
+                    String code = res.getString("code");
+                    if(code.equals("success")) {
+                        // Needs to be this way because CONTENT and IDS don't talk to each other
+                        // so if we simply did adapter.remove, we would remove the first character
+                        // with a specific name but maybe not the one we meant to remove.
+                        // For this reason we will remove by index from both CONTENT and IDS and then
+                        // tell the adapter that something changed.
+                        CharactersActivity.CONTENT.remove(charPosition);
+                        CharactersActivity.IDS.remove(charPosition);
+                        CharactersActivity.adapter.notifyDataSetChanged();
+                    } else if(code.equals("failure")) {
+                        Log.d("CHARACTER DELETE", res.getString("message"));
+                    }
+                }catch(JSONException e) {
+                    Log.d("CHARACTER DELETE", "Invalid JSON response from server");
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
     // These functions are used to get a list of character the user has to populate
     // a list before starting the activity with the list.
     public static void readyCharlistThenStart(final Context context, final Intent intent) {
@@ -248,17 +313,33 @@ public class DataLoader {
         });
         goToWaitScreen(context);
     }
-/*
-    public static void readyResultsThenStart(final Context context, final Intent intent, final boolean getResult, final int code) {
+
+    public static void handleSearchQuery(final Context context, final Intent intent, String searchtype, String searchtext) {
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        cli.get("/skillData", null, new AsyncHttpResponseHandler() {
+        String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
+        cli.get(queryURL, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Create a new character sheet object
-                CharacterSheet character = new CharacterSheet(name, race, charClass, new String(responseBody));
-                storeCharSheet(context, character);
-                intent.putExtra("CharacterSheet", character);
-                context.startActivity(intent);
+                String JSONresponse = new String(responseBody);
+                // This response will be:
+                //  { 0 : [id: , name: , fullText: ,...], 1: [id: , name: , fullText: ,...]
+
+                ArrayList<String> content = new ArrayList<String>();
+                ArrayList<Integer> ids = new ArrayList<Integer>();
+                try {
+                    JSONArray allResults = new JSONArray(JSONresponse);
+                    //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
+                    for(int i = 0; i<allResults.length(); i++) {
+                        JSONObject result = allResults.getJSONObject(i);
+                        content.add(result.get("name").toString());
+                        //ids.add(Integer.parseInt(key));
+
+                    }
+                    (SearchActivity.adapter).clear();
+                    (SearchActivity.adapter).addAll(content);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -267,10 +348,8 @@ public class DataLoader {
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
-        goToWaitScreen(context);
     }
 
-*/
 
     // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
@@ -416,7 +495,7 @@ public class DataLoader {
     }
 
     // Stores a given character sheet in the server-side database.
-    public static void storeCharSheet(Context context, CharacterSheet c){
+    public static void storeCharSheet(Context context, final CharacterSheet c){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
         try {
@@ -428,8 +507,23 @@ public class DataLoader {
         if(charEntity!= null) {
             cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Log.i("STORECHAR", "Success: "+new String(responseBody));
+                public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                    Log.i("STORECHAR", "Success: "+new String(response));
+                    try {
+                        JSONObject res = new JSONObject(new String(response));
+                        String code = res.getString("code");
+                        if(code.equals("success")) {
+                            // Could add to CONTENT and notify adapter as with remove but this is fine too
+                            CharactersActivity.IDS.add(Integer.parseInt(res.getString("message")));
+                            CharactersActivity.adapter.add(c.getName());
+                        } else if(code.equals("failure")) {
+                            Log.d("STORECHAR", res.getString("message"));
+                        } else {
+                            Log.d("STORECHAR", "This should never happen. Something went horribly wrong.");
+                        }
+                    }catch(JSONException e) {
+                        Log.d("STORECHAR", "This should never happen. ");
+                    }
                 }
 
                 @Override
