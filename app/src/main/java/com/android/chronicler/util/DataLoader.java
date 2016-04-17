@@ -323,11 +323,11 @@ public class DataLoader {
                         //ids.add(Integer.parseInt(key));
 
                     }
-                    if(content.size() != 0) {
+                    if (content.size() != 0) {
                         (SearchActivity.adapter).clear();
                         (SearchActivity.adapter).addAll(content);
                         SearchActivity.showResults();
-                    }else{
+                    } else {
                         SearchActivity.noResults();
                     }
                 } catch (JSONException e) {
@@ -338,7 +338,7 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SEARCH", "Failure fetching search results for search type: " + searchtype + " and search string "+searchtext);
+                Log.i("SEARCH", "Failure fetching search results for search type: " + searchtype + " and search string " + searchtext);
             }
         });
     }
@@ -403,6 +403,24 @@ public class DataLoader {
             }
         });
     }
+
+    public static void leaveCampaign(final Context context, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+        cli.postUserData("/leaveCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", new String(responseBody));
+            }
+        });
+    }
+
 
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {

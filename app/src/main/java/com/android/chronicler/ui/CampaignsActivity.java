@@ -91,6 +91,38 @@ public class CampaignsActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        playerCampaignsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showPCPopup(view, PCCampaigns, position);
+
+                return true;
+            }
+        });
+    }
+
+    public void showPCPopup(View v, final ArrayList<String> list, final int position) {
+        final PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.menu_pc_campaign_list);
+        final Activity thisActivity = this;
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Leave campaign":
+                        DataLoader.leaveCampaign(thisActivity, list.get(position));
+                        list.remove(position);
+                        adapter2.notifyDataSetChanged();
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     public void showDMPopup(View v, final ArrayList<String> list, final int position) {
