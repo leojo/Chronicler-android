@@ -443,11 +443,12 @@ public class DataLoader {
                 //ArrayList<String> characters = new ArrayList<>();
                 ArrayList<String> characterNames = new ArrayList<>();
                 ArrayList<String> characterIDs = new ArrayList<>();
-                ArrayList<String> journalEntries = new ArrayList<>();
+                ArrayList<ArrayList<String>> journalEntries = new ArrayList<>();
                 ArrayList<String> privateNotes = new ArrayList<>();
                 ArrayList<String> publicNotes = new ArrayList<>();
+                Log.d("Campaign", responseBody.toString());
 
-                Log.i("CAMPAIGN_DATA", "Received campaign data: "+responseBody.toString());
+                Log.i("CAMPAIGN_DATA", "Received campaign data: " + responseBody.toString());
                 try {
                     JSONObject players = new JSONObject(responseBody.getString("Players"));
                     JSONArray JCharacterIDs = players.names();
@@ -458,18 +459,24 @@ public class DataLoader {
                         }
                     }
 
-                    JSONArray journal = new JSONArray(responseBody.getString("Journal Entries"));
-                    for (int i=0; i<journal.length(); i++) {
-                        journalEntries.add(journal.getString(i));
+                    JSONObject journal = new JSONObject(responseBody.getString("Journal Entries"));
+                    JSONArray journalKeys = journal.names();
+                    if (journalKeys != null) {
+                        for (int i = 0; i < journalKeys.length(); i++) {
+                            ArrayList<String> entry = new ArrayList<>();
+                            entry.add(journalKeys.getString(i));
+                            entry.add(journal.getString(journalKeys.getString(i)));
+                            journalEntries.add(entry);
+                        }
                     }
 
                     JSONArray pubNotes = new JSONArray(responseBody.getString("Public Notes"));
-                    for (int i=0; i<journal.length(); i++) {
+                    for (int i = 0; i < pubNotes.length(); i++) {
                         publicNotes.add(pubNotes.getString(i));
                     }
 
                     JSONArray privNotes = new JSONArray(responseBody.getString("Private Notes"));
-                    for (int i=0; i<journal.length(); i++) {
+                    for (int i = 0; i < privNotes.length(); i++) {
                         privateNotes.add(privNotes.getString(i));
                     }
                 } catch (JSONException e) {
@@ -494,6 +501,71 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void storePublicNote(Context context, final int index, final String noteText, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("note", noteText);
+        params.add("campaign_name", campaign);
+        params.add("index", String.valueOf(index));
+
+        cli.postUserData("/savePublicNotes", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored public note with responseBody: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store public note with responseBody: " + new String(responseBody));
+            }
+        });
+    }
+
+    public static void storePrivateNote(Context context, final int index, final String noteText, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("note", noteText);
+        params.add("campaign_name", campaign);
+        params.add("index", String.valueOf(index));
+
+        cli.postUserData("/savePrivateNotes", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored private note with responseBody: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store private note with responseBody: " + new String(responseBody));
+            }
+        });
+    }
+    public static void storeJournalEntry(Context context, final String title, final String entry, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("title", title);
+        params.add("entry", entry);
+        params.add("campaign_name", campaign);
+
+        cli.postUserData("/saveJournalEntry", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored journal entry with responseBody: "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store journal entry with responseBody: "+new String(responseBody));
+            }
+        });
     }
 
     public static void storeCharSheet(Context context, final CharacterSheet c){
