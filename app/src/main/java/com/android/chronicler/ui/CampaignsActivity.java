@@ -1,5 +1,6 @@
 package com.android.chronicler.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
@@ -32,8 +34,8 @@ public class CampaignsActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter, adapter2;
     ListView campaignListView, playerCampaignsView;
-    public List<String> DMCampaigns;
-    public List<String> PCCampaigns;
+    public ArrayList<String> DMCampaigns;
+    public ArrayList<String> PCCampaigns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +66,50 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
+                Log.i("Campaigns", "Position " + position + " of " + adapter.getCount());
                 if (position == adapter.getCount()) {
                     newCampaign();
                 } else {
                     openCampaign(DMCampaigns.get(position));
                 }
-            };
-        // --------------------------------------
+            }
+
+            ;
+            // --------------------------------------
         });
+
+        campaignListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showPopup(view, DMCampaigns, position);
+
+                return true;
+            }
+        });
+    }
+
+    public void showPopup(View v, final ArrayList<String> list, final int position) {
+        final PopupMenu popup = new PopupMenu(this, v);
+        popup.inflate(R.menu.menu_dm_campaign_list);
+        final Activity thisActivity = this;
+        Log.i("Campaign", list.toString());
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Delete":
+                        DataLoader.deleteCampaign(thisActivity, list.get(position));
+                        list.remove(position);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     public void openCampaign(String name) {

@@ -360,7 +360,7 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
-                Log.i("CAMPAIGNS", responseBody.toString());
+                Log.i("Campaigns", responseBody.toString());
 
                 try {
                     JSONArray DMResponse = responseBody.getJSONObject(0).names();
@@ -420,6 +420,7 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 context.startActivity(intent);
+                Log.i("Campaign", new String(responseBody));
             }
 
             @Override
@@ -428,6 +429,27 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void deleteCampaign(final Context context, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+
+        Log.i("Campaign", "Deleting campaign "+campaignName+"...");
+        cli.postUserData("/deleteCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Database response: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to delete campaign with responseBody: " + new String(responseBody));
+            }
+        });
     }
 
     public static void getCampaignDetailsThenOpen(final Context context, final Intent intent, String campaignName) {
@@ -447,8 +469,6 @@ public class DataLoader {
                 ArrayList<String> privateNotes = new ArrayList<>();
                 ArrayList<String> publicNotes = new ArrayList<>();
                 Log.d("Campaign", responseBody.toString());
-
-                Log.i("CAMPAIGN_DATA", "Received campaign data: " + responseBody.toString());
                 try {
                     JSONObject players = new JSONObject(responseBody.getString("Players"));
                     JSONArray JCharacterIDs = players.names();
@@ -481,10 +501,7 @@ public class DataLoader {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.i("CAMPAIGN_DATA", e.toString());
                 }
-                Log.i("CAMPAIGN_DATA", "Received characters: " + characterNames);
-                Log.i("CAMPAIGN_DATA", "Received character IDs: " + characterIDs);
 
                 intent.putExtra("campaign_characters", characterNames);
                 intent.putExtra("campaign_character_ids", characterIDs);
