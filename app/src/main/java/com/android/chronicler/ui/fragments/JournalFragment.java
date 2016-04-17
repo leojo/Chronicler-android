@@ -1,18 +1,21 @@
 package com.android.chronicler.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
 import com.android.chronicler.ui.CampaignNoteActivity;
@@ -91,22 +94,56 @@ public class JournalFragment extends SheetFragment {
                     ArrayList<String> newEntry = new ArrayList<String>();
                     newEntry.add(0, "");
                     newEntry.add(1, "");
-                    openNote(newEntry, position);
+                    openNote(newEntry, position, true);
                 } else {
-                    openNote(entries.get(position), position);
+                    openNote(entries.get(position), position, false);
                 }
+            }
+        });
+
+        journalView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showPopup(view, position);
+
+                return true;
             }
         });
 
         return rootView;
     }
 
-    private void openNote(ArrayList<String> entry, int position) {
+    public void showPopup(View v, final int position) {
+        final PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.inflate(R.menu.menu_character_options);
+        final Activity thisActivity = getActivity();
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Delete":
+                        entries.remove(position);
+                        titles.remove(position);
+                        adapter.notifyDataSetChanged();
+                        DataLoader.deleteJournalEntry(thisActivity, position, campaignName);
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
+    }
+
+    private void openNote(ArrayList<String> entry, int position, boolean editTitle) {
         String entryTitle = entry.get(0);
         String entryText = entry.get(1);
         Intent intent = new Intent(getActivity(), EditJournalActivity.class);
         intent.putExtra("TITLE", entryTitle);
         intent.putExtra("TEXT", entryText);
+        intent.putExtra("EDIT_TITLE", editTitle);
         startActivityForResult(intent, position);
     }
 
@@ -140,5 +177,6 @@ public class JournalFragment extends SheetFragment {
         for (ArrayList<String> entry : entries) {
             titles.add(entry.get(0));
         }
+        Log.i("Campaign", titles.toString());
     }
 }

@@ -25,8 +25,12 @@ public class EditJournalActivity extends AppCompatActivity {
         title = intent.getStringExtra("TITLE");
         body  = intent.getStringExtra("TEXT");
 
+
         titleField = (EditText) findViewById(R.id.entry_title);
         titleField.setText(title);
+        if (!intent.getBooleanExtra("EDIT_TITLE", true)) {
+            titleField.setKeyListener(null);
+        }
 
         bodyField = (EditText) findViewById(R.id.entry_body);
         bodyField.setText(body);

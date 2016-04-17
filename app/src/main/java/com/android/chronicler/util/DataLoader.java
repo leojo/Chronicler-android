@@ -568,6 +568,69 @@ public class DataLoader {
         });
     }
 
+    public static void deletePublicNote(Context context, final int index, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("index", String.valueOf(index));
+        params.add("campaign_name", campaign);
+
+        cli.postUserData("/deletePublicNote", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully deleted public note with responseBody: "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to delete public note with responseBody: "+new String(responseBody));
+            }
+        });
+    }
+
+    public static void deletePrivateNote(Context context, final int index, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("index", String.valueOf(index));
+        params.add("campaign_name", campaign);
+
+        cli.postUserData("/deletePrivateNote", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully deleted private note with responseBody: "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to delete private note with responseBody: "+new String(responseBody));
+            }
+        });
+    }
+
+    public static void deleteJournalEntry(Context context, final int index, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("index", String.valueOf(index));
+        params.add("campaign_name", campaign);
+
+        cli.postUserData("/deleteJournalEntry", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully deleted journal entry with responseBody: "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to delete journal entry with responseBody: "+new String(responseBody));
+            }
+        });
+    }
+
     public static void storeCharSheet(Context context, final CharacterSheet c){
         storeCharSheet(context, c, true, 0);
     }
