@@ -239,7 +239,8 @@ public class CharacterSheet implements Serializable{
         if(level >= 20) return;
         level++;
         HashMap<String,String> advTableRow = advancementTable.get(level);
-        BaB = advTableRow.get("bas_attack_bonus");
+        Log.i("LEVEL_UP","AdvTableRow keys: "+Arrays.toString(advTableRow.keySet().toArray()));
+        BaB = advTableRow.get("base_attack_bonus");
 
         String fort_save = advTableRow.get("fort_save");
         String ref_save = advTableRow.get("ref_save");
@@ -428,6 +429,8 @@ public class CharacterSheet implements Serializable{
                 return ff;
             case "init":
                 return initiative;
+            case "bab":
+                return BaB;
             case "fort":
                 return saves.getSaves().get(SavingThrowID.FORT).getTotal()+"";
             case "ref":

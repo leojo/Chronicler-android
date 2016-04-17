@@ -101,12 +101,13 @@ public class CombatFragment extends SheetFragment {
         Log.d("POPULATE", "getting values");
         Log.d("DEX_CHANGE","The AC value of the charactersheet is "+cs.getAc());
         Log.d("DEX_CHANGE","The Touch value of the charactersheet is "+cs.getTouch());
-        Log.d("DEX_CHANGE","The Initiative value of the charactersheet is "+cs.getInitiative());
+        Log.d("DEX_CHANGE", "The Initiative value of the charactersheet is " + cs.getInitiative());
         vals.put("ac",cs.getAc()+"");
         vals.put("touch",cs.getTouch()+"");
         vals.put("ff",cs.getFf()+"");
         vals.put("hp",cs.getHp()+"");
         vals.put("init",cs.getInitiative()+"");
+        vals.put("bab",cs.getBaB()+"");
         vals.put("fort",cs.getSaves().getSaves().get(SavingThrowID.FORT).getTotal()+"");
         vals.put("ref",cs.getSaves().getSaves().get(SavingThrowID.REF).getTotal()+"");
         vals.put("will",cs.getSaves().getSaves().get(SavingThrowID.WILL).getTotal()+"");
