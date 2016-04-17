@@ -13,14 +13,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
+import com.android.chronicler.character.feat.FeatSlot;
 import com.android.chronicler.character.skill.Skills;
+import com.android.chronicler.character.spell.Spell;
+import com.android.chronicler.character.spell.SpellSlot;
+import com.android.chronicler.character.spell.SpellSlots;
 import com.android.chronicler.ui.CharacterActivity;
+import com.android.chronicler.ui.FeatOverviewActivity;
 import com.android.chronicler.ui.SearchActivity;
+import com.android.chronicler.ui.SpellOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
 import com.android.chronicler.util.SkillsAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
 
 /**
  * Fragment for the CharacterActivity: This is the character's list of feats.
@@ -28,16 +37,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Created by andrea on 26.2.2016.
  */
 public class FeatFragment extends SheetFragment {
+    private SheetAdapter adapter;
+    private FeatList feats;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.feat_fragment_layout, container, false);
 
         ListView featsView = (ListView)(rootView.findViewById(R.id.featListView));
+
+
+        final FeatFragment thisFragment = this;
+
         // Set add button to footer
         ImageView addButtonView = new ImageView(getContext());
         addButtonView.setPadding(20, 20, 20, 20);
         addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
         featsView.addFooterView(addButtonView);
-        adapter = new SheetAdapter(getContext(), (FeatList)getArguments().getSerializable("FEATS"));
+
+        feats = (FeatList)getArguments().getSerializable("FEATS");
+
+        adapter = new SheetAdapter(getContext(), feats);
         featsView.setAdapter(adapter);
 
         featsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -46,9 +65,9 @@ public class FeatFragment extends SheetFragment {
                                     int position, long id) {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
-                    Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    intent.putExtra("TYPE", "feat");
-                    getActivity().startActivityForResult(intent, 1);
+                    Intent intent = new Intent(thisFragment.getContext(), FeatOverviewActivity.class);
+                    Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
+                    thisFragment.startActivityForResult(intent, 1);
 
                 } else {
                     return;
@@ -60,8 +79,21 @@ public class FeatFragment extends SheetFragment {
         return rootView;
     }
 
-    ListView skillsView;
-    private SheetAdapter adapter;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 0) return;
+
+        String featName = data.getStringExtra("toBeAdded");
+
+        FeatSlot newFeatSlot = new FeatSlot();
+        Feat newFeat = new Feat();
+        newFeat.setName(featName);
+        newFeatSlot.setFeat(newFeat);
+        feats.add(newFeatSlot);
+        adapter.clearAndAddAll(feats);
+        adapter.notifyDataSetChanged();
+    }
+
 
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)

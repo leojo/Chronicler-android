@@ -74,11 +74,13 @@ public class SearchActivity extends AppCompatActivity {
                         break;
                     case "feat":
                         featIntent.putExtra("featName", searchResults.get(position));
-                        thisActivity.startActivityForResult(featIntent, 1);
+                        featIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(featIntent);
                         break;
                     case "item":
                         itemIntent.putExtra("itemName", searchResults.get(position));
-                        thisActivity.startActivityForResult(itemIntent, 1);
+                        itemIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(itemIntent);
                 }
             };
         });
@@ -153,6 +155,14 @@ public class SearchActivity extends AppCompatActivity {
         if(SpellOverviewActivity.overviewActivity != null) {
             SpellOverviewActivity.overviewActivity.setResult(0);
             SpellOverviewActivity.overviewActivity.finish();
+        }
+        if(FeatOverviewActivity.overviewActivity != null) {
+            FeatOverviewActivity.overviewActivity.setResult(0);
+            FeatOverviewActivity.overviewActivity.finish();
+        }
+        if(ItemOverviewActivity.overviewActivity != null) {
+            ItemOverviewActivity.overviewActivity.setResult(0);
+            ItemOverviewActivity.overviewActivity.finish();
         }
         this.finish();
     }

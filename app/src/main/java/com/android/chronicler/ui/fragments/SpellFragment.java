@@ -76,15 +76,6 @@ public class SpellFragment extends SheetFragment {
                     Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
-                    //Intent intent2 = new Intent(this, SearchActivity.class);
-                    //intent2.putExtra("TYPE", "spell");
-                    //intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    //this.startActivity(intent2);
-
-
-
-
-
                 } else {
                     return;
                 }

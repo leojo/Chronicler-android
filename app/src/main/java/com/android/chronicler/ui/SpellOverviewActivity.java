@@ -16,7 +16,7 @@ import com.android.chronicler.R;
  */
 public class SpellOverviewActivity extends AppCompatActivity {
 
-    Button addSpellBtn;
+    private Button addSpellBtn;
     public static SpellOverviewActivity overviewActivity;
 
 
@@ -27,14 +27,11 @@ public class SpellOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spell_overview);
         overviewActivity = this;
         addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
-        Log.i("RESULT", "Spell overview activity has been started!");
-        Log.i("RESULT", "SpellOverview is now about to start the Search Activity, NOT for result");
+
         Intent intent2 = new Intent(this, SearchActivity.class);
         intent2.putExtra("TYPE", "spell");
         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         this.startActivity(intent2);
-
-
     }
 
     @Override
@@ -44,7 +41,6 @@ public class SpellOverviewActivity extends AppCompatActivity {
         TextView spellName = (TextView)findViewById(R.id.spellName);
         spellName.setText(spell);
 
-        final SpellOverviewActivity thisActivity = this;
 
         addSpellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,10 +48,10 @@ public class SpellOverviewActivity extends AppCompatActivity {
                 Log.i("RESULT", "SpellOverViewActivity: About to set the result");
                 Intent intent=new Intent();
                 intent.putExtra("toBeAdded",spell);
-                thisActivity.setResult(1,intent);
+                overviewActivity.setResult(1,intent);
                 Log.i("RESULT", "SpellOverviewActivity, result has extra "+spell);
                 SearchActivity.searchActivity.finish();
-                thisActivity.finish();
+                overviewActivity.finish();
 
             }
         });
