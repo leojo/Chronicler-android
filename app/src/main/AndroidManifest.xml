@@ -74,7 +74,9 @@
         <activity
             android:name=".ui.CharactersActivity"
             android:label="@string/title_activity_characters" />
-        <activity android:name=".ui.NewCampaignActivity" />
+        <activity
+            android:name=".ui.NewCampaignActivity"
+            android:noHistory="true" />
         <activity android:name=".ui.MyAccountActivity" />
         <activity android:name=".ui.InvitesActivity" />
         <activity
