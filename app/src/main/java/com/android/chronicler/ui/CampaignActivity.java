@@ -77,6 +77,9 @@ public class CampaignActivity extends FragmentActivity {
         Intent intent = getIntent();
         campaignName = intent.getStringExtra("CAMPAIGN_NAME");
         campaignCharacters = intent.getStringArrayListExtra("campaign_characters");
+        if (intent.hasExtra("NEW_PLAYER") && !campaignCharacters.contains(intent.getStringExtra("NEW_PLAYER"))) {
+            campaignCharacters.add(intent.getStringExtra("NEW_PLAYER"));
+        }
         campaignCharacterIDs = intent.getStringArrayListExtra("campaign_character_ids");
         // -------------------------------------------------------- FRAGMENT RELATED
 
