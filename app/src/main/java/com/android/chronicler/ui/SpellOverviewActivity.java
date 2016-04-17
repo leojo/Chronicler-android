@@ -29,10 +29,14 @@ public class SpellOverviewActivity extends AppCompatActivity {
         overviewActivity = this;
         addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
 
-        Intent intent2 = new Intent(this, SearchActivity.class);
-        intent2.putExtra("TYPE", "spell");
-        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        this.startActivity(intent2);
+        if(!getIntent().getBooleanExtra("StartedForResult", true)) {
+            addSpellBtn.setVisibility(View.GONE);
+        } else {
+            Intent intent2 = new Intent(this, SearchActivity.class);
+            intent2.putExtra("TYPE", "spell");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            this.startActivity(intent2);
+        }
     }
 
     @Override
@@ -45,6 +49,8 @@ public class SpellOverviewActivity extends AppCompatActivity {
         TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
         spellName.setText(spell);
         spellDescr.setText(Html.fromHtml(html));
+
+        addSpellBtn.setVisibility(View.VISIBLE);
 
 
         addSpellBtn.setOnClickListener(new View.OnClickListener() {

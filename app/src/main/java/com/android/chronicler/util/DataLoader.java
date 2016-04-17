@@ -435,6 +435,24 @@ public class DataLoader {
         });
     }
 
+    public static void leaveCampaign(final Context context, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+        cli.postUserData("/leaveCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", new String(responseBody));
+            }
+        });
+    }
+
+
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
     public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);

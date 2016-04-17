@@ -26,6 +26,16 @@ public class FeatOverviewActivity extends AppCompatActivity{
         overviewActivity = this;
         addFeatBtn = (Button)findViewById(R.id.addFeatBtn);
 
+        if(!getIntent().getBooleanExtra("StartedForResult", true)) {
+            addFeatBtn.setVisibility(View.GONE);
+        } else {
+            Intent intent2 = new Intent(this, SearchActivity.class);
+            intent2.putExtra("TYPE", "spell");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            this.startActivity(intent2);
+        }
+
+
         Intent intent2 = new Intent(this, SearchActivity.class);
         intent2.putExtra("TYPE", "feat");
         intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -38,6 +48,8 @@ public class FeatOverviewActivity extends AppCompatActivity{
         final String feat = intent.getStringExtra("featName");
         TextView featName = (TextView)findViewById(R.id.featName);
         featName.setText(feat);
+
+        addFeatBtn.setVisibility(View.VISIBLE);
 
         addFeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override

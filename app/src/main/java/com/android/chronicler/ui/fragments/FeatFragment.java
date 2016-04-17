@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
@@ -76,7 +78,48 @@ public class FeatFragment extends SheetFragment {
             // --------------------------------------
         });
 
+        featsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Activate popup when an invite is clicked
+                showPopup(view);
+
+                return false;
+            }
+        });
+
         return rootView;
+    }
+
+
+
+    // Pop-up for accepting or declining invites: Will later be replaced with buttons
+    // nested inside the list elements for accepting and declining.
+    public void showPopup(View v) {
+        final FeatFragment thisFragment = this;
+        PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
+        popup.inflate(R.menu.menu_feat_options);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Overview":
+                        Log.d("FEATS", "Should open overview for spell");
+                        Intent intent = new Intent(thisFragment.getContext(), FeatOverviewActivity.class);
+                        intent.putExtra("StartedForResult", false);
+                        startActivity(intent);
+                        break;
+                    case "Delete":
+                        Log.d("FEATS", "Should delete this spell");
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     @Override

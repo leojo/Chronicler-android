@@ -29,9 +29,14 @@ import com.android.chronicler.ui.fragments.SkillFragment;
 import com.android.chronicler.ui.fragments.SpellFragment;
 import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.SkillsAdapter;
+import com.android.chronicler.util.UserLocalStore;
 import com.android.chronicler.util.ViewPagerTabs;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

@@ -11,11 +11,13 @@
         android:text="Large Text"
         android:id="@+id/featName"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:layout_weight="0.09" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="221dp"
         android:layout_height="wrap_content"
+        style="@style/LoginButtonStyle"
         android:text="Add"
         android:id="@+id/addFeatBtn"
         android:layout_gravity="center_horizontal" />

@@ -27,8 +27,9 @@
     </ScrollView>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="221dp"
         android:layout_height="0dp"
+        style="@style/LoginButtonStyle"
         android:text="Add"
         android:id="@+id/addSpellBtn"
         android:layout_gravity="center_horizontal"
