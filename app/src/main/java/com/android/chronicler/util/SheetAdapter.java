@@ -19,6 +19,7 @@ import com.android.chronicler.character.item.Item;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.character.spell.SpellSlots;
+import com.android.chronicler.ui.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,14 +28,29 @@ import java.util.Arrays;
  * Created by andrea on 10.4.2016.
  */
 public class SheetAdapter extends BaseAdapter {
-    private ArrayList<SheetObject> sheetObjs = new ArrayList<>();
+    private ArrayList<SheetObject> sheetObjs;
     private String[] liValues;
     private final LayoutInflater inflater;
 
+    public SheetAdapter(Context context, ArrayList<SheetObject> arrayList){
+        this.sheetObjs = arrayList;
+        this.setValues();
+        inflater = LayoutInflater.from(context);
+    }
+
     public SheetAdapter(Context context , FeatList feats){
+        this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(feats.getFeats());
         this.setValues();
         inflater = LayoutInflater.from(context);
+    }
+
+    public void clearAndAddAll(ArrayList<SheetObject> objs) {
+        SearchActivity.searchResults.clear();
+        SearchActivity.searchResults.addAll(objs);
+        sheetObjs = new ArrayList<>();
+        this.sheetObjs.addAll(objs);
+        this.setValues();
     }
 
     public void clearAndAddAll(FeatList feats) {
@@ -45,6 +61,7 @@ public class SheetAdapter extends BaseAdapter {
 
 
     public SheetAdapter(Context context , SpellSlots spells){
+        this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(spells.getSpellSlots());
         this.setValues();
         inflater = LayoutInflater.from(context);
@@ -53,12 +70,13 @@ public class SheetAdapter extends BaseAdapter {
 
 
     public void clearAndAddAll(SpellSlots spells) {
-        sheetObjs = new ArrayList<>();
+        sheetObjs.clear();
         this.sheetObjs.addAll(spells.getSpellSlots());
         this.setValues();
     }
 
     public SheetAdapter(Context context , Inventory invt){
+        this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(invt.getItems());
         this.setValues();
         inflater = LayoutInflater.from(context);
@@ -102,10 +120,12 @@ public class SheetAdapter extends BaseAdapter {
     public View getView(int position, View item, ViewGroup parent) {
 
         if(item == null)
-            item = inflater.inflate(R.layout.skill_list_item, null);
+            item = inflater.inflate(R.layout.sheet_object_list_item, null);
 
-        TextView nameView = (TextView)item.findViewById(R.id.skillName);
+        TextView nameView = (TextView)item.findViewById(R.id.name);
         nameView.setText(sheetObjs.get(position).getName());
+        TextView descrView = (TextView)item.findViewById(R.id.shortDescr);
+        descrView.setText(sheetObjs.get(position).shortDescr());
 
         return item;
     }

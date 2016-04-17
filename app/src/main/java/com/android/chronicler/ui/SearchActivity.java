@@ -1,6 +1,5 @@
 package com.android.chronicler.ui;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -13,13 +12,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.SheetObject;
+import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.util.DataLoader;
+import com.android.chronicler.util.SheetAdapter;
 
 import java.util.ArrayList;
 
@@ -29,8 +30,8 @@ import java.util.ArrayList;
 public class SearchActivity extends AppCompatActivity {
     // TODO: http://developer.android.com/training/search/setup.html
     public static SearchActivity searchActivity;
-    public static ArrayAdapter<String> adapter;
-    private ArrayList<String> searchResults;
+    public static SheetAdapter adapter;
+    public static ArrayList<SheetObject> searchResults;
     private SearchView searchView;
     private String searchType;
     public static ListView resultsView;
@@ -56,7 +57,8 @@ public class SearchActivity extends AppCompatActivity {
         initListAndDialog();
 
         searchResults = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, searchResults);
+        adapter = new SheetAdapter(this,searchResults);
+
         resultsView.setAdapter(adapter);
 
         final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);
@@ -73,17 +75,18 @@ public class SearchActivity extends AppCompatActivity {
                 switch (searchType) {
                     case "spell":
                         Log.i("RESULT", "Search activity, reordering the spelloverview activity to front");
-                        spellIntent.putExtra("spellName", searchResults.get(position));
+                        spellIntent.putExtra("spellName", searchResults.get(position).getName());
+                        spellIntent.putExtra("html", searchResults.get(position).longDescr());
                         spellIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(spellIntent);
                         break;
                     case "feat":
-                        featIntent.putExtra("featName", searchResults.get(position));
+                        featIntent.putExtra("featName", searchResults.get(position).getName());
                         featIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(featIntent);
                         break;
                     case "item":
-                        itemIntent.putExtra("itemName", searchResults.get(position));
+                        itemIntent.putExtra("itemName", searchResults.get(position).getName());
                         itemIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(itemIntent);
                 }

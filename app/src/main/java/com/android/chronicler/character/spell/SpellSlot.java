@@ -42,6 +42,18 @@ public class SpellSlot extends SheetObject implements Serializable {
         this.available = true;
     }
 
+    @Override
+    public String shortDescr(){
+        if(containsSpell()) return spell.getShortDescription();
+        return "";
+    }
+
+    @Override
+    public String longDescr() {
+        if(containsSpell()) return spell.getFullText();
+        return super.longDescr();
+    }
+
     // This may be redundant
     @JsonIgnore
     public String getStatus(){ return (this.available ? "available" : "spent");}

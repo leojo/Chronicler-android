@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,8 +43,12 @@ public class SpellOverviewActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         final String spell = intent.getStringExtra("spellName");
+        String html = intent.getStringExtra("html");
+        Log.i("SPELL",html);
         TextView spellName = (TextView)findViewById(R.id.spellName);
+        TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
         spellName.setText(spell);
+        spellDescr.setText(Html.fromHtml(html));
 
         addSpellBtn.setVisibility(View.VISIBLE);
 

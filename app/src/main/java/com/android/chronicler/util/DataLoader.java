@@ -5,10 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.android.chronicler.character.CharacterSheet;
+import com.android.chronicler.character.SheetObject;
+import com.android.chronicler.character.feat.Feat;
+import com.android.chronicler.character.feat.FeatSlot;
+import com.android.chronicler.character.item.Item;
+import com.android.chronicler.character.spell.Spell;
+import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -312,25 +320,49 @@ public class DataLoader {
                 // This response will be:
                 //  { 0 : [id: , name: , fullText: ,...], 1: [id: , name: , fullText: ,...]
 
-                ArrayList<String> content = new ArrayList<String>();
+                ArrayList<SheetObject> content = new ArrayList<>();
                 ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
                     JSONArray allResults = new JSONArray(JSONresponse);
                     //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
+                    ObjectMapper mapper = new ObjectMapper();
                     for (int i = 0; i < allResults.length(); i++) {
-                        JSONObject result = allResults.getJSONObject(i);
-                        content.add(result.get("name").toString());
+                        //JSONObject result = allResults.getJSONObject(i);
+                        //content.add(result.get("name").toString());
                         //ids.add(Integer.parseInt(key));
-
+                        String resultString = allResults.getString(i);
+                        SheetObject result;
+                        switch (searchtype){
+                            case "spell":
+                                result = new SpellSlot();
+                                ((SpellSlot)result).setSpell(mapper.readValue(resultString, Spell.class));
+                                break;
+                            case "feat":
+                                result = new FeatSlot();
+                                ((FeatSlot)result).setFeat(mapper.readValue(resultString, Feat.class));
+                                break;
+                            case "item":
+                                result = mapper.readValue(resultString, Item.class);
+                                break;
+                            default:
+                                SearchActivity.noResults();
+                                return;
+                        }
+                        content.add(result);
                     }
                     if (content.size() != 0) {
-                        (SearchActivity.adapter).clear();
-                        (SearchActivity.adapter).addAll(content);
+                        SearchActivity.adapter.clearAndAddAll(content);
                         SearchActivity.showResults();
                     } else {
                         SearchActivity.noResults();
                     }
                 } catch (JSONException e) {
+                    SearchActivity.noResults();
+                } catch (JsonMappingException e) {
+                    SearchActivity.noResults();
+                } catch (JsonParseException e) {
+                    SearchActivity.noResults();
+                } catch (IOException e) {
                     SearchActivity.noResults();
                 }
             }
@@ -342,7 +374,6 @@ public class DataLoader {
             }
         });
     }
-
 
     // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
