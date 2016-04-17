@@ -36,7 +36,7 @@ public class ItemOverviewActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        final String item = getIntent().getStringExtra("itemName");
+        final String item = intent.getStringExtra("itemName");
         TextView itemName = (TextView)findViewById(R.id.itemName);
         itemName.setText(item);
 

@@ -129,6 +129,19 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
+        switch (searchType) {
+            case "spell":
+                searchView.setQueryHint("Fireball");
+                break;
+            case "feat":
+                searchView.setQueryHint("Initiative");
+                break;
+            case "item":
+                searchView.setQueryHint("Pouch");
+        }
+
+
+
         //MenuItemCompat searchItem = new Menu
         MenuItem searchItem = menu.findItem(R.id.search);
 
