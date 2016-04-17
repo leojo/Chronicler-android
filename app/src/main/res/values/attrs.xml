@@ -20,4 +20,7 @@
         <attr name="compBorder" format="integer"></attr>
         <attr name="compIntegerField" format="boolean"></attr>
     </declare-styleable>
+    <declare-styleable name="SkillListItemView">
+        <attr name="skillName" format="string"></attr>
+    </declare-styleable>
 </resources>
