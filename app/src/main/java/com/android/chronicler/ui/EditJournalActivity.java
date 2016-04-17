@@ -38,7 +38,6 @@ public class EditJournalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO: Implement controller that saves value to server
         Intent intent = new Intent();
         intent.putExtra("TITLE", titleField.getText().toString());
         intent.putExtra("TEXT", bodyField.getText().toString());

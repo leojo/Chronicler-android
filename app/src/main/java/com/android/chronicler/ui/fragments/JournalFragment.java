@@ -150,6 +150,7 @@ public class JournalFragment extends SheetFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data.getStringExtra("TITLE").length() == 0) return;
         ArrayList<String> newEntry = new ArrayList<>();
         newEntry.add(0, data.getStringExtra("TITLE"));
         newEntry.add(1, data.getStringExtra("TEXT"));
