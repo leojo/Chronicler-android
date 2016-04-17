@@ -33,4 +33,12 @@
         android:id="@+id/classTblBtn"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="221dp"
+        android:layout_height="wrap_content"
+        android:text="Save Changes"
+        android:id="@+id/saveBtn"
+        style="@style/LoginButtonStyle"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
