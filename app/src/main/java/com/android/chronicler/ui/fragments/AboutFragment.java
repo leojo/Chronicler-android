@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class AboutFragment extends SheetFragment {
     private static CharacterSheet cs;
+    private static CombatFragment combatFragment;
     private static final List<String> abilityFields = Arrays.asList(new String[]{"str", "dex", "con", "int", "wis", "cha"});
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,9 +55,6 @@ public class AboutFragment extends SheetFragment {
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
                                 String newVal = ((ContentView) v).getText();
-                                if(id.equalsIgnoreCase("dex")){
-                                    Log.i("DEX_CHANGE","Dex is about to be changed to "+newVal+"! The value of AC is "+cs.getAc());
-                                }
                                 cs.updateField(((ContentView) v).getCustomId(), newVal);
                                 String actualNewVal = cs.getField(((ContentView) v).getCustomId(), newVal);
                                 ((ContentView) v).updateText(actualNewVal);
@@ -65,7 +63,31 @@ public class AboutFragment extends SheetFragment {
                                 if (abilityFields.contains(id)) {
                                     Log.i("UPDATE_MOD", "Should update " + id + "Mod now");
                                     if(id.equalsIgnoreCase("dex")){
-                                        Log.i("DEX_CHANGE","Dex has just changed to "+newVal+"! The value of AC is "+cs.getAc());
+                                        // Find the combatFragment and update ac, touch, init and reflex
+                                        //FIND
+                                        ContentView acView = (ContentView) combatFragment.getView().findViewById(R.id.acView);
+                                        ContentView touchView = (ContentView) combatFragment.getView().findViewById(R.id.touchView);
+                                        ContentView initView = (ContentView) combatFragment.getView().findViewById(R.id.initView);
+                                        ContentView refView = (ContentView) combatFragment.getView().findViewById(R.id.refView);
+                                        //UPDATE
+                                        acView.updateText(cs.getAc());
+                                        touchView.updateText(cs.getTouch());
+                                        initView.updateText(cs.getInitiative());
+                                        refView.updateText(cs.getField("ref",refView.getText()));
+                                    } else if(id.equalsIgnoreCase("con")){
+                                        // Find the combatFragment and update hp and fort
+                                        //FIND
+                                        ContentView hpView = (ContentView) combatFragment.getView().findViewById(R.id.hpView);
+                                        ContentView fortView = (ContentView) combatFragment.getView().findViewById(R.id.fortView);
+                                        //UPDATE
+                                        hpView.updateText(cs.getHp()+"");
+                                        fortView.updateText(cs.getField("fort",hpView.getText()));
+                                    } else if(id.equalsIgnoreCase("wis")){
+                                        // Find the combatFragment and update will
+                                        //FIND
+                                        ContentView willView = (ContentView) combatFragment.getView().findViewById(R.id.willView);
+                                        //UPDATE
+                                        willView.updateText(cs.getField("will", willView.getText()));
                                     }
                                     ContentView modView = (ContentView) rootView.findViewById(modId);
                                     String oldMod = modView.getText();
@@ -135,10 +157,12 @@ public class AboutFragment extends SheetFragment {
     // newInstance is called when the CharacterActivity is started and the fragments get
     // created. Here is where we would put our arguments specific to that fragment (say, a list of spells)
     // as arguments for this function.
-    public static AboutFragment newInstance(String type, CharacterSheet characterSheet) {
+    public static AboutFragment newInstance(String type, CharacterSheet characterSheet, CombatFragment combatFrag) {
         cs = characterSheet;
         Bundle args = new Bundle();
         args.putString("ID", type);
+        //args.putInt("COMBAT_ID", combatFrag.getId());
+        combatFragment = combatFrag;
         AboutFragment aboutFrag = new AboutFragment();
         aboutFrag.setArguments(args);
         return aboutFrag;

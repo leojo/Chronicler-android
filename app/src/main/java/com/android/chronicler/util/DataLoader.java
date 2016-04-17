@@ -483,6 +483,8 @@ public class DataLoader {
                     e.printStackTrace();
                     Log.i("CAMPAIGN_DATA", e.toString());
                 }
+                Log.i("CAMPAIGN_DATA", "Received characters: " + characterNames);
+                Log.i("CAMPAIGN_DATA", "Received character IDs: " + characterIDs);
 
                 intent.putExtra("campaign_characters", characterNames);
                 intent.putExtra("campaign_character_ids", characterIDs);
@@ -566,8 +568,18 @@ public class DataLoader {
         });
     }
 
-    // Stores a given character sheet in the server-side database.
     public static void storeCharSheet(Context context, final CharacterSheet c){
+        storeCharSheet(context, c, true, 0);
+    }
+
+
+    public static void updateCharSheet(Context context, final CharacterSheet c){
+        int charID = CharactersActivity.openCharID;
+        storeCharSheet(context,c,false,charID);
+    }
+
+    // Stores a given character sheet in the server-side database.
+    public static void storeCharSheet(Context context, final CharacterSheet c, final boolean newSheet, final int charID){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
         try {
@@ -577,17 +589,20 @@ public class DataLoader {
             e.printStackTrace();
         }
         if(charEntity!= null) {
-            cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
+            String url = "/storeChar?"+(newSheet?"new=true":"new=false")+"&id="+charID;
+            cli.postUserData(url, charEntity, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                     Log.i("STORECHAR", "Success: "+new String(response));
                     try {
                         JSONObject res = new JSONObject(new String(response));
                         String code = res.getString("code");
-                        if(code.equals("success")) {
+                        if(code.equals("success") && newSheet) {
                             // Could add to CONTENT and notify adapter as with remove but this is fine too
-                            CharactersActivity.IDS.add(Integer.parseInt(res.getString("message")));
+                            int newCharID = Integer.parseInt(res.getString("message"));
+                            CharactersActivity.IDS.add(newCharID);
                             CharactersActivity.adapter.add(c.getName());
+                            CharactersActivity.openCharID = newCharID;
                         } else if(code.equals("failure")) {
                             Log.d("STORECHAR", res.getString("message"));
                         } else {

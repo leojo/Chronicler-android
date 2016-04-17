@@ -1,6 +1,7 @@
 package com.android.chronicler.ui;
 
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -65,8 +66,8 @@ public class CharacterActivity extends FragmentActivity {
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
-        fragments.add(AboutFragment.newInstance("ABOUT",character));
         CombatFragment combatFrag = CombatFragment.newInstance("COMBAT",character);
+        fragments.add(AboutFragment.newInstance("ABOUT",character,combatFrag));
         fragments.add(combatFrag);
         fragments.add(SpellFragment.newInstance("SPELLS", character.getSpellSlots()));
         fragments.add(FeatFragment.newInstance("FEATS", character.getFeats()));
@@ -85,7 +86,7 @@ public class CharacterActivity extends FragmentActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(pagerTabs);
         mPager.setCurrentItem(INITIAL_PAGE);
-        mPager.setPageMargin(2);
+        mPager.setPageMargin(0);
         mPager.setPageMarginDrawable(R.color.tabs_color);
 
         // Pager tabs are the small tabs that scroll the fragments and have the names
@@ -131,9 +132,11 @@ public class CharacterActivity extends FragmentActivity {
      */
     private class SheetPagerAdapter extends FragmentStatePagerAdapter {
         private List<SheetFragment> fragments;
+        private FragmentManager fm;
 
         public SheetPagerAdapter(FragmentManager fm, List<SheetFragment> fragments) {
             super(fm);
+            this.fm = fm;
             this.fragments = fragments;
         }
 
@@ -147,5 +150,4 @@ public class CharacterActivity extends FragmentActivity {
             return this.fragments.size();
         }
     }
-
 }

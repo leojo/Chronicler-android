@@ -80,6 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:background="@drawable/border_left_bottom"
+            android:id="@+id/hpView"
             custom:editable="true"
             custom:name="HitPoints"
             custom:id="hp"
@@ -122,6 +123,7 @@
         custom:id="init"
         custom:value="+3"
         custom:integerField="true"
+        android:id="@+id/initView"
         >
     </com.android.chronicler.util.ContentView>
 

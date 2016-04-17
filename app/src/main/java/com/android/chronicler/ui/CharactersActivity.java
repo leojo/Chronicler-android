@@ -35,6 +35,7 @@ public class CharactersActivity extends AppCompatActivity {
     ListView characterListView;
     public static List<String> CONTENT;
     public static List<Integer> IDS;
+    public static int openCharID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,7 @@ public class CharactersActivity extends AppCompatActivity {
     // Opens the character sheet. This will load the JSON of the character
     // selected and populate the sheet with his information. This is as of now incomplete.
     public void openSheet(int id) {
+        this.openCharID = id;
         Intent intent = new Intent(this, CharacterActivity.class);
         DataLoader.readySheetThenStart(this, intent, id);
     }
