@@ -302,7 +302,7 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
-    public static void handleSearchQuery(final Context context, final Intent intent, String searchtype, String searchtext) {
+    public static void handleSearchQuery(final Context context, final Intent intent, final String searchtype, final String searchtext) {
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
         cli.get(queryURL, null, new AsyncHttpResponseHandler() {
@@ -333,7 +333,7 @@ public class DataLoader {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("SEARCH", "Failure fetching search results for search type: " + searchtype + " and search string "+searchtext);
             }
         });
     }

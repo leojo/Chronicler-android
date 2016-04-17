@@ -69,6 +69,12 @@ public class SheetAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    public void clearAndAddAll(SpellSlots spells) {
+        sheetObjs = new ArrayList<>();
+        this.sheetObjs.addAll(spells.getSpellSlots());
+        this.setValues();
+    }
+
     private void setValues()  {
         int size = this.sheetObjs.size();
         liValues = new String[size];
@@ -105,4 +111,6 @@ public class SheetAdapter extends BaseAdapter {
 
         return item;
     }
+
+
 }

@@ -16,25 +16,57 @@ import com.android.chronicler.R;
  */
 public class SpellOverviewActivity extends AppCompatActivity {
 
+    Button addSpellBtn;
+    public static SpellOverviewActivity overviewActivity;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spell_overview);
-        final String spell = getIntent().getStringExtra("spellName");
+        overviewActivity = this;
+        addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
+        Log.i("RESULT", "Spell overview activity has been started!");
+        Log.i("RESULT", "SpellOverview is now about to start the Search Activity, NOT for result");
+        Intent intent2 = new Intent(this, SearchActivity.class);
+        intent2.putExtra("TYPE", "spell");
+        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        this.startActivity(intent2);
+
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        final String spell = intent.getStringExtra("spellName");
         TextView spellName = (TextView)findViewById(R.id.spellName);
         spellName.setText(spell);
 
-        Button addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
+        final SpellOverviewActivity thisActivity = this;
+
         addSpellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("RESULT", "SpellOverViewActivity: About to set the result");
                 Intent intent=new Intent();
                 intent.putExtra("toBeAdded",spell);
-                setResult(1,intent);
+                thisActivity.setResult(1,intent);
                 Log.i("RESULT", "SpellOverviewActivity, result has extra "+spell);
-                finish();
+                SearchActivity.searchActivity.finish();
+                thisActivity.finish();
+
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent2 = new Intent(this, SearchActivity.class);
+        intent2.putExtra("TYPE", "spell");
+        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        this.startActivity(intent2);
     }
 }
