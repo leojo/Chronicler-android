@@ -7,4 +7,12 @@ public class SheetObject {
     public String getName() {
         return "No Name";
     }
+
+    public String shortDescr(){
+        return "";
+    }
+
+    public String longDescr(){
+        return "No Description";
+    }
 }
