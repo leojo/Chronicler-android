@@ -41,11 +41,12 @@ public class SpellFragment extends SheetFragment {
 
     private SheetAdapter adapter;
     private SpellSlots spells;
+    private ArrayList<Boolean> spellAvailability;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.spell_fragment_layout, container, false);
 
-        ListView spellsView = (ListView)(rootView.findViewById(R.id.spellsView));
+        final ListView spellsView = (ListView)(rootView.findViewById(R.id.spellsView));
 
         final SpellFragment thisFragment = this;
 
@@ -56,17 +57,12 @@ public class SpellFragment extends SheetFragment {
         spellsView.addFooterView(addButtonView);
 
         spells = (SpellSlots) getArguments().getSerializable("SPELLS");
+        spellAvailability = new ArrayList<>();
 
-
-        SpellSlot dummySlot = new SpellSlot();
-        Spell dummyFeat = new Spell();
-        dummyFeat.setName("Testing this");
-        dummySlot.setSpell(dummyFeat);
-        spells.add(dummySlot);
+        for(int i = 0; i < spells.getSpellSlots().size(); i++) spellAvailability.add(true);
 
         adapter = new SheetAdapter(getContext(), spells);
         spellsView.setAdapter(adapter);
-
         spellsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -81,7 +77,14 @@ public class SpellFragment extends SheetFragment {
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
-                    view.setBackgroundResource(R.drawable.spell_spent);
+                    if(spellAvailability.get(position)) {
+                        view.setBackgroundResource(R.drawable.spell_spent);
+                        spellAvailability.set(position, false);
+                    } else {
+                        view.setBackgroundResource(R.drawable.spell_ready);
+                        spellAvailability.set(position, true);
+                    }
+
                     return;
                 }
             };
@@ -150,6 +153,8 @@ public class SpellFragment extends SheetFragment {
         adapter.clearAndAddAll(spells);
         adapter.notifyDataSetChanged();
         ArrayList<SpellSlot> s = (spells.getSpellSlots());
+
+        spellAvailability.add(true);
 
 
         Log.i("RESULT", "After result, our spells vector is "+s.toString());
