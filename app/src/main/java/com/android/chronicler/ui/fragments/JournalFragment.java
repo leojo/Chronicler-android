@@ -52,7 +52,6 @@ public class JournalFragment extends SheetFragment {
         Bundle args = new Bundle();
         args.putSerializable(PUBLIC_NOTES, notes);
         args.putString(CAMPAIGN_NAME, campaignName);
-        Log.i("Journal", notes.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,7 +89,6 @@ public class JournalFragment extends SheetFragment {
         journalView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Adapter", String.valueOf(adapter.getCount()));
                 if (position == adapter.getCount()) {
                     ArrayList<String> newEntry = new ArrayList<String>();
                     newEntry.add(0, "");
@@ -179,6 +177,5 @@ public class JournalFragment extends SheetFragment {
         for (ArrayList<String> entry : entries) {
             titles.add(entry.get(0));
         }
-        Log.i("Campaign", titles.toString());
     }
 }

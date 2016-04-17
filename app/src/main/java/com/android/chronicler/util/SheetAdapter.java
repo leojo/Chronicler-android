@@ -44,6 +44,12 @@ public class SheetAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    public void clearAndAddAll(FeatList feats) {
+        sheetObjs = new ArrayList<>();
+        this.sheetObjs.addAll(feats.getFeats());
+        this.setValues();
+    }
+
 
     public SheetAdapter(Context context , SpellSlots spells){
         if(spells.getSpellSlots().size() == 0) {
@@ -58,6 +64,12 @@ public class SheetAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    public void clearAndAddAll(SpellSlots spells) {
+        sheetObjs = new ArrayList<>();
+        this.sheetObjs.addAll(spells.getSpellSlots());
+        this.setValues();
+    }
+
     public SheetAdapter(Context context , Inventory invt){
         if(invt.getItems().size() == 0) {
             Item dummyItem = new ArmorShield();
@@ -68,6 +80,15 @@ public class SheetAdapter extends BaseAdapter {
         this.setValues();
         inflater = LayoutInflater.from(context);
     }
+
+    public void clearAndAddAll(Inventory invt) {
+        sheetObjs = new ArrayList<>();
+        this.sheetObjs.addAll(invt.getItems());
+        this.setValues();
+    }
+
+
+
 
     private void setValues()  {
         int size = this.sheetObjs.size();
@@ -105,4 +126,6 @@ public class SheetAdapter extends BaseAdapter {
 
         return item;
     }
+
+
 }

@@ -84,7 +84,6 @@ public class CampaignActivity extends FragmentActivity {
         privateNotes = intent.getStringArrayListExtra("campaign_private_notes");
         publicNotes = intent.getStringArrayListExtra("campaign_public_notes");
         journalNotes = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("campaign_journal_entries");
-        Log.i("Campaign", "Journal notes are: " +journalNotes);
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS

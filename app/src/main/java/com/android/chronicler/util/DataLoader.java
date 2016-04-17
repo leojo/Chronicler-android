@@ -1,25 +1,14 @@
 package com.android.chronicler.util;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-
-import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,7 +21,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -314,7 +302,7 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
-    public static void handleSearchQuery(final Context context, final Intent intent, String searchtype, String searchtext) {
+    public static void handleSearchQuery(final Context context, final Intent intent, final String searchtype, final String searchtext) {
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
         cli.get(queryURL, null, new AsyncHttpResponseHandler() {
@@ -335,17 +323,22 @@ public class DataLoader {
                         //ids.add(Integer.parseInt(key));
 
                     }
-                    (SearchActivity.adapter).clear();
-                    (SearchActivity.adapter).addAll(content);
+                    if(content.size() != 0) {
+                        (SearchActivity.adapter).clear();
+                        (SearchActivity.adapter).addAll(content);
+                        SearchActivity.showResults();
+                    }else{
+                        SearchActivity.noResults();
+                    }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    SearchActivity.noResults();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 String response = (responseBody == null ? "Empty response" : new String(responseBody));
-                Log.i("SKILLS", "Failure fetching skill data: " + response);
+                Log.i("SEARCH", "Failure fetching search results for search type: " + searchtype + " and search string "+searchtext);
             }
         });
     }
@@ -360,7 +353,7 @@ public class DataLoader {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 ArrayList<String> DMCampaigns = new ArrayList<>();
                 ArrayList<String> PCCampaigns = new ArrayList<>();
-                Log.i("CAMPAIGNS", responseBody.toString());
+                Log.i("Campaigns", responseBody.toString());
 
                 try {
                     JSONArray DMResponse = responseBody.getJSONObject(0).names();
@@ -420,6 +413,7 @@ public class DataLoader {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 context.startActivity(intent);
+                Log.i("Campaign", new String(responseBody));
             }
 
             @Override
@@ -428,6 +422,27 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void deleteCampaign(final Context context, String campaignName) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.put("campaign_name", campaignName);
+
+        Log.i("Campaign", "Deleting campaign "+campaignName+"...");
+        cli.postUserData("/deleteCampaign", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Database response: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to delete campaign with responseBody: " + new String(responseBody));
+            }
+        });
     }
 
     public static void getCampaignDetailsThenOpen(final Context context, final Intent intent, String campaignName) {
@@ -447,8 +462,6 @@ public class DataLoader {
                 ArrayList<String> privateNotes = new ArrayList<>();
                 ArrayList<String> publicNotes = new ArrayList<>();
                 Log.d("Campaign", responseBody.toString());
-
-                Log.i("CAMPAIGN_DATA", "Received campaign data: " + responseBody.toString());
                 try {
                     JSONObject players = new JSONObject(responseBody.getString("Players"));
                     JSONArray JCharacterIDs = players.names();
@@ -481,10 +494,7 @@ public class DataLoader {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.i("CAMPAIGN_DATA", e.toString());
                 }
-                Log.i("CAMPAIGN_DATA", "Received characters: " + characterNames);
-                Log.i("CAMPAIGN_DATA", "Received character IDs: " + characterIDs);
 
                 intent.putExtra("campaign_characters", characterNames);
                 intent.putExtra("campaign_character_ids", characterIDs);
