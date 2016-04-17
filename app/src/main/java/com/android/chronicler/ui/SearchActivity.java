@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
@@ -32,6 +33,8 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<String> searchResults;
     private SearchView searchView;
     private String searchType;
+    public static ListView resultsView;
+    public static TextView searchMessage;
 
 
 
@@ -45,13 +48,15 @@ public class SearchActivity extends AppCompatActivity {
         // activity for result on this within inner class (in click listener)
         final SearchActivity thisActivity = this;
 
+        // Hide results view for now and just show the message
+        resultsView = (ListView)findViewById(R.id.resultsView);
+        searchMessage = (TextView)findViewById(R.id.searchMessage);
+
         searchType = getIntent().getStringExtra("TYPE");
+        initListAndDialog();
+
         searchResults = new ArrayList<>();
-        searchResults.add("Dummy result 1");
-        searchResults.add("Dummy result 2");
-        searchResults.add("Dummy result 3");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, searchResults);
-        ListView resultsView = (ListView)findViewById(R.id.resultsView);
         resultsView.setAdapter(adapter);
 
         final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);
@@ -160,6 +165,31 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private void initListAndDialog()  {
+        showView(searchMessage);
+        hideView(resultsView);
+        searchMessage.setText("Find a particular "+searchType+" by using the search above.");
+    }
+
+    public static void showResults() {
+        hideView(searchMessage);
+        showView(resultsView);
+    }
+
+    public static void noResults() {
+        hideView(resultsView);
+        searchMessage.setText("No results found for your query.");
+        showView(searchMessage);
+    }
+
+    private static void hideView(View v) {
+        v.setVisibility(View.GONE);
+    }
+
+    private static void showView(View v) {
+        v.setVisibility(View.VISIBLE);
     }
 
     @Override

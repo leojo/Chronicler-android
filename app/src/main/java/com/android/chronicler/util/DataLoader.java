@@ -323,10 +323,15 @@ public class DataLoader {
                         //ids.add(Integer.parseInt(key));
 
                     }
-                    (SearchActivity.adapter).clear();
-                    (SearchActivity.adapter).addAll(content);
+                    if(content.size() != 0) {
+                        (SearchActivity.adapter).clear();
+                        (SearchActivity.adapter).addAll(content);
+                        SearchActivity.showResults();
+                    }else{
+                        SearchActivity.noResults();
+                    }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    SearchActivity.noResults();
                 }
             }
 
