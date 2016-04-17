@@ -22,12 +22,14 @@ import java.util.HashMap;
  */
 public class SkillsAdapter extends BaseAdapter {
 
-    private HashMap<String,Skill> skills;
-    private String[] skillNames;
+    private final HashMap<String,Skill> skills;
+    private final String[] skillNames;
     private final LayoutInflater inflater;
+    private final Context context;
 
     public SkillsAdapter(Context context ,Skills skills){
         this.skills = skills.getSkills();
+        this.context = context;
         skillNames = this.skills.keySet().toArray(new String[this.skills.size()]);
         Arrays.sort(skillNames);
         Log.d("SKILLS_ADAPTER",Arrays.toString(skillNames));
@@ -52,28 +54,43 @@ public class SkillsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View item, ViewGroup parent) {
         Log.i("SKILLS_ADAPTER","Adapter getting view...");
+        if(item != null) return item;
 
-        String key = skillNames[position];
-        //if(skills.get(key).get)
-        int mod = skills.get(key).getMod();
-        int rank = skills.get(key).getRanks();
-        int total = skills.get(key).getTotalValue();
-        int misc = total-mod-rank;
+        String name = skillNames[position];
+        int mod = skills.get(name).getMod();
+        int rank = skills.get(name).getRanks();
+        int misc = skills.get(name).getMisc();
+        int total = skills.get(name).getTotalValue();
 
-        if(item == null) item = inflater.inflate(R.layout.skill_list_item, null);
+        final SkillListItemView sliv = new SkillListItemView(context,name);
+        sliv.setMod(mod);
+        sliv.setRank(rank);
+        sliv.setMisc(misc);
+        sliv.setTotal(total);
 
+        sliv.setRankViewOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    sliv.recalculate();
+                    Log.d("SKILL_STORE", "Setting ranks of " + sliv.getName() + " to " + sliv.getRank());
+                    skills.get(sliv.getName()).setRanks(sliv.getRank());
+                    skills.get(sliv.getName()).update();
+                }
+            }
+        });
 
-        TextView nameView = (TextView)item.findViewById(R.id.skillName);
-        TextView modView = (TextView)item.findViewById(R.id.skillMod);
-        TextView rankView = (TextView)item.findViewById(R.id.skillRank);
-        TextView miscView = (TextView)item.findViewById(R.id.skillMisc);
-        TextView totalView = (TextView)item.findViewById(R.id.skillTotal);
-        nameView.setText(key);
-        modView.setText(mod+"");
-        rankView.setText(rank+"");
-        miscView.setText(misc+"");
-        totalView.setText(total+"");
-
-        return item;
+        sliv.setMiscViewOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    sliv.recalculate();
+                    Log.d("SKILL_STORE", "Setting misc of " + sliv.getName() + " to " + sliv.getMisc());
+                    skills.get(sliv.getName()).setMisc(sliv.getMisc());
+                    skills.get(sliv.getName()).update();
+                }
+            }
+        });
+        return sliv;
     }
 }

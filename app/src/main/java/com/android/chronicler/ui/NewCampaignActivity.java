@@ -11,6 +11,7 @@ import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by bjorn on 24.2.2016.
@@ -38,6 +39,11 @@ public class NewCampaignActivity extends AppCompatActivity {
     public void addCampaign(String campaignName) {
         DataLoader loader = new DataLoader();
         Intent intent = new Intent(this, CampaignActivity.class);
+        intent.putExtra("campaign_characters", new ArrayList<String>());
+        intent.putExtra("campaign_character_ids", new ArrayList<String>());
+        intent.putExtra("campaign_private_notes", new ArrayList<String>());
+        intent.putExtra("campaign_public_notes", new ArrayList<String>());
+        intent.putExtra("campaign_journal_entries", new ArrayList<ArrayList<String>>());
         try {
             loader.postCampaignThenOpen(this, intent, campaignName);
         } catch (IOException e) {

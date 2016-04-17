@@ -123,8 +123,7 @@
         custom:id="init"
         custom:value="+3"
         custom:integerField="true"
-        android:id="@+id/initView"
-        >
+        android:id="@+id/initView">
     </com.android.chronicler.util.ContentView>
 
     <LinearLayout
@@ -198,6 +197,21 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.72"></LinearLayout>
+            android:layout_weight="0.72"
+            android:weightSum="1">
+
+            <com.android.chronicler.util.ContentView
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.155"
+                android:background="@drawable/border_bottom"
+                custom:editable="false"
+                custom:name="Base Attack Bonus"
+                custom:id="bab"
+                custom:value="+1"
+                custom:integerField="false"
+                android:id="@+id/babView"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

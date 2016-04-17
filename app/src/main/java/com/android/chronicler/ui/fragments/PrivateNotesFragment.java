@@ -1,11 +1,13 @@
 package com.android.chronicler.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,9 +16,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
+import com.android.chronicler.ui.CampaignActivity;
 import com.android.chronicler.ui.CampaignNoteActivity;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 
@@ -94,7 +99,48 @@ public class PrivateNotesFragment extends SheetFragment {
             }
         });
 
+        noteListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showPopup(view, position);
+
+                return true;
+            }
+        });
+
         return rootView;
+    }
+
+    public void showPopup(View v, final int position) {
+        final PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.inflate(R.menu.menu_private_notes);
+        final Activity thisActivity = getActivity();
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Delete":
+                        privateNotes.remove(position);
+                        shortNotes.remove(position);
+                        adapter.notifyDataSetChanged();
+                        DataLoader.deletePrivateNote(thisActivity, position, campaignName);
+                        break;
+                    case "Make public":
+                        DataLoader.storePublicNote(thisActivity, Integer.MAX_VALUE, privateNotes.get(position), campaignName);
+                        DataLoader.deletePrivateNote(thisActivity, position, campaignName);
+                        ((CampaignActivity) getActivity()).setNotePublic(privateNotes.get(position));
+                        privateNotes.remove(position);
+                        shortNotes.remove(position);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird. Got "+item.getTitle());
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     private void openNote(String noteText, int position) {
@@ -114,6 +160,13 @@ public class PrivateNotesFragment extends SheetFragment {
             privateNotes.add(requestCode, newNote);
             shortNotes.add(requestCode, trimToLength(newNote));
         }
+        DataLoader.storePrivateNote(getActivity(), requestCode, newNote, campaignName);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void addNote(String noteText) {
+        privateNotes.add(noteText);
+        shortNotes.add(trimToLength(noteText));
         adapter.notifyDataSetChanged();
     }
 

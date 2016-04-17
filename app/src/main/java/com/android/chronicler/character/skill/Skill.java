@@ -1,5 +1,7 @@
 package com.android.chronicler.character.skill;
 
+import android.util.Log;
+
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,6 +33,8 @@ public class Skill implements Serializable {
 
     @JsonIgnore
     private final static String modBonus = "Ability Modifier";
+    @JsonIgnore
+    private final static String miscBonus = "Misc";
 
     // UPDATE FUNCTIONS ///////////////////////////////////////////////
     // Call this to make the skill recalculate stuff i.e. when ranks increase
@@ -45,11 +49,9 @@ public class Skill implements Serializable {
 
     // The actual update function, using the apropriate ability modifier.
 	public void update(int abilityModifier) {
-        this.bonuses = new HashMap<>();
-		this.bonuses.put("Ranks", this.ranks);
 		this.bonuses.put(modBonus, abilityModifier);
         this.totalValue = 0;
-        for(Integer value : bonuses.values()){ totalValue += value; }
+        for(Integer value : bonuses.values()) totalValue += value;
 	}
     // UPDATE END //////////////////////////////////////////////////
 
@@ -61,11 +63,19 @@ public class Skill implements Serializable {
     // Get's the total modifier of the skill, ranks and bonuses added together.
     @JsonIgnore
     public int getMod(){
-        int mod = ranks;
-        for(Integer bonus : bonuses.values()){
-            mod += bonus;
-        }
-        return mod;
+        if(bonuses.containsKey(modBonus)) return bonuses.get(modBonus);
+        return 0;
+    }
+
+    @JsonIgnore
+    public int getMisc(){
+        if(bonuses.containsKey(miscBonus)) return bonuses.get(miscBonus);
+        return 0;
+    }
+
+    @JsonIgnore
+    public void setMisc(int misc){
+        bonuses.put(miscBonus, misc);
     }
 
     // Does what you'd think, creates bonus if it didn't exist. returns true if bonus existed,

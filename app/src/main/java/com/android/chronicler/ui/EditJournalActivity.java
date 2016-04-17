@@ -25,8 +25,12 @@ public class EditJournalActivity extends AppCompatActivity {
         title = intent.getStringExtra("TITLE");
         body  = intent.getStringExtra("TEXT");
 
+
         titleField = (EditText) findViewById(R.id.entry_title);
         titleField.setText(title);
+        if (!intent.getBooleanExtra("EDIT_TITLE", true)) {
+            titleField.setKeyListener(null);
+        }
 
         bodyField = (EditText) findViewById(R.id.entry_body);
         bodyField.setText(body);
@@ -34,7 +38,6 @@ public class EditJournalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO: Implement controller that saves value to server
         Intent intent = new Intent();
         intent.putExtra("TITLE", titleField.getText().toString());
         intent.putExtra("TEXT", bodyField.getText().toString());
