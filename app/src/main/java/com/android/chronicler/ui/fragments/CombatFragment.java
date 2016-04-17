@@ -94,6 +94,7 @@ public class CombatFragment extends SheetFragment {
                 populate((ViewGroup) v, aboutVals);
             }
         }
+
     }
 
     private static HashMap<String,String> getVals(CharacterSheet cs){

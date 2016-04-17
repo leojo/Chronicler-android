@@ -1,6 +1,7 @@
 package com.android.chronicler.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -120,6 +121,13 @@ public class CharacterActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("RESULT", "Is this firing for some reason? Within Character Activity class");
+
     }
 
     public ViewPager getViewPager() {

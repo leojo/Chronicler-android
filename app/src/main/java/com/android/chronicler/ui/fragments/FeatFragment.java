@@ -48,7 +48,7 @@ public class FeatFragment extends SheetFragment {
                 if (position == adapter.getCount()) {
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
                     intent.putExtra("TYPE", "feat");
-                    getActivity().startActivity(intent);
+                    getActivity().startActivityForResult(intent, 1);
 
                 } else {
                     return;
