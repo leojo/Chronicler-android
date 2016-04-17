@@ -234,12 +234,12 @@ public class DataLoader {
         cli.getUserData("/deleteChar", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.i("LOGIN", "This is the response: "+new String(response));
+                Log.i("LOGIN", "This is the response: " + new String(response));
                 // called when response HTTP status is "200 OK"
                 try {
                     JSONObject res = new JSONObject(new String(response));
                     String code = res.getString("code");
-                    if(code.equals("success")) {
+                    if (code.equals("success")) {
                         // Needs to be this way because CONTENT and IDS don't talk to each other
                         // so if we simply did adapter.remove, we would remove the first character
                         // with a specific name but maybe not the one we meant to remove.
@@ -248,10 +248,10 @@ public class DataLoader {
                         CharactersActivity.CONTENT.remove(charPosition);
                         CharactersActivity.IDS.remove(charPosition);
                         CharactersActivity.adapter.notifyDataSetChanged();
-                    } else if(code.equals("failure")) {
+                    } else if (code.equals("failure")) {
                         Log.d("CHARACTER DELETE", res.getString("message"));
                     }
-                }catch(JSONException e) {
+                } catch (JSONException e) {
                     Log.d("CHARACTER DELETE", "Invalid JSON response from server");
                 }
             }
@@ -329,7 +329,7 @@ public class DataLoader {
                 try {
                     JSONArray allResults = new JSONArray(JSONresponse);
                     //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
-                    for(int i = 0; i<allResults.length(); i++) {
+                    for (int i = 0; i < allResults.length(); i++) {
                         JSONObject result = allResults.getJSONObject(i);
                         content.add(result.get("name").toString());
                         //ids.add(Integer.parseInt(key));
@@ -344,7 +344,7 @@ public class DataLoader {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                String response = (responseBody==null?"Empty response":new String(responseBody));
+                String response = (responseBody == null ? "Empty response" : new String(responseBody));
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
@@ -443,11 +443,12 @@ public class DataLoader {
                 //ArrayList<String> characters = new ArrayList<>();
                 ArrayList<String> characterNames = new ArrayList<>();
                 ArrayList<String> characterIDs = new ArrayList<>();
-                ArrayList<String> journalEntries = new ArrayList<>();
+                ArrayList<ArrayList<String>> journalEntries = new ArrayList<>();
                 ArrayList<String> privateNotes = new ArrayList<>();
                 ArrayList<String> publicNotes = new ArrayList<>();
+                Log.d("Campaign", responseBody.toString());
 
-                Log.i("CAMPAIGN_DATA", "Received campaign data: "+responseBody.toString());
+                Log.i("CAMPAIGN_DATA", "Received campaign data: " + responseBody.toString());
                 try {
                     JSONObject players = new JSONObject(responseBody.getString("Players"));
                     JSONArray JCharacterIDs = players.names();
@@ -458,18 +459,24 @@ public class DataLoader {
                         }
                     }
 
-                    JSONArray journal = new JSONArray(responseBody.getString("Journal Entries"));
-                    for (int i=0; i<journal.length(); i++) {
-                        journalEntries.add(journal.getString(i));
+                    JSONObject journal = new JSONObject(responseBody.getString("Journal Entries"));
+                    JSONArray journalKeys = journal.names();
+                    if (journalKeys != null) {
+                        for (int i = 0; i < journalKeys.length(); i++) {
+                            ArrayList<String> entry = new ArrayList<>();
+                            entry.add(journalKeys.getString(i));
+                            entry.add(journal.getString(journalKeys.getString(i)));
+                            journalEntries.add(entry);
+                        }
                     }
 
                     JSONArray pubNotes = new JSONArray(responseBody.getString("Public Notes"));
-                    for (int i=0; i<journal.length(); i++) {
+                    for (int i = 0; i < pubNotes.length(); i++) {
                         publicNotes.add(pubNotes.getString(i));
                     }
 
                     JSONArray privNotes = new JSONArray(responseBody.getString("Private Notes"));
-                    for (int i=0; i<journal.length(); i++) {
+                    for (int i = 0; i < privNotes.length(); i++) {
                         privateNotes.add(privNotes.getString(i));
                     }
                 } catch (JSONException e) {
@@ -492,6 +499,71 @@ public class DataLoader {
             }
         });
         goToWaitScreen(context);
+    }
+
+    public static void storePublicNote(Context context, final int index, final String noteText, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("note", noteText);
+        params.add("campaign_name", campaign);
+        params.add("index", String.valueOf(index));
+
+        cli.postUserData("/savePublicNotes", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored public note with responseBody: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store public note with responseBody: " + new String(responseBody));
+            }
+        });
+    }
+
+    public static void storePrivateNote(Context context, final int index, final String noteText, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("note", noteText);
+        params.add("campaign_name", campaign);
+        params.add("index", String.valueOf(index));
+
+        cli.postUserData("/savePrivateNotes", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored private note with responseBody: " + new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store private note with responseBody: " + new String(responseBody));
+            }
+        });
+    }
+    public static void storeJournalEntry(Context context, final String title, final String entry, final String campaign) {
+        ChroniclerRestClient cli = new ChroniclerRestClient(context);
+        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
+        RequestParams params = new RequestParams();
+        params.add("title", title);
+        params.add("entry", entry);
+        params.add("campaign_name", campaign);
+
+        cli.postUserData("/saveJournalEntry", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("Campaign", "Successfully stored journal entry with responseBody: "+new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("Campaign", "Failed to store journal entry with responseBody: "+new String(responseBody));
+            }
+        });
     }
 
     // Stores a given character sheet in the server-side database.

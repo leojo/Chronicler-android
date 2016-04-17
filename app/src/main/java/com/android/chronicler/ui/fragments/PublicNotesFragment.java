@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.ui.CampaignNoteActivity;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 
@@ -103,6 +104,7 @@ public class PublicNotesFragment extends SheetFragment {
         startActivityForResult(intent, position);
     }
 
+    // requestCode doubles as index
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("Notes", "Received text: " + data.getStringExtra("TEXT"));
@@ -114,6 +116,7 @@ public class PublicNotesFragment extends SheetFragment {
             publicNotes.add(requestCode, newNote);
             shortNotes.add(requestCode, trimToLength(newNote));
         }
+        DataLoader.storePublicNote(getActivity(), requestCode, newNote, campaignName);
         adapter.notifyDataSetChanged();
     }
 

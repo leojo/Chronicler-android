@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.ui.CampaignNoteActivity;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.ArrayList;
 
@@ -114,6 +115,7 @@ public class PrivateNotesFragment extends SheetFragment {
             privateNotes.add(requestCode, newNote);
             shortNotes.add(requestCode, trimToLength(newNote));
         }
+        DataLoader.storePrivateNote(getActivity(), requestCode, newNote, campaignName);
         adapter.notifyDataSetChanged();
     }
 

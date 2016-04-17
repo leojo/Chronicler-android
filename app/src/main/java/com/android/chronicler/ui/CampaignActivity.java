@@ -67,7 +67,7 @@ public class CampaignActivity extends FragmentActivity {
     private ArrayList<String> privateNotes;
     private ArrayList<String> publicNotes;
     //This should probably be a ArrayList<ArrayList<String>>
-    private ArrayList<String> journalNotes;
+    private ArrayList<ArrayList<String>> journalNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,10 @@ public class CampaignActivity extends FragmentActivity {
             campaignCharacters.add(intent.getStringExtra("NEW_PLAYER"));
         }
         campaignCharacterIDs = intent.getStringArrayListExtra("campaign_character_ids");
+        privateNotes = intent.getStringArrayListExtra("campaign_private_notes");
+        publicNotes = intent.getStringArrayListExtra("campaign_public_notes");
+        journalNotes = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("campaign_journal_entries");
+        Log.i("Campaign", "Journal notes are: " +journalNotes);
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
@@ -100,8 +104,8 @@ public class CampaignActivity extends FragmentActivity {
         demoNotes.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra. ");
         demoNotes.add("Nulla volutpat neque ac purus condimentum, sed vehicula mauris lacinia. Sed in venenatis urna. Pellentesque convallis est vel est pretium, id tristique dui tincidunt. Donec tempus quam nulla, ut sagittis lectus interdum tincidunt. Nullam risus dui, placerat a neque in, accumsan ultrices elit. Aliquam quis mi nec leo luctus maximus. Phasellus eleifend nisi diam, sit amet tincidunt orci scelerisque in. Duis ultricies vel purus sit amet facilisis. Maecenas id consequat odio, tempor sagittis libero. Aliquam a elit eu augue rhoncus auctor id a tellus. Phasellus ut tortor sit amet justo bibendum euismod. In magna orci, aliquam non suscipit eget, imperdiet rhoncus enim. Morbi auctor, felis non ultrices condimentum, dui nisi bibendum nisi, nec feugiat mauris erat non augue. Ut lobortis tortor nibh, at molestie risus interdum eget. In egestas eu nulla a commodo. ");
         fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
-        fragments.add(PrivateNotesFragment.newInstance(campaignName, demoNotes));
-        fragments.add(PublicNotesFragment.newInstance(campaignName, demoNotes));
+        fragments.add(PrivateNotesFragment.newInstance(campaignName, privateNotes));
+        fragments.add(PublicNotesFragment.newInstance(campaignName, publicNotes));
 
         ArrayList<ArrayList<String>> demoJournal = new ArrayList<>();
         ArrayList<String> entry1 = new ArrayList<>();
@@ -112,7 +116,7 @@ public class CampaignActivity extends FragmentActivity {
         entry2.add("Sed at solli");
         entry2.add("Sed at sollicitudin eros. Vivamus vel purus non ante tempus sagittis. Sed at vestibulum lacus, in aliquam arcu. Ut augue nisi, dignissim at nunc et, lobortis hendrerit neque. Morbi non consectetur ipsum. Donec quis dolor facilisis, elementum sapien eu, efficitur risus. Aliquam erat volutpat. Aenean imperdiet leo vel suscipit convallis. Morbi luctus quam sed tellus iaculis, in venenatis turpis pharetra.");
         demoJournal.add(entry2);
-        fragments.add(JournalFragment.newInstance(campaignName, demoJournal));
+        fragments.add(JournalFragment.newInstance(campaignName, journalNotes));
 
 
         // The view pager is an element that can shift through views by swiping right and left
