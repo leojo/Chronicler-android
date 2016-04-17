@@ -132,7 +132,7 @@ public class NewCharacterActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("CHARACTER_NAME", name);
             setResult(RESULT_OK, intent);
-            finish();
+            DataLoader.readyNewSheet(this, name, race, className, true);
         }
     }
 }

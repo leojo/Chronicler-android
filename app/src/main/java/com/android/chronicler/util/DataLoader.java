@@ -117,18 +117,22 @@ public class DataLoader {
     }
 
     // Function to ready a fresh character-sheet in the background.
-    public static void readyNewSheet(final Context context,final String name, final String race, final String charClass){
+    public static void readyNewSheet(final Context context,final String name, final String race, final String charClass, final boolean finishAfter){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         cli.get("/skillData", null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Create a new character sheet object
                 final String skillData = new String(responseBody);
-                cli.get("/classData?s=" + race, null, new AsyncHttpResponseHandler() {
+                cli.get("/classData?s=" + charClass, null, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         CharacterSheet character = new CharacterSheet(name, race, charClass, skillData, new String(responseBody));
-                        storeCharSheet(context, character);
+                        if (finishAfter) {
+                            storeCharSheetThenFinish(context, character);
+                        } else {
+                            storeCharSheet(context, character);
+                        }
                     }
 
                     @Override
@@ -449,7 +453,7 @@ public class DataLoader {
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
 
-        Log.i("Campaign", "Deleting campaign "+campaignName+"...");
+        Log.i("Campaign", "Deleting campaign " + campaignName + "...");
         cli.postUserData("/deleteCampaign", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -649,18 +653,26 @@ public class DataLoader {
         cli.postUserData("/deleteJournalEntry", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.i("Campaign", "Successfully deleted journal entry with responseBody: "+new String(responseBody));
+                Log.i("Campaign", "Successfully deleted journal entry with responseBody: " + new String(responseBody));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.i("Campaign", "Failed to delete journal entry with responseBody: "+new String(responseBody));
+                Log.i("Campaign", "Failed to delete journal entry with responseBody: " + new String(responseBody));
             }
         });
     }
 
     public static void storeCharSheet(Context context, final CharacterSheet c){
-        storeCharSheet(context, c, true, 0);
+        storeCharSheet(context, c, true, false, 0);
+    }
+
+    public static void storeCharSheetThenFinish(Context context, final CharacterSheet c) {
+        storeCharSheet(context, c, true, true, 0);
+    }
+
+    public static void storeCharSheet(Context context, final CharacterSheet c, final boolean newSheet, final int charID){
+        storeCharSheet(context, c, newSheet, false, charID);
     }
 
 
@@ -670,7 +682,7 @@ public class DataLoader {
     }
 
     // Stores a given character sheet in the server-side database.
-    public static void storeCharSheet(Context context, final CharacterSheet c, final boolean newSheet, final int charID){
+    public static void storeCharSheet(final Context context, final CharacterSheet c, final boolean newSheet, final boolean finishActivity, final int charID){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
         try {
@@ -701,6 +713,10 @@ public class DataLoader {
                         }
                     }catch(JSONException e) {
                         Log.d("STORECHAR", "This should never happen. ");
+                    }
+
+                    if (context instanceof Activity) {
+                        ((Activity) context).finish();
                     }
                 }
 

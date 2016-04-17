@@ -173,6 +173,7 @@ public class CharactersActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Intent intent = new Intent();
+        Log.i("Campaign", "Adding character "+data.getStringExtra("CHARACTER_NAME"));
         intent.putExtra("CHARACTER_NAME", data.getStringExtra("CHARACTER_NAME"));
         setResult(RESULT_OK, intent);
         finish();
