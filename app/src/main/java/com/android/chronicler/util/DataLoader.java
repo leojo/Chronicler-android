@@ -234,12 +234,12 @@ public class DataLoader {
         cli.getUserData("/deleteChar", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                Log.i("LOGIN", "This is the response: "+new String(response));
+                Log.i("LOGIN", "This is the response: " + new String(response));
                 // called when response HTTP status is "200 OK"
                 try {
                     JSONObject res = new JSONObject(new String(response));
                     String code = res.getString("code");
-                    if(code.equals("success")) {
+                    if (code.equals("success")) {
                         // Needs to be this way because CONTENT and IDS don't talk to each other
                         // so if we simply did adapter.remove, we would remove the first character
                         // with a specific name but maybe not the one we meant to remove.
@@ -248,10 +248,10 @@ public class DataLoader {
                         CharactersActivity.CONTENT.remove(charPosition);
                         CharactersActivity.IDS.remove(charPosition);
                         CharactersActivity.adapter.notifyDataSetChanged();
-                    } else if(code.equals("failure")) {
+                    } else if (code.equals("failure")) {
                         Log.d("CHARACTER DELETE", res.getString("message"));
                     }
-                }catch(JSONException e) {
+                } catch (JSONException e) {
                     Log.d("CHARACTER DELETE", "Invalid JSON response from server");
                 }
             }
@@ -329,7 +329,7 @@ public class DataLoader {
                 try {
                     JSONArray allResults = new JSONArray(JSONresponse);
                     //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
-                    for(int i = 0; i<allResults.length(); i++) {
+                    for (int i = 0; i < allResults.length(); i++) {
                         JSONObject result = allResults.getJSONObject(i);
                         content.add(result.get("name").toString());
                         //ids.add(Integer.parseInt(key));
@@ -344,7 +344,7 @@ public class DataLoader {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                String response = (responseBody==null?"Empty response":new String(responseBody));
+                String response = (responseBody == null ? "Empty response" : new String(responseBody));
                 Log.i("SKILLS", "Failure fetching skill data: " + response);
             }
         });
@@ -448,7 +448,7 @@ public class DataLoader {
                 try {
                     JSONArray JCharacterIDs = responseBody.getJSONObject(0).names();
                     if (JCharacterIDs != null) {
-                        for (int i=0; i<JCharacterIDs.length(); i++) {
+                        for (int i = 0; i < JCharacterIDs.length(); i++) {
                             characterIDs.add(JCharacterIDs.getString(i));
                             characterNames.add(responseBody.getJSONObject(0).getString(JCharacterIDs.getString(i)));
                         }
@@ -457,8 +457,8 @@ public class DataLoader {
                     e.printStackTrace();
                 }
 
-                Log.i("CAMPAIGN_DATA", "Received characters: "+characterNames);
-                Log.i("CAMPAIGN_DATA", "Received character IDs: "+characterIDs);
+                Log.i("CAMPAIGN_DATA", "Received characters: " + characterNames);
+                Log.i("CAMPAIGN_DATA", "Received character IDs: " + characterIDs);
 
                 intent.putExtra("campaign_characters", characterNames);
                 intent.putExtra("campaign_character_ids", characterIDs);
@@ -468,8 +468,18 @@ public class DataLoader {
         goToWaitScreen(context);
     }
 
-    // Stores a given character sheet in the server-side database.
     public static void storeCharSheet(Context context, final CharacterSheet c){
+        storeCharSheet(context, c, true, 0);
+    }
+
+
+    public static void updateCharSheet(Context context, final CharacterSheet c){
+        int charID = CharactersActivity.openCharID;
+        storeCharSheet(context,c,false,charID);
+    }
+
+    // Stores a given character sheet in the server-side database.
+    public static void storeCharSheet(Context context, final CharacterSheet c, final boolean newSheet, final int charID){
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         StringEntity charEntity = null;
         try {
@@ -479,17 +489,20 @@ public class DataLoader {
             e.printStackTrace();
         }
         if(charEntity!= null) {
-            cli.postUserData("/storeChar", charEntity, new AsyncHttpResponseHandler() {
+            String url = "/storeChar?"+(newSheet?"new=true":"new=false")+"&id="+charID;
+            cli.postUserData(url, charEntity, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                     Log.i("STORECHAR", "Success: "+new String(response));
                     try {
                         JSONObject res = new JSONObject(new String(response));
                         String code = res.getString("code");
-                        if(code.equals("success")) {
+                        if(code.equals("success") && newSheet) {
                             // Could add to CONTENT and notify adapter as with remove but this is fine too
-                            CharactersActivity.IDS.add(Integer.parseInt(res.getString("message")));
+                            int newCharID = Integer.parseInt(res.getString("message"));
+                            CharactersActivity.IDS.add(newCharID);
                             CharactersActivity.adapter.add(c.getName());
+                            CharactersActivity.openCharID = newCharID;
                         } else if(code.equals("failure")) {
                             Log.d("STORECHAR", res.getString("message"));
                         } else {

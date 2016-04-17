@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.CharacterActivity;
+import com.android.chronicler.util.DataLoader;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,16 @@ public class MiscFragment extends SheetFragment {
                 // Need to create the class table activity first!
                 // Intent intent = new Intent(getContext(), ClassTableActivity.class);
                 // getContext().startActivity(intent);
+            }
+        });
+
+        Button saveBtn = (Button)rootView.findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataLoader.updateCharSheet(getContext(), cs);
+                ((CharacterActivity)getActivity()).getViewPager().setCurrentItem(1);
+                return;
             }
         });
 
