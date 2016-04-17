@@ -1,5 +1,6 @@
 package com.android.chronicler.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.CharacterActivity;
+import com.android.chronicler.ui.ClassTableActivity;
 import com.android.chronicler.util.DataLoader;
 
 import java.util.Arrays;
@@ -48,10 +50,9 @@ public class MiscFragment extends SheetFragment {
         classTblBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Should start an overview activity for the class table on click.
-                // Need to create the class table activity first!
-                // Intent intent = new Intent(getContext(), ClassTableActivity.class);
-                // getContext().startActivity(intent);
+                Intent intent = new Intent(getContext(), ClassTableActivity.class);
+                intent.putExtra(ClassTableActivity.TABLE_DATA,cs.getAdvancementTable());
+                startActivity(intent);
             }
         });
 

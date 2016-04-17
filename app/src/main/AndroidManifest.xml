@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.chronicler"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
     >
 
     <!-- To access Google+ APIs: -->
@@ -24,7 +24,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true"
@@ -35,9 +35,9 @@
             android:name=".ui.SearchActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:noHistory="true"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" /> <!-- Declares where we want to display the search view -->
@@ -49,14 +49,14 @@
         <activity
             android:name=".ui.SearchResultActivity"
             android:label="@string/app_name"
-            android:noHistory="true"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:label="Chronicler">
+            android:label="Chronicler"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -97,7 +97,9 @@
             android:name=".ui.EditJournalActivity"
             android:label="@string/title_activity_edit_journal"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.ClassTableActivity" >
+        </activity>
     </application>
 
 </manifest>
