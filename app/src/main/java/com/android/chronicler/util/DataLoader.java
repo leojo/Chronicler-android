@@ -439,30 +439,58 @@ public class DataLoader {
 
         cli.getUserData("/campaignDetails", params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject responseBody) {
                 //ArrayList<String> characters = new ArrayList<>();
                 ArrayList<String> characterNames = new ArrayList<>();
                 ArrayList<String> characterIDs = new ArrayList<>();
+                ArrayList<String> journalEntries = new ArrayList<>();
+                ArrayList<String> privateNotes = new ArrayList<>();
+                ArrayList<String> publicNotes = new ArrayList<>();
 
-                Log.i("CAMPAIGN_DATA", responseBody.toString());
+                Log.i("CAMPAIGN_DATA", "Received campaign data: "+responseBody.toString());
                 try {
-                    JSONArray JCharacterIDs = responseBody.getJSONObject(0).names();
+                    JSONObject players = new JSONObject(responseBody.getString("Players"));
+                    JSONArray JCharacterIDs = players.names();
                     if (JCharacterIDs != null) {
                         for (int i = 0; i < JCharacterIDs.length(); i++) {
                             characterIDs.add(JCharacterIDs.getString(i));
-                            characterNames.add(responseBody.getJSONObject(0).getString(JCharacterIDs.getString(i)));
+                            characterNames.add(players.getString(JCharacterIDs.getString(i)));
                         }
+                    }
+
+                    JSONArray journal = new JSONArray(responseBody.getString("Journal Entries"));
+                    for (int i=0; i<journal.length(); i++) {
+                        journalEntries.add(journal.getString(i));
+                    }
+
+                    JSONArray pubNotes = new JSONArray(responseBody.getString("Public Notes"));
+                    for (int i=0; i<journal.length(); i++) {
+                        publicNotes.add(pubNotes.getString(i));
+                    }
+
+                    JSONArray privNotes = new JSONArray(responseBody.getString("Private Notes"));
+                    for (int i=0; i<journal.length(); i++) {
+                        privateNotes.add(privNotes.getString(i));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.i("CAMPAIGN_DATA", e.toString());
                 }
-
                 Log.i("CAMPAIGN_DATA", "Received characters: " + characterNames);
                 Log.i("CAMPAIGN_DATA", "Received character IDs: " + characterIDs);
 
                 intent.putExtra("campaign_characters", characterNames);
                 intent.putExtra("campaign_character_ids", characterIDs);
+                intent.putExtra("campaign_private_notes", privateNotes);
+                intent.putExtra("campaign_public_notes", publicNotes);
+                intent.putExtra("campaign_journal_entries", journalEntries);
                 context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.i("DataLoader", "Got response string: " + responseString);
+                super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
         goToWaitScreen(context);
