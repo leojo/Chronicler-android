@@ -4,7 +4,6 @@ package com.android.chronicler.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +17,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
-import com.android.chronicler.ui.CampaignNoteActivity;
 import com.android.chronicler.ui.EditJournalActivity;
 import com.android.chronicler.util.DataLoader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -129,7 +126,7 @@ public class JournalFragment extends SheetFragment {
                         DataLoader.deleteJournalEntry(thisActivity, position, campaignName);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This is weird");
                 }
                 return false;
             }
@@ -160,7 +157,6 @@ public class JournalFragment extends SheetFragment {
             entries.add(requestCode, newEntry);
             titles.add(data.getStringExtra("TITLE"));
         }
-        Log.i("Journal", titles.toString());
         DataLoader.storeJournalEntry(getActivity(), newEntry.get(0), newEntry.get(1), campaignName);
         adapter.notifyDataSetChanged();
     }

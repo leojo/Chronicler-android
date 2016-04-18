@@ -69,7 +69,6 @@ public class CampaignsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Log.i("Campaigns", "Position " + position + " of " + adapter.getCount());
                 if (position == adapter.getCount()) {
                     newCampaign();
                 } else {
@@ -123,7 +122,7 @@ public class CampaignsActivity extends AppCompatActivity {
                         adapter2.notifyDataSetChanged();
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This is weird");
                 }
                 return false;
             }
@@ -135,7 +134,6 @@ public class CampaignsActivity extends AppCompatActivity {
         final PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.menu_dm_campaign_list);
         final Activity thisActivity = this;
-        Log.i("Campaign", list.toString());
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -147,7 +145,7 @@ public class CampaignsActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This is weird");
                 }
                 return false;
             }
@@ -165,7 +163,7 @@ public class CampaignsActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
                 ArrayList<String> DMCampaignResponse = new ArrayList<>();
                 ArrayList<String> PCCampaignResponse = new ArrayList<>();
-                Log.i("Campaigns", responseBody.toString());
+                Log.d("Campaigns", "Received campaigns "+responseBody.toString());
 
                 try {
                     JSONArray DMResponse = responseBody.getJSONObject(0).names();

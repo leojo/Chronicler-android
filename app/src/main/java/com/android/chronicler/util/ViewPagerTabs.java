@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.android.chronicler.R;
+
 import java.util.ArrayList;
 import java.util.List;
 

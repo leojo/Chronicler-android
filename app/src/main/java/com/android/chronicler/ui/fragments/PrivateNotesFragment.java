@@ -4,7 +4,6 @@ package com.android.chronicler.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
@@ -90,7 +87,6 @@ public class PrivateNotesFragment extends SheetFragment {
         noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Adapter", String.valueOf(adapter.getCount()));
                 if (position == adapter.getCount()) {
                     openNote("", position);
                 } else {
@@ -136,7 +132,7 @@ public class PrivateNotesFragment extends SheetFragment {
                         adapter.notifyDataSetChanged();
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird. Got "+item.getTitle());
+                        Log.d("PopupMenu", "This is weird. Got "+item.getTitle());
                 }
                 return false;
             }
@@ -152,7 +148,6 @@ public class PrivateNotesFragment extends SheetFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("Notes", "Received text: " + data.getStringExtra("TEXT"));
         String newNote = data.getStringExtra("TEXT");
         if (newNote.isEmpty()) return;
         if (requestCode < privateNotes.size()) {

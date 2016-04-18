@@ -1,8 +1,8 @@
 package com.android.chronicler.ui;
 
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;

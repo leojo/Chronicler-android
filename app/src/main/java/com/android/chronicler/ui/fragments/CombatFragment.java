@@ -1,18 +1,13 @@
 package com.android.chronicler.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
-import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.SavingThrowID;
 import com.android.chronicler.util.CompactContentView;
 import com.android.chronicler.util.ContentView;

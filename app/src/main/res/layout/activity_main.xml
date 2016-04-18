@@ -48,11 +48,11 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="My Account"
+        android:text="@string/my_account"
         android:id="@+id/button3"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
-        android:onClick="openMyAccount"/>
+        android:onClick="openInvites"/>
 
     <Button
         android:layout_width="221dp"

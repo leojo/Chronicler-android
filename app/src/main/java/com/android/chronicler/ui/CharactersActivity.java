@@ -2,7 +2,6 @@ package com.android.chronicler.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,7 +17,6 @@ import android.widget.PopupMenu;
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**

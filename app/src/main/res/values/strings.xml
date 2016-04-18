@@ -66,7 +66,7 @@
     <string name="action_view_feat">Overview</string>
     <string name="action_delete_feat">Delete</string>
     <string name="leave_campaign">Leave campaign</string>
-    <string name="my_account">My account</string>
+    <string name="my_account">Invites</string>
 
 
 </resources>

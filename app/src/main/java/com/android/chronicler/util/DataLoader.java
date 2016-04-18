@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatSlot;
-import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.item.Item;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
@@ -17,13 +17,11 @@ import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +30,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
@@ -317,9 +314,9 @@ public class DataLoader {
     }
 
     public static void handleSearchQuery(final Context context, final Intent intent, final String searchtype, final String searchtext) {
-        Log.d("ITEMSEARCH","Inside handleSearchQuery, searchType is "+searchtype);
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
+        Log.d("ITEMSEARCH", "This is the query "+queryURL);
         cli.get(queryURL, null, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -328,44 +325,37 @@ public class DataLoader {
                 //  { 0 : [id: , name: , fullText: ,...], 1: [id: , name: , fullText: ,...]
 
                 ArrayList<SheetObject> content = new ArrayList<>();
-                ObjectMapper mapper = new ObjectMapper();
                 ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
-                    switch (searchtype) {
-                        case "spell":
-                            // The JSONrespnse represents an Arraylist<Spell>
-                            ArrayList<Spell> spells = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Spell>>() {
-                            });
-                            ArrayList<SpellSlot> spellSlots = new ArrayList<>();
-                            for (Spell s : spells) {
-                                SpellSlot ss = new SpellSlot();
-                                ss.setSpell(s);
-                                spellSlots.add(ss);
-                            }
-                            content.addAll(spellSlots);
-                            break;
-                        case "feat":
-                            // The JSONrespnse represents an Arraylist<Feat>
-                            ArrayList<Feat> feats = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Feat>>() {
-                            });
-                            ArrayList<FeatSlot> featSlots = new ArrayList<>();
-                            for (Feat f : feats) {
-                                FeatSlot fs = new FeatSlot();
-                                fs.setFeat(f);
-                                featSlots.add(fs);
-                            }
-                            content.addAll(featSlots);
-                            break;
-                        case "item":
-                            // The JSONrespnse represents an Inventory containing an ArrayList<Item>
-                            Inventory inv = mapper.readValue(JSONresponse, Inventory.class);
-                            content.addAll(inv.getItems());
-                            break;
-                        default:
-                            Log.d("SEARCH", "Unrecognized search type "+searchtype);
-                            Log.d("ITEMSEARCH", JSONresponse);
-                            SearchActivity.noResults();
-                            break;
+                    JSONArray allResults = new JSONArray(JSONresponse);
+                    //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
+                    ObjectMapper mapper = new ObjectMapper();
+                    for (int i = 0; i < allResults.length(); i++) {
+                        //JSONObject result = allResults.getJSONObject(i);
+                        //content.add(result.get("name").toString());
+                        //ids.add(Integer.parseInt(key));
+                        String resultString = allResults.getString(i);
+                        SheetObject result;
+                        switch (searchtype){
+                            case "spell":
+                                result = new SpellSlot();
+                                ((SpellSlot)result).setSpell(mapper.readValue(resultString, Spell.class));
+                                Log.d("ITEMSEARCH", "Found spell "+result.getName());
+                                break;
+                            case "feat":
+                                result = new FeatSlot();
+                                ((FeatSlot)result).setFeat(mapper.readValue(resultString, Feat.class));
+                                Log.d("ITEMSEARCH", "Found feat "+result.getName());
+                                break;
+                            case "item":
+                                result = mapper.readValue(resultString, Item.class);
+                                Log.d("ITEMSEARCH", "Found item "+result.getName());
+                                break;
+                            default:
+                                SearchActivity.noResults();
+                                return;
+                        }
+                        content.add(result);
                     }
                     if (content.size() != 0) {
                         SearchActivity.adapter.clearAndAddAll(content);
@@ -373,14 +363,17 @@ public class DataLoader {
                     } else {
                         SearchActivity.noResults();
                     }
+                } catch (JSONException e) {
+                    Log.d("ITEMSEARCH", "JSon exception", e);
+                    SearchActivity.noResults();
                 } catch (JsonMappingException e) {
-                    Log.e("SEARCH","JsonMappingException for String "+JSONresponse,e);
+                    Log.d("ITEMSEARCH", "JsonMappingException", e);
                     SearchActivity.noResults();
                 } catch (JsonParseException e) {
-                    Log.e("SEARCH","JsonParseException for String "+JSONresponse,e);
+                    Log.d("ITEMSEARCH", "JSon Parse Exception", e);
                     SearchActivity.noResults();
                 } catch (IOException e) {
-                    Log.e("SEARCH","IOException: for String "+JSONresponse,e);
+                    Log.d("ITEMSEARCH", "IO Exception", e);
                     SearchActivity.noResults();
                 }
             }
@@ -471,14 +464,13 @@ public class DataLoader {
 
 
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
-    public static void postCampaignThenOpen(final Context context, final Intent intent, final String campaignName) throws IOException {
+    public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
         cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                intent.putExtra("CAMPAIGN_NAME", campaignName);
                 context.startActivity(intent);
                 Log.i("Campaign", new String(responseBody));
             }

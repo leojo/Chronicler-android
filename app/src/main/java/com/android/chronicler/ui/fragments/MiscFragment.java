@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.ui.CharacterActivity;

@@ -77,7 +77,6 @@
         <activity
             android:name=".ui.NewCampaignActivity"
             android:noHistory="true" />
-        <activity android:name=".ui.MyAccountActivity" />
         <activity android:name=".ui.InvitesActivity" />
         <activity
             android:name=".ui.WaitingActivity"

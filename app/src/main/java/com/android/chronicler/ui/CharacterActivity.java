@@ -2,21 +2,17 @@ package com.android.chronicler.ui;
 
 
 import android.content.Intent;
-
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+
 import com.android.chronicler.R;
 import com.android.chronicler.character.CharacterSheet;
-import com.android.chronicler.character.enums.AbilityID;
 import com.android.chronicler.ui.fragments.AboutFragment;
 import com.android.chronicler.ui.fragments.CombatFragment;
 import com.android.chronicler.ui.fragments.FeatFragment;
@@ -25,7 +21,6 @@ import com.android.chronicler.ui.fragments.MiscFragment;
 import com.android.chronicler.ui.fragments.SheetFragment;
 import com.android.chronicler.ui.fragments.SkillFragment;
 import com.android.chronicler.ui.fragments.SpellFragment;
-import com.android.chronicler.util.SkillsAdapter;
 import com.android.chronicler.util.ViewPagerTabs;
 
 import java.util.List;

@@ -1,14 +1,15 @@
 package com.android.chronicler.character.ability;
 
 import android.util.Log;
+
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.android.chronicler.util.alUtils.sum;
 
 /**
  * Created by BjornBjarnsteins on 10/28/15.
@@ -71,6 +72,13 @@ public class AbilityScore implements Serializable{
 
 	}
 
+	public static int sum(Collection<Integer> c){
+		int sum = 0;
+		for(Integer n : c){
+			sum += n;
+		}
+		return sum;
+	}
 
     // bonus handling functions:
     //// They all return false if the bonus did not exist. The set/increment ones create the bonus

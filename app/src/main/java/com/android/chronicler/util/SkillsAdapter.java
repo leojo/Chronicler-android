@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
-import com.android.chronicler.R;
 import com.android.chronicler.character.skill.Skill;
 import com.android.chronicler.character.skill.Skills;
 
