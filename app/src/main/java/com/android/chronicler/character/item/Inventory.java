@@ -13,7 +13,7 @@ import java.util.Collections;
  */
 public class Inventory implements Serializable {
     private ArrayList<Item> items = new ArrayList<>();
-    
+
     public void add(Item item){
         items.add(item);
     } // FIXME: 25.2.2016 Each item should only appear once in the inventory, if there are more than one the quantity should be updated

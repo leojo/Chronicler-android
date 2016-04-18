@@ -8,6 +8,7 @@ import com.android.chronicler.character.CharacterSheet;
 import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatSlot;
+import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.item.Item;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
@@ -16,6 +17,7 @@ import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.WaitingActivity;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -315,6 +317,7 @@ public class DataLoader {
     }
 
     public static void handleSearchQuery(final Context context, final Intent intent, final String searchtype, final String searchtext) {
+        Log.d("ITEMSEARCH","Inside handleSearchQuery, searchType is "+searchtype);
         final ChroniclerRestClient cli = new ChroniclerRestClient(context);
         String queryURL = "/"+searchtype+"?s="+searchtext; // For example: .../feat?s=healing etc
         cli.get(queryURL, null, new AsyncHttpResponseHandler() {
@@ -325,9 +328,43 @@ public class DataLoader {
                 //  { 0 : [id: , name: , fullText: ,...], 1: [id: , name: , fullText: ,...]
 
                 ArrayList<SheetObject> content = new ArrayList<>();
+                ObjectMapper mapper = new ObjectMapper();
                 ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
-                    JSONArray allResults = new JSONArray(JSONresponse);
+                    switch (searchtype){
+                        case "spell":
+                            // The JSONrespnse represents an Arraylist<Spell>
+                            ArrayList<Spell> spells = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Spell>>() { });
+                            ArrayList<SpellSlot> spellSlots = new ArrayList<>();
+                            for(Spell s : spells){
+                                SpellSlot ss = new SpellSlot();
+                                ss.setSpell(s);
+                                spellSlots.add(ss);
+                            }
+                            content.addAll(spellSlots);
+                            break;
+                        case "feat":
+                            // The JSONrespnse represents an Arraylist<Feat>
+                            ArrayList<Feat> feats = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Feat>>() { });
+                            ArrayList<FeatSlot> featSlots = new ArrayList<>();
+                            for(Feat f : feats){
+                                FeatSlot fs = new FeatSlot();
+                                fs.setFeat(f);
+                                featSlots.add(fs);
+                            }
+                            content.addAll(featSlots);
+                            break;
+                        case "item":
+                            // The JSONrespnse represents an Inventory containing an ArrayList<Item>
+                            Inventory inv = mapper.readValue(JSONresponse, Inventory.class);
+                            content.addAll(inv.getItems());
+                            break;
+                        default:
+                            Log.d("ITEMSEARCH",JSONresponse);
+                            SearchActivity.noResults();
+                            break;
+                    }
+                    /*JSONArray allResults = new JSONArray(JSONresponse);
                     //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
                     ObjectMapper mapper = new ObjectMapper();
                     for (int i = 0; i < allResults.length(); i++) {
@@ -340,33 +377,37 @@ public class DataLoader {
                             case "spell":
                                 result = new SpellSlot();
                                 ((SpellSlot)result).setSpell(mapper.readValue(resultString, Spell.class));
+                                content.add(result);
                                 break;
                             case "feat":
                                 result = new FeatSlot();
                                 ((FeatSlot)result).setFeat(mapper.readValue(resultString, Feat.class));
+                                content.add(result);
                                 break;
                             case "item":
-                                result = mapper.readValue(resultString, Item.class);
+                                content.addAll(mapper.readValue(JSONresponse, Inventory.class).getItems());
                                 break;
                             default:
                                 SearchActivity.noResults();
                                 return;
                         }
-                        content.add(result);
-                    }
+                    }*/
                     if (content.size() != 0) {
                         SearchActivity.adapter.clearAndAddAll(content);
                         SearchActivity.showResults();
                     } else {
                         SearchActivity.noResults();
                     }
-                } catch (JSONException e) {
-                    SearchActivity.noResults();
+                //} catch (JSONException e) {
+                //    SearchActivity.noResults();
                 } catch (JsonMappingException e) {
+                    Log.d("ITEMSEARCH","JsonMappingException:",e);
                     SearchActivity.noResults();
                 } catch (JsonParseException e) {
+                    Log.d("ITEMSEARCH","JsonParseException:",e);
                     SearchActivity.noResults();
                 } catch (IOException e) {
+                    Log.d("ITEMSEARCH","IOException:",e);
                     SearchActivity.noResults();
                 }
             }

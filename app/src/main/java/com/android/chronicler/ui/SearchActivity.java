@@ -55,6 +55,7 @@ public class SearchActivity extends AppCompatActivity {
         searchMessage = (TextView)findViewById(R.id.searchMessage);
 
         searchType = getIntent().getStringExtra("TYPE");
+        Log.d("ITEMSEARCH","Search type is "+searchType);
         initListAndDialog();
 
         if(searchResults==null) searchResults = new ArrayList<>();
@@ -119,6 +120,7 @@ public class SearchActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             Log.i("SEARCH", "The intent was an ACTION_SEARCH intent!");
             String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d("ITEMSEARCH","Inside handleIntent, searchType is "+searchType);
             DataLoader.handleSearchQuery(getApplication(), intent, searchType, query);
         }
     }
