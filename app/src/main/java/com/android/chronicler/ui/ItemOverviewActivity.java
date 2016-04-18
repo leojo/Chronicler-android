@@ -26,11 +26,14 @@ public class ItemOverviewActivity extends AppCompatActivity {
         overviewActivity = this;
         addItemBtn = (Button)findViewById(R.id.addItemBtn);
 
-        Intent intent2 = new Intent(this, SearchActivity.class);
-        intent2.putExtra("TYPE", "item");
-        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        this.startActivity(intent2);
-
+        if(!getIntent().getBooleanExtra("StartedForResult", true)) {
+            addItemBtn.setVisibility(View.GONE);
+        } else {
+            Intent intent2 = new Intent(this, SearchActivity.class);
+            intent2.putExtra("TYPE", "item");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            this.startActivity(intent2);
+        }
     }
 
     @Override
@@ -40,6 +43,7 @@ public class ItemOverviewActivity extends AppCompatActivity {
         TextView itemName = (TextView)findViewById(R.id.itemName);
         itemName.setText(item);
 
+        addItemBtn.setVisibility(View.VISIBLE);
 
         addItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override

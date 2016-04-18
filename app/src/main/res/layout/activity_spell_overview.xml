@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="10">
 
     <TextView
         android:layout_width="match_parent"
@@ -10,13 +10,28 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/spellName"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.09" />
+        android:gravity="center_vertical"
+        android:layout_weight="0.5" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/scrollView"
+        android:layout_weight="8.5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Description"
+            android:id="@+id/spellDescr"/>
+    </ScrollView>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="221dp"
+        android:layout_height="0dp"
+        style="@style/LoginButtonStyle"
         android:text="Add"
         android:id="@+id/addSpellBtn"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"/>
 </LinearLayout>

@@ -1,14 +1,17 @@
 package com.android.chronicler.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
@@ -18,6 +21,7 @@ import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.character.spell.SpellSlots;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.SpellOverviewActivity;
+import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.SheetAdapter;
 import com.android.chronicler.util.SkillsAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,11 +41,12 @@ public class SpellFragment extends SheetFragment {
 
     private SheetAdapter adapter;
     private SpellSlots spells;
+    private ArrayList<Boolean> spellAvailability;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.spell_fragment_layout, container, false);
 
-        ListView spellsView = (ListView)(rootView.findViewById(R.id.spellsView));
+        final ListView spellsView = (ListView)(rootView.findViewById(R.id.spellsView));
 
         final SpellFragment thisFragment = this;
 
@@ -50,19 +55,14 @@ public class SpellFragment extends SheetFragment {
         addButtonView.setPadding(20, 20, 20, 20);
         addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
         spellsView.addFooterView(addButtonView);
-        //spells = (SpellSlots) getArguments().getSerializable("SPELLS");
 
-        spells = new SpellSlots();
+        spells = (SpellSlots) getArguments().getSerializable("SPELLS");
+        spellAvailability = new ArrayList<>();
 
-        SpellSlot dummySlot = new SpellSlot();
-        Spell dummyFeat = new Spell();
-        dummyFeat.setName("Testing this");
-        dummySlot.setSpell(dummyFeat);
-        spells.add(dummySlot);
+        for(int i = 0; i < spells.getSpellSlots().size(); i++) spellAvailability.add(true);
 
         adapter = new SheetAdapter(getContext(), spells);
         spellsView.setAdapter(adapter);
-
         spellsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -77,12 +77,59 @@ public class SpellFragment extends SheetFragment {
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
+                    if(spellAvailability.get(position)) {
+                        view.setBackgroundResource(R.drawable.spell_spent);
+                        spellAvailability.set(position, false);
+                    } else {
+                        view.setBackgroundResource(R.drawable.spell_ready);
+                        spellAvailability.set(position, true);
+                    }
+
                     return;
                 }
             };
             // --------------------------------------
         });
+
+        spellsView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Activate popup when an invite is clicked
+                showPopup(view);
+
+                return false;
+            }
+        });
         return rootView;
+    }
+
+    // Pop-up for accepting or declining invites: Will later be replaced with buttons
+    // nested inside the list elements for accepting and declining.
+    public void showPopup(View v) {
+        final SpellFragment thisFragment = this;
+        PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
+        popup.inflate(R.menu.menu_spell_options);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Overview":
+                        Log.d("SPELLS", "Should open overview for spell");
+                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        intent.putExtra("StartedForResult", false);
+                        startActivity(intent);
+                        break;
+                    case "Delete":
+                        Log.d("SPELLS", "Should delete this spell");
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     @Override
@@ -106,6 +153,8 @@ public class SpellFragment extends SheetFragment {
         adapter.clearAndAddAll(spells);
         adapter.notifyDataSetChanged();
         ArrayList<SpellSlot> s = (spells.getSpellSlots());
+
+        spellAvailability.add(true);
 
 
         Log.i("RESULT", "After result, our spells vector is "+s.toString());

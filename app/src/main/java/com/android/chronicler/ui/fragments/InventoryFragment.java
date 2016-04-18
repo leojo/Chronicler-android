@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.feat.FeatList;
@@ -18,6 +20,7 @@ import com.android.chronicler.character.item.Item;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.character.spell.SpellSlots;
+import com.android.chronicler.ui.FeatOverviewActivity;
 import com.android.chronicler.ui.ItemOverviewActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.SpellOverviewActivity;
@@ -71,7 +74,47 @@ public class InventoryFragment extends SheetFragment {
             // --------------------------------------
         });
 
+
+        invtView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Activate popup when an invite is clicked
+                showPopup(view);
+
+                return false;
+            }
+        });
+
         return rootView;
+    }
+
+    // Pop-up for accepting or declining invites: Will later be replaced with buttons
+    // nested inside the list elements for accepting and declining.
+    public void showPopup(View v) {
+        final InventoryFragment thisFragment = this;
+        PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
+        popup.inflate(R.menu.menu_feat_options);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch ((String) item.getTitle()) {
+                    case "Overview":
+                        Log.d("ITEMS", "Should open overview for spell");
+                        Intent intent = new Intent(thisFragment.getContext(), ItemOverviewActivity.class);
+                        intent.putExtra("StartedForResult", false);
+                        startActivity(intent);
+                        break;
+                    case "Delete":
+                        Log.d("ITEMS", "Should delete this spell");
+                        break;
+                    default:
+                        Log.i("PopupMenu", "This is weird");
+                }
+                return false;
+            }
+        });
+        popup.show();
     }
 
     @Override
