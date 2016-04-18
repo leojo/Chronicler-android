@@ -740,13 +740,13 @@ public class DataLoader {
                         } else if(code.equals("failure")) {
                             Log.d("STORECHAR", res.getString("message"));
                         } else {
-                            Log.d("STORECHAR", "This should never happen. Something went horribly wrong.");
+                            Log.d("STORECHAR", "This should only happen when storing an existing sheet! Response = { code="+res.getString("code")+", message="+res.getString("message")+" }");
                         }
                     }catch(JSONException e) {
                         Log.d("STORECHAR", "This should never happen. ");
                     }
 
-                    if (context instanceof Activity) {
+                    if (context instanceof Activity && newSheet) {
                         ((Activity) context).finish();
                     }
                 }

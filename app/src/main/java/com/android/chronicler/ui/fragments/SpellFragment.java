@@ -168,6 +168,7 @@ public class SpellFragment extends SheetFragment {
         SpellSlot spellSlot = (SpellSlot)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
         Log.i("RESULT", "We got our result! it's " + spellSlot.getName());
         spellAvailability.add(true);
+        SheetAdapter.searching = false;
         spells.add(spellSlot);
         adapter.clearAndAddAll(spells);
         adapter.notifyDataSetChanged();
