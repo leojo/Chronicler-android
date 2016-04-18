@@ -2,7 +2,6 @@ package com.android.chronicler.util;
 
 import android.content.Context;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ public class SkillListItemView extends LinearLayout {
 
     // Do all the other stuff needed to initialize the view
     private void init() {
-        Log.i("SkillListItemView", "init");
         inflate(getContext(), R.layout.skill_list_item, this);
         TextView nameView = (TextView)findViewById(R.id.skillName);
         modView = (TextView)findViewById(R.id.skillMod);
@@ -39,7 +37,6 @@ public class SkillListItemView extends LinearLayout {
         nameView.setText(name);
         setEditable(rankView);
         setEditable(miscView);
-        Log.i("ContentView", "Ready, the name is " + name);
     }
 
     // This function detects when the view is clicked and emulates the EditField

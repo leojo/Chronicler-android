@@ -15,6 +15,12 @@ import com.android.chronicler.character.SheetObject;
 
 /**
  * Created by andrea on 16.4.2016.
+ *
+ * Overview activity for all types of sheet objects:
+ * spells, feats, items
+ *
+ * The overview shows text from database about the objects,
+ * the damage they do (if any), etc.
  */
 public class SheetObjectOverviewActivity extends AppCompatActivity {
 

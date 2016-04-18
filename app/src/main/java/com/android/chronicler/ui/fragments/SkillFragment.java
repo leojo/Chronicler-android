@@ -1,7 +1,6 @@
 package com.android.chronicler.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.ListView;
 import com.android.chronicler.R;
 import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.util.SkillsAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Fragment for the CharacterActivity: This is the character's skill list.

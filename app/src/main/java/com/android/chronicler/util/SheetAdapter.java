@@ -22,6 +22,12 @@ import java.util.Arrays;
 
 /**
  * Created by andrea on 10.4.2016.
+ *
+ * Adapter to handle lists of SheetObjects (feats, items, spells)
+ *
+ * This adapter controls lists found in
+ *      The character sheet: Spell tab, Feat tab, Inventory tab
+ *      The search activity, when searching for any type of sheet object
  */
 public class SheetAdapter extends BaseAdapter {
     private ArrayList<SheetObject> sheetObjs;

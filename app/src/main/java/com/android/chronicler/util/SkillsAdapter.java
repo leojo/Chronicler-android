@@ -51,7 +51,6 @@ public class SkillsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View item, ViewGroup parent) {
-        Log.i("SKILLS_ADAPTER","Adapter getting view...");
         if(item != null) return item;
 
         String name = skillNames[position];

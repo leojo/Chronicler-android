@@ -56,5 +56,9 @@ BUILDING
 * Error handling is still needed in some places, esp. with faulty requests to the server.
 * Limiting user input is needed in some places.
 * Magic items have not been implemented. This is not a bug, it's a lack of a feature. :)
+* When using the search, a fatal error occurs when the user clicks on a search result, goes back to 
+  the search activity and tries to search for a new string. This is because the adapter for the list
+  is updated out of the ui thread which is risky and we need to fix it by making sure its always
+  updated in sync with the list content.
 
 

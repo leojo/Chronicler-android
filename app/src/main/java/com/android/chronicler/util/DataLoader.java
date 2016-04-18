@@ -10,7 +10,6 @@ import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatSlot;
 import com.android.chronicler.character.item.Inventory;
-import com.android.chronicler.character.item.Item;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.ui.CharactersActivity;
