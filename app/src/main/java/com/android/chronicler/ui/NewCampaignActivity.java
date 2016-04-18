@@ -39,6 +39,7 @@ public class NewCampaignActivity extends AppCompatActivity {
     public void addCampaign(String campaignName) {
         DataLoader loader = new DataLoader();
         Intent intent = new Intent(this, CampaignActivity.class);
+        intent.putExtra("read_only", false);
         intent.putExtra("campaign_characters", new ArrayList<String>());
         intent.putExtra("campaign_character_ids", new ArrayList<String>());
         intent.putExtra("campaign_private_notes", new ArrayList<String>());
