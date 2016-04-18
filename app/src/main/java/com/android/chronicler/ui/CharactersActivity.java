@@ -93,10 +93,11 @@ public class CharactersActivity extends AppCompatActivity {
         characterListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == adapter.getCount()) return false;
                 int charID = IDS.get(position);
                 String charName = CONTENT.get(position);
                 showPopup(view, charID, position);
-                return false;
+                return true;
             }
         });
     }
