@@ -44,12 +44,14 @@ public class CampaignPlayersFragment extends SheetFragment {
     private static final String PLAYER_LIST = "PLAYER_LIST";
     private static final String PLAYER_IDS = "PLAYER_IDS";
     private static final String CAMPAIGN_NAME = "CAMPAIGN_NAME";
+    private static final String READ_ONLY = "READ_ONLY";
 
     // TODO: Rename and change types of parameters
     private ArrayList<String> playerList;
     private ArrayList<String> playerIDs;
     private String campaignName;
     private ListAdapter playerAdapter;
+    private boolean readOnly;
 
     public CampaignPlayersFragment() {
         // Required empty public constructor
@@ -65,12 +67,14 @@ public class CampaignPlayersFragment extends SheetFragment {
     // TODO: Rename and change types and number of parameters
     public static CampaignPlayersFragment newInstance(String campaignName,
                                                       ArrayList<String> playerList,
-                                                      ArrayList<String> characterIDs) {
+                                                      ArrayList<String> characterIDs,
+                                                      boolean readOnly) {
         CampaignPlayersFragment fragment = new CampaignPlayersFragment();
         Bundle args = new Bundle();
         args.putStringArrayList(PLAYER_LIST, playerList);
         args.putStringArrayList(PLAYER_IDS, characterIDs);
         args.putString(CAMPAIGN_NAME, campaignName);
+        args.putBoolean(READ_ONLY, readOnly);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,6 +86,7 @@ public class CampaignPlayersFragment extends SheetFragment {
             playerList = getArguments().getStringArrayList(PLAYER_LIST);
             playerIDs = getArguments().getStringArrayList(PLAYER_IDS);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
+            readOnly = getArguments().getBoolean(READ_ONLY);
         }
     }
 
@@ -99,12 +104,14 @@ public class CampaignPlayersFragment extends SheetFragment {
                 playerList);
 
 
-        // Set add button to footer
-        ImageView addButtonView = new ImageView(getActivity());
-        addButtonView.setPadding(20, 20, 20, 20);
-        addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
+        if (!readOnly) {
+            // Set add button to footer
+            ImageView addButtonView = new ImageView(getActivity());
+            addButtonView.setPadding(20, 20, 20, 20);
+            addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
 
-        playerListView.addFooterView(addButtonView);
+            playerListView.addFooterView(addButtonView);
+        }
         playerListView.setAdapter(playerAdapter);
 
         playerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -135,7 +142,6 @@ public class CampaignPlayersFragment extends SheetFragment {
                     });
                     dialogBuilder.show();
                 } else {
-                    Log.i("CampaignPlayer", "Inviting character with id "+playerIDs.get(position));
                     DataLoader.readySheetThenStart(getActivity(),
                             new Intent(getActivity(), CharacterActivity.class),
                             Integer.parseInt(playerIDs.get(position)));

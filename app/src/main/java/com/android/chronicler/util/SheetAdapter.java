@@ -39,13 +39,6 @@ public class SheetAdapter extends BaseAdapter {
     }
 
     public SheetAdapter(Context context , FeatList feats){
-        if(feats.getFeats().size() == 0) {
-            FeatSlot dummySlot = new FeatSlot();
-            Feat dummyFeat = new Feat();
-            dummyFeat.setName("This is an awesome dummy feat");
-            dummySlot.setFeat(dummyFeat);
-            feats.add(dummySlot);
-        }
         this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(feats.getFeats());
         this.setValues();
@@ -70,13 +63,6 @@ public class SheetAdapter extends BaseAdapter {
 
 
     public SheetAdapter(Context context , SpellSlots spells){
-        if(spells.getSpellSlots().size() == 0) {
-            SpellSlot dummySlot = new SpellSlot();
-            Spell dummyFeat = new Spell();
-            dummyFeat.setName("This is an awesome dummy spell");
-            dummySlot.setSpell(dummyFeat);
-            spells.add(dummySlot);
-        }
         this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(spells.getSpellSlots());
         this.setValues();
@@ -94,11 +80,6 @@ public class SheetAdapter extends BaseAdapter {
     }
 
     public SheetAdapter(Context context , Inventory invt){
-        if(invt.getItems().size() == 0) {
-            Item dummyItem = new ArmorShield();
-            dummyItem.setName("This is an awesome dummy item!");
-            invt.add(dummyItem);
-        }
         this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(invt.getItems());
         this.setValues();
