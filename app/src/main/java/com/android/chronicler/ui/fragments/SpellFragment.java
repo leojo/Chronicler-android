@@ -131,6 +131,7 @@ public class SpellFragment extends SheetFragment {
                     case "Delete":
                         Log.d("SPELLS", "Should delete this spell");
                         adapter.remove(position);
+                        adapter.notifyDataSetChanged();
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
