@@ -15,4 +15,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/inviteListView"
         android:layout_gravity="center_horizontal|top"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have no pending invites"
+        android:id="@+id/no_invites_text"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:visibility="invisible" />
 </FrameLayout>
