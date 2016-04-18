@@ -101,7 +101,6 @@ public class InvitesActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, CampaignActivity.class);
         intent.putExtra("CAMPAIGN_NAME", selectedItem);
-        intent.putExtra("NEW_PLAYER", selectedCharacter);
         DataLoader.getCampaignDetailsThenOpen(this, intent, selectedItem);
     }
 }
