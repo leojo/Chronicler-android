@@ -59,6 +59,7 @@ public class SearchActivity extends AppCompatActivity {
 
         if(searchResults==null) searchResults = new ArrayList<>();
         adapter = new SheetAdapter(this,searchResults);
+        adapter.searching = true;
         resultsView.setAdapter(adapter);
 
         final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);

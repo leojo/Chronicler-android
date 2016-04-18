@@ -31,11 +31,13 @@ public class SheetAdapter extends BaseAdapter {
     private ArrayList<SheetObject> sheetObjs;
     private String[] liValues;
     private final LayoutInflater inflater;
+    public static boolean searching = false;
 
     public SheetAdapter(Context context, ArrayList<SheetObject> arrayList){
         this.sheetObjs = arrayList;
         this.setValues();
         inflater = LayoutInflater.from(context);
+        searching = false;
     }
 
     public SheetAdapter(Context context , FeatList feats){
@@ -43,6 +45,7 @@ public class SheetAdapter extends BaseAdapter {
         this.sheetObjs.addAll(feats.getFeats());
         this.setValues();
         inflater = LayoutInflater.from(context);
+        searching = false;
     }
 
     public void clearAndAddAll(ArrayList<SheetObject> objs) {
@@ -67,6 +70,7 @@ public class SheetAdapter extends BaseAdapter {
         this.sheetObjs.addAll(spells.getSpellSlots());
         this.setValues();
         inflater = LayoutInflater.from(context);
+        searching = false;
     }
 
 
@@ -84,6 +88,7 @@ public class SheetAdapter extends BaseAdapter {
         this.sheetObjs.addAll(invt.getItems());
         this.setValues();
         inflater = LayoutInflater.from(context);
+        searching = false;
     }
 
     public void clearAndAddAll(Inventory invt) {
@@ -124,6 +129,14 @@ public class SheetAdapter extends BaseAdapter {
 
         if(item == null)
             item = inflater.inflate(R.layout.sheet_object_list_item, null);
+
+        if(sheetObjs.get(position) instanceof SpellSlot && !searching){
+            if(((SpellSlot) sheetObjs.get(position)).isAvailable()){
+                item.setBackgroundResource(R.drawable.spell_ready);
+            } else {
+                item.setBackgroundResource(R.drawable.spell_spent);
+            }
+        }
 
         TextView nameView = (TextView)item.findViewById(R.id.name);
         nameView.setText(sheetObjs.get(position).getName());

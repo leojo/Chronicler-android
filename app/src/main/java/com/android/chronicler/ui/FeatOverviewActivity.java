@@ -30,7 +30,7 @@ public class FeatOverviewActivity extends AppCompatActivity{
             addFeatBtn.setVisibility(View.GONE);
         } else {
             Intent intent2 = new Intent(this, SearchActivity.class);
-            intent2.putExtra("TYPE", "spell");
+            intent2.putExtra("TYPE", "feat");
             intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             this.startActivity(intent2);
         }

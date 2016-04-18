@@ -55,8 +55,8 @@ public class SpellOverviewActivity extends AppCompatActivity {
                 Intent intent=new Intent();
                 intent.putExtra("toBeAdded",spell.getName());
                 intent.putExtra(SearchActivity.SHEET_OBJECT,spell);
-                overviewActivity.setResult(1,intent);
-                Log.i("RESULT", "SpellOverviewActivity, result has extra "+spell.getName());
+                overviewActivity.setResult(1, intent);
+                Log.i("RESULT", "SpellOverviewActivity, result has extra " + spell.getName());
                 SearchActivity.searchActivity.finish();
                 overviewActivity.finish();
 
@@ -74,9 +74,13 @@ public class SpellOverviewActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent2 = new Intent(this, SearchActivity.class);
-        intent2.putExtra("TYPE", "spell");
-        intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        this.startActivity(intent2);
+        if(!getIntent().getBooleanExtra("StartedForResult", true)) {
+            super.onBackPressed();
+        } else {
+            Intent intent2 = new Intent(this, SearchActivity.class);
+            intent2.putExtra("TYPE", "spell");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            this.startActivity(intent2);
+        }
     }
 }
