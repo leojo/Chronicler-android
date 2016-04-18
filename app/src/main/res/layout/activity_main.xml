@@ -18,12 +18,9 @@
         android:layout_weight="0.36" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Chronicler"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/Chronicler_heading"
+        style="@style/heading_style" />
 
     <Space
         android:layout_width="351dp"

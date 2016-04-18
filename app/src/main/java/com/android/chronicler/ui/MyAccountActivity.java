@@ -1,9 +1,11 @@
 package com.android.chronicler.ui;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
@@ -20,6 +22,10 @@ public class MyAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
         getSupportActionBar().hide();
+
+        TextView heading = (TextView) findViewById(R.id.my_account_heading);
+        Typeface font = Typeface.createFromAsset(getAssets(), "DroidSerif-Regular.ttf");
+        heading.setTypeface(font);
     }
 
     // Opens the list of invites. For now it is a hard-coded test vector,
