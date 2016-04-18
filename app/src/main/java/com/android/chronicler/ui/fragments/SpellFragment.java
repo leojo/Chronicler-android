@@ -2,6 +2,7 @@ package com.android.chronicler.ui.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +64,8 @@ public class SpellFragment extends SheetFragment {
 
         adapter = new SheetAdapter(getContext(), spells);
         spellsView.setAdapter(adapter);
+
+        //spellsView.getChildAt(spellsView.getChildCount()-1).setBackgroundColor(Color.WHITE);
         spellsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
