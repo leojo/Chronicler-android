@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="I Will Roll a Dwarf Rogue Named Jimminybillybob"
             android:id="@+id/previewText"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
@@ -25,7 +24,6 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create"
             android:id="@+id/confirmButton"
             style="@style/LoginButtonStyle"
             android:layout_gravity="bottom"/>
@@ -56,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:inputType="textPersonName"
-            android:text="Jimminybillybob"
+            android:text="Baelor"
             android:ems="10"
             android:id="@+id/charNameField"
             android:gravity="center"
