@@ -98,7 +98,7 @@ public class SpellFragment extends SheetFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Activate popup when an invite is clicked
-                showPopup(view);
+                showPopup(view, position);
 
                 return false;
             }
@@ -108,7 +108,7 @@ public class SpellFragment extends SheetFragment {
 
     // Pop-up for accepting or declining invites: Will later be replaced with buttons
     // nested inside the list elements for accepting and declining.
-    public void showPopup(View v) {
+    public void showPopup(View v, final int position) {
         final SpellFragment thisFragment = this;
         PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
         popup.inflate(R.menu.menu_spell_options);
@@ -125,6 +125,7 @@ public class SpellFragment extends SheetFragment {
                         break;
                     case "Delete":
                         Log.d("SPELLS", "Should delete this spell");
+                        adapter.remove(position);
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
