@@ -61,6 +61,8 @@ public class SheetAdapter extends BaseAdapter {
     }
 
     public void clearAndAddAll(FeatList feats) {
+        SearchActivity.searchResults.clear();
+        SearchActivity.searchResults.addAll(feats.getFeats());
         sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(feats.getFeats());
         this.setValues();
@@ -84,6 +86,8 @@ public class SheetAdapter extends BaseAdapter {
 
 
     public void clearAndAddAll(SpellSlots spells) {
+        SearchActivity.searchResults.clear();
+        SearchActivity.searchResults.addAll(spells.getSpellSlots());
         sheetObjs.clear();
         this.sheetObjs.addAll(spells.getSpellSlots());
         this.setValues();
@@ -102,13 +106,12 @@ public class SheetAdapter extends BaseAdapter {
     }
 
     public void clearAndAddAll(Inventory invt) {
+        SearchActivity.searchResults.clear();
+        SearchActivity.searchResults.addAll(invt.getItems());
         sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(invt.getItems());
         this.setValues();
     }
-
-
-
 
     private void setValues()  {
         int size = this.sheetObjs.size();
@@ -116,7 +119,7 @@ public class SheetAdapter extends BaseAdapter {
         for(int i=0; i<size; i++) {
             liValues[i] = this.sheetObjs.get(i).getName();
         }
-        Arrays.sort(liValues);
+        //Arrays.sort(liValues);
         Log.d("SHEET OBJS FROM ADAPTER",Arrays.toString(liValues));
     }
 
@@ -149,5 +152,8 @@ public class SheetAdapter extends BaseAdapter {
         return item;
     }
 
-
+    public void remove(int position){
+        sheetObjs.remove(position);
+        setValues();
+    }
 }
