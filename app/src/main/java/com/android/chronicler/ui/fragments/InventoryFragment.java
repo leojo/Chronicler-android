@@ -17,7 +17,7 @@ import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.item.Item;
 import com.android.chronicler.ui.SearchActivity;
-import com.android.chronicler.ui.SpellOverviewActivity;
+import com.android.chronicler.ui.SheetObjectOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
 
 import java.util.ArrayList;
@@ -57,9 +57,9 @@ public class InventoryFragment extends SheetFragment {
                                     int position, long id) {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
-                    Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                    Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                     intent.putExtra("TYPE","item");
-                    Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
+                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -96,7 +96,7 @@ public class InventoryFragment extends SheetFragment {
                 switch ((String) item.getTitle()) {
                     case "Overview":
                         Log.d("ITEMS", "Should open overview for spell");
-                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                         intent.putExtra("TYPE","item");
                         intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         intent.putExtra("StartedForResult", false);

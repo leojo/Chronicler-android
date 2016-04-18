@@ -16,23 +16,23 @@ import com.android.chronicler.character.SheetObject;
 /**
  * Created by andrea on 16.4.2016.
  */
-public class SpellOverviewActivity extends AppCompatActivity {
+public class SheetObjectOverviewActivity extends AppCompatActivity {
 
-    private Button addSpellBtn;
-    public static SpellOverviewActivity overviewActivity;
+    private Button addBtn;
+    public static SheetObjectOverviewActivity overviewActivity;
     private String type;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spell_overview);
+        setContentView(R.layout.activity_sheet_object_overview);
         overviewActivity = this;
-        addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
+        addBtn = (Button)findViewById(R.id.addBtn);
         type = getIntent().getStringExtra("TYPE");
 
         if(!getIntent().getBooleanExtra("StartedForResult", true)) {
-            addSpellBtn.setVisibility(View.GONE);
+            addBtn.setVisibility(View.GONE);
             populate((SheetObject)getIntent().getSerializableExtra(SearchActivity.SHEET_OBJECT));
         } else {
             Intent intent2 = new Intent(this, SearchActivity.class);
@@ -45,19 +45,17 @@ public class SpellOverviewActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        final SheetObject spell = (SheetObject)intent.getSerializableExtra(SearchActivity.SHEET_OBJECT);
-        populate(spell);
+        final SheetObject sheetObject = (SheetObject)intent.getSerializableExtra(SearchActivity.SHEET_OBJECT);
+        populate(sheetObject);
 
-        addSpellBtn.setVisibility(View.VISIBLE);
-        addSpellBtn.setOnClickListener(new View.OnClickListener() {
+        addBtn.setVisibility(View.VISIBLE);
+        addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("RESULT", "SpellOverViewActivity: About to set the result");
-                Intent intent=new Intent();
-                intent.putExtra("toBeAdded",spell.getName());
-                intent.putExtra(SearchActivity.SHEET_OBJECT,spell);
+                Intent intent = new Intent();
+                intent.putExtra("toBeAdded", sheetObject.getName());
+                intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                 overviewActivity.setResult(1, intent);
-                Log.i("RESULT", "SpellOverviewActivity, result has extra " + spell.getName());
                 SearchActivity.searchActivity.finish();
                 overviewActivity.finish();
 
@@ -65,12 +63,11 @@ public class SpellOverviewActivity extends AppCompatActivity {
         });
     }
 
-    private void populate(SheetObject spell){
-        String html = spell.longDescr();
-        Log.i("SPELL",html);
-        TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
-        if(html.indexOf("</div>") == -1) html = "<p><h3>"+spell.getName()+"</h3></p>"+html;
-        spellDescr.setText(Html.fromHtml(html));
+    private void populate(SheetObject sheetObject){
+        String html = sheetObject.longDescr();
+        TextView sheetObjectDescr = (TextView)findViewById(R.id.sheetObjectDescr);
+        if(html.indexOf("</div>") == -1) html = "<p><h3>"+sheetObject.getName()+"</h3></p>"+html;
+        sheetObjectDescr.setText(Html.fromHtml(html));
     }
 
 

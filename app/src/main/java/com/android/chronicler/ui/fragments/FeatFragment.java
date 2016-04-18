@@ -14,11 +14,10 @@ import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.SheetObject;
-import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
 import com.android.chronicler.character.feat.FeatSlot;
 import com.android.chronicler.ui.SearchActivity;
-import com.android.chronicler.ui.SpellOverviewActivity;
+import com.android.chronicler.ui.SheetObjectOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
 
 /**
@@ -55,9 +54,9 @@ public class FeatFragment extends SheetFragment {
                                     int position, long id) {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
-                    Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                    Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                     intent.putExtra("TYPE","feat");
-                    Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
+                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -95,7 +94,7 @@ public class FeatFragment extends SheetFragment {
                 switch ((String) item.getTitle()) {
                     case "Overview":
                         Log.d("FEATS", "Should open overview for spell");
-                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                         intent.putExtra("TYPE","feat");
                         intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         intent.putExtra("StartedForResult", false);
