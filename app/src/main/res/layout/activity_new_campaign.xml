@@ -25,4 +25,5 @@
         android:id="@+id/confirm_campaign_button"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

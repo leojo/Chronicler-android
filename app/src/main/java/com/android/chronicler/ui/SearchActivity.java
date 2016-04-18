@@ -44,8 +44,8 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        Log.d("SEARCH", "OnCreate fired");
         searchActivity = this;
-        Log.i("RESULT", "Search activity has been started");
         // Define this final variable to be able to call start
         // activity for result on this within inner class (in click listener)
         final SearchActivity thisActivity = this;
@@ -55,7 +55,6 @@ public class SearchActivity extends AppCompatActivity {
         searchMessage = (TextView)findViewById(R.id.searchMessage);
 
         searchType = getIntent().getStringExtra("TYPE");
-        Log.d("ITEMSEARCH","Search type is "+searchType);
         initListAndDialog();
 
         if(searchResults==null) searchResults = new ArrayList<>();
@@ -76,7 +75,6 @@ public class SearchActivity extends AppCompatActivity {
                 // activity for result and the result should be a specific spell, feat or inventory.
                 switch (searchType) {
                     case "spell":
-                        Log.i("RESULT", "Search activity, reordering the spelloverview activity to front");
                         spellIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
                         spellIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(spellIntent);
@@ -103,7 +101,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // Grab the result from the OverviewActivity and define it as the result
         // for this activity to send it back to the fragments:
-        Log.i("RESULT", "Search Activity class, is the data null even here? "+(data==null)+"if not, can we get the toBeAdded extra? "+data.getStringExtra("toBeAdded"));
         Intent intent=new Intent();
         intent.putExtra("toBeAdded",data.getStringExtra("toBeAdded"));
         setResult(1,intent);
@@ -111,16 +108,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        Log.d("SEARCH", "Oh no! It dies!");
+        super.finish();
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
+        Log.d("SEARCH", "onNewIntent fired!");
         handleIntent(intent);
     }
 
     private void handleIntent(Intent intent) {
-        Log.i("SEARCH", "Were handling the intent");
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            Log.i("SEARCH", "The intent was an ACTION_SEARCH intent!");
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.d("ITEMSEARCH","Inside handleIntent, searchType is "+searchType);
             DataLoader.handleSearchQuery(getApplication(), intent, searchType, query);
         }
     }
@@ -153,12 +154,13 @@ public class SearchActivity extends AppCompatActivity {
 
 
         //MenuItemCompat searchItem = new Menu
-        MenuItem searchItem = menu.findItem(R.id.search);
+        final MenuItem searchItem = menu.findItem(R.id.search);
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                searchView.setIconified(false);
                 return true;
             }
 
@@ -199,7 +201,6 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.i("RESULT", "PRESSED THE BACK BUTTON!!!!");
         if(SpellOverviewActivity.overviewActivity != null) {
             SpellOverviewActivity.overviewActivity.setResult(0);
             SpellOverviewActivity.overviewActivity.finish();

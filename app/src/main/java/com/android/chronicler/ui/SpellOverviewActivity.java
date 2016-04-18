@@ -26,6 +26,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("SEARCH", "We shouldnt be creating this now");
         setContentView(R.layout.activity_spell_overview);
         overviewActivity = this;
         addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
@@ -51,12 +52,10 @@ public class SpellOverviewActivity extends AppCompatActivity {
         addSpellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("RESULT", "SpellOverViewActivity: About to set the result");
                 Intent intent=new Intent();
                 intent.putExtra("toBeAdded",spell.getName());
                 intent.putExtra(SearchActivity.SHEET_OBJECT,spell);
                 overviewActivity.setResult(1, intent);
-                Log.i("RESULT", "SpellOverviewActivity, result has extra " + spell.getName());
                 SearchActivity.searchActivity.finish();
                 overviewActivity.finish();
 
@@ -77,6 +76,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
         if(!getIntent().getBooleanExtra("StartedForResult", true)) {
             super.onBackPressed();
         } else {
+            Log.d("SEARCH", "This should be happening");
             Intent intent2 = new Intent(this, SearchActivity.class);
             intent2.putExtra("TYPE", "spell");
             intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
