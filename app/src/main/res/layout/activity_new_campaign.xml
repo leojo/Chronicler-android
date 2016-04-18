@@ -18,8 +18,9 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="221dp"
         android:layout_height="wrap_content"
+        style="@style/LoginButtonStyle"
         android:text="Confirm"
         android:id="@+id/confirm_campaign_button"
         android:layout_centerVertical="true"

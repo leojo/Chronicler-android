@@ -344,7 +344,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 */
         // Redirect to main screen:
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
 
     }
