@@ -18,6 +18,9 @@ import java.util.List;
 
 /**
  * Created by andrea on 16.4.2016.
+ *
+ * Fragment for character options, such as Rest, Level Up, Save
+ * and viewing Class Advancement table.
  */
 public class MiscFragment extends SheetFragment {
     private static CharacterSheet cs;

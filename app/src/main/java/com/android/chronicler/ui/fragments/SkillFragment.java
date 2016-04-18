@@ -24,16 +24,11 @@ public class SkillFragment extends SheetFragment {
     private static Skills skills;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i("SKILLFRAG","Created");
+
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.skill_fragment_layout, container, false);
 
         ListView skillsView = (ListView)(rootView.findViewById(R.id.skillsView));
         skillsView.setAdapter(new SkillsAdapter(getContext(), skills));
-        try {
-            Log.d("SKILLFRAG", new ObjectMapper().writeValueAsString((Skills)getArguments().getSerializable("SKILLS")));
-        } catch (JsonProcessingException e) {
-            Log.d("SKILLFRAG","Failed to write skills");
-        }
 
         return rootView;
     }

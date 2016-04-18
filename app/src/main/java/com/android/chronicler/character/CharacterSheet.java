@@ -31,6 +31,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+
+/**
+ * Created by leo on 25.11.2015.
+ *
+ * Java bean to represent the Character Sheet in its entirety.
+ * This uses all other character related classes: skills, featSlots, spells, etc...
+ * All these getters and setters are needed to convert to/from JSON!
+ */
 public class CharacterSheet implements Serializable{
 
     // =====================

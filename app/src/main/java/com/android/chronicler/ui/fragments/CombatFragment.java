@@ -35,9 +35,7 @@ public class CombatFragment extends SheetFragment {
             final View v = rootView.getChildAt(i);
 
             if(v instanceof ContentView){
-                Log.d("POPULATE", "Setting " + ((ContentView) v).getCustomId());
                 ((ContentView) v).updateText(aboutVals.get(((ContentView) v).getCustomId().toLowerCase()));
-                Log.d("POPULATE", "set to " + ((ContentView) v).getText());
 
                 if(((ContentView) v).isEditable()){
                     ((ContentView) v).setValueViewOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -45,8 +43,6 @@ public class CombatFragment extends SheetFragment {
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
                                 String newVal = ((ContentView) v).getText();
-                                Log.d("UPDATE_FIELD", ((ContentView) v).getCustomId() + " lost focus! Should store now! Value: " + newVal);
-                                Log.d("UPDATE_FIELD", "The id we are updating is actually " + ((ContentView) v).getCustomId());
                                 cs.updateField(((ContentView) v).getCustomId(), newVal);
                                 ((ContentView) v).updateText(newVal);
                             } else
@@ -56,17 +52,9 @@ public class CombatFragment extends SheetFragment {
                 }
             }
             else if(v instanceof CompactContentView){
-                Log.d("POPULATE","Setting "+((CompactContentView) v).getCustomId());
-                ((CompactContentView) v).updateText(aboutVals.get(((CompactContentView) v).getCustomId().toLowerCase()));
-                Log.d("POPULATE", "set to " + ((CompactContentView) v).getText());
-                Log.d("POPULATE", "value = " + ((CompactContentView) v).getValue() + ", valueView.getText = " + ((CompactContentView) v).getText());
 
-                if(i>0){
-                    for(int j=i; j>0; j--){
-                        View v2 = rootView.getChildAt(j-1);
-                        Log.d("POP_BACKLOG", "----Text of " + ((CompactContentView) v2).getCustomId() + " is now " + ((CompactContentView) v2).getText());
-                    }
-                }
+                ((CompactContentView) v).updateText(aboutVals.get(((CompactContentView) v).getCustomId().toLowerCase()));
+
 
                 if(((CompactContentView) v).isEditable()){
                     ((CompactContentView) v).setValueViewOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -74,8 +62,6 @@ public class CombatFragment extends SheetFragment {
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (!hasFocus) {
                                 String newVal = ((CompactContentView) v).getText();
-                                Log.d("UPDATE_FIELD", ((CompactContentView) v).getCustomId() + " lost focus! Should store now! Value: " + newVal);
-                                Log.d("UPDATE_FIELD", "The id we are updating is actually " + ((CompactContentView) v).getCustomId());
                                 cs.updateField(((CompactContentView) v).getCustomId(), newVal);
                                 ((CompactContentView) v).updateText(newVal);
                             } else
@@ -94,10 +80,7 @@ public class CombatFragment extends SheetFragment {
 
     private static HashMap<String,String> getVals(CharacterSheet cs){
         HashMap<String,String> vals = new HashMap<>();
-        Log.d("POPULATE", "getting values");
-        Log.d("DEX_CHANGE","The AC value of the charactersheet is "+cs.getAc());
-        Log.d("DEX_CHANGE","The Touch value of the charactersheet is "+cs.getTouch());
-        Log.d("DEX_CHANGE", "The Initiative value of the charactersheet is " + cs.getInitiative());
+
         vals.put("ac",cs.getAc()+"");
         vals.put("touch",cs.getTouch()+"");
         vals.put("ff",cs.getFf()+"");
