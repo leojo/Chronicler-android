@@ -129,7 +129,7 @@ public class JournalFragment extends SheetFragment {
                         DataLoader.deleteJournalEntry(thisActivity, position, campaignName);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This is weird");
                 }
                 return false;
             }
@@ -160,7 +160,6 @@ public class JournalFragment extends SheetFragment {
             entries.add(requestCode, newEntry);
             titles.add(data.getStringExtra("TITLE"));
         }
-        Log.i("Journal", titles.toString());
         DataLoader.storeJournalEntry(getActivity(), newEntry.get(0), newEntry.get(1), campaignName);
         adapter.notifyDataSetChanged();
     }
