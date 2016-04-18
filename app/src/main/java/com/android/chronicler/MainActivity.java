@@ -23,10 +23,6 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 
 public class MainActivity extends AppCompatActivity {
-<<<<<<< HEAD
-
-=======
->>>>>>> 62649bcb6512a8c31cdc33b93c152132bba32a27
     private static PersistentCookieStore cookieStore;
 
     @Override
