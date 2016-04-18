@@ -244,37 +244,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
         refuseRegisterBtn.setVisibility(View.VISIBLE);
 
-        // Store values at the time of the login attempt.
-        username = mEmailView.getText().toString();
-        final String password = mPasswordView.getText().toString();
 
         Button signInButton = (Button) findViewById(R.id.email_sign_in_button);
         signInButton.setText("Register");
         signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                username = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
                 performRegister(username, password);
             }
         });
     }
 
     private void backToLogin() {
-
         refuseRegisterBtn.setVisibility(View.GONE);
-
-
-        // Store values at the time of the login attempt.
-        username = mEmailView.getText().toString();
-        final String password = mPasswordView.getText().toString();
 
         Button signInButton = (Button) findViewById(R.id.email_sign_in_button);
         signInButton.setText("Signin Or Register");
         signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                username = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
                 performLogin(username, password);
             }
         });
+
+        showMessage("");
     }
 
     private void performRegister(String username, String password) {

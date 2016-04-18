@@ -13,5 +13,6 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/campaign_note"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center_horizontal|top"
+        android:padding="1sp" />
 </FrameLayout>
