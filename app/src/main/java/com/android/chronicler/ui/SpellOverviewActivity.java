@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.SheetObject;
 
 /**
  * Created by andrea on 16.4.2016.
@@ -31,6 +32,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
 
         if(!getIntent().getBooleanExtra("StartedForResult", true)) {
             addSpellBtn.setVisibility(View.GONE);
+            populate((SheetObject)getIntent().getSerializableExtra(SearchActivity.SHEET_OBJECT));
         } else {
             Intent intent2 = new Intent(this, SearchActivity.class);
             intent2.putExtra("TYPE", "spell");
@@ -42,30 +44,31 @@ public class SpellOverviewActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        final String spell = intent.getStringExtra("spellName");
-        String html = intent.getStringExtra("html");
-        Log.i("SPELL",html);
-        TextView spellName = (TextView)findViewById(R.id.spellName);
-        TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
-        spellName.setText(spell);
-        spellDescr.setText(Html.fromHtml(html));
+        final SheetObject spell = (SheetObject)intent.getSerializableExtra(SearchActivity.SHEET_OBJECT);
+        populate(spell);
 
         addSpellBtn.setVisibility(View.VISIBLE);
-
-
         addSpellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("RESULT", "SpellOverViewActivity: About to set the result");
                 Intent intent=new Intent();
-                intent.putExtra("toBeAdded",spell);
+                intent.putExtra("toBeAdded",spell.getName());
+                intent.putExtra(SearchActivity.SHEET_OBJECT,spell);
                 overviewActivity.setResult(1,intent);
-                Log.i("RESULT", "SpellOverviewActivity, result has extra "+spell);
+                Log.i("RESULT", "SpellOverviewActivity, result has extra "+spell.getName());
                 SearchActivity.searchActivity.finish();
                 overviewActivity.finish();
 
             }
         });
+    }
+
+    private void populate(SheetObject spell){
+        String html = spell.longDescr();
+        Log.i("SPELL",html);
+        TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
+        spellDescr.setText(Html.fromHtml(html));
     }
 
 

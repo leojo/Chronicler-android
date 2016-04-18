@@ -34,8 +34,9 @@ public class SearchActivity extends AppCompatActivity {
     public static ArrayList<SheetObject> searchResults;
     private SearchView searchView;
     private String searchType;
-    public static ListView resultsView;
-    public static TextView searchMessage;
+    private static ListView resultsView;
+    private static TextView searchMessage;
+    public static final String SHEET_OBJECT = "SHEET_OBJECT";
 
 
 
@@ -56,9 +57,8 @@ public class SearchActivity extends AppCompatActivity {
         searchType = getIntent().getStringExtra("TYPE");
         initListAndDialog();
 
-        searchResults = new ArrayList<>();
+        if(searchResults==null) searchResults = new ArrayList<>();
         adapter = new SheetAdapter(this,searchResults);
-
         resultsView.setAdapter(adapter);
 
         final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);
@@ -75,8 +75,7 @@ public class SearchActivity extends AppCompatActivity {
                 switch (searchType) {
                     case "spell":
                         Log.i("RESULT", "Search activity, reordering the spelloverview activity to front");
-                        spellIntent.putExtra("spellName", searchResults.get(position).getName());
-                        spellIntent.putExtra("html", searchResults.get(position).longDescr());
+                        spellIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
                         spellIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(spellIntent);
                         break;
@@ -90,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
                         itemIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(itemIntent);
                 }
-            };
+            }
         });
     }
 

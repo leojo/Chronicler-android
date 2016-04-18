@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.skill.Skills;
 import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
@@ -95,7 +97,7 @@ public class SpellFragment extends SheetFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Activate popup when an invite is clicked
-                showPopup(view);
+                showPopup(view, spells.getSpellSlots().get(position));
 
                 return false;
             }
@@ -105,7 +107,7 @@ public class SpellFragment extends SheetFragment {
 
     // Pop-up for accepting or declining invites: Will later be replaced with buttons
     // nested inside the list elements for accepting and declining.
-    public void showPopup(View v) {
+    public void showPopup(View v, final SheetObject sheetObject) {
         final SpellFragment thisFragment = this;
         PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
         popup.inflate(R.menu.menu_spell_options);
@@ -118,6 +120,7 @@ public class SpellFragment extends SheetFragment {
                         Log.d("SPELLS", "Should open overview for spell");
                         Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
                         intent.putExtra("StartedForResult", false);
+                        intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         startActivity(intent);
                         break;
                     case "Delete":
@@ -143,13 +146,9 @@ public class SpellFragment extends SheetFragment {
         ArrayList<SpellSlot> p = (spells.getSpellSlots());
 
         Log.i("RESULT", "Before result, our spells vector is "+p.toString());
-        String spellName = data.getStringExtra("toBeAdded");
-        Log.i("RESULT", "We got our result! it's "+spellName);
-        SpellSlot newSpellSlot = new SpellSlot();
-        Spell newSpell = new Spell();
-        newSpell.setName(spellName);
-        newSpellSlot.setSpell(newSpell);
-        spells.add(newSpellSlot);
+        SpellSlot spellSlot = (SpellSlot)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
+        Log.i("RESULT", "We got our result! it's " + spellSlot.getName());
+        spells.add(spellSlot);
         adapter.clearAndAddAll(spells);
         adapter.notifyDataSetChanged();
         ArrayList<SpellSlot> s = (spells.getSpellSlots());
