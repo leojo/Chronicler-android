@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.SheetObject;
-import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.util.DataLoader;
 import com.android.chronicler.util.SheetAdapter;
 
@@ -55,6 +54,7 @@ public class SearchActivity extends AppCompatActivity {
         searchMessage = (TextView)findViewById(R.id.searchMessage);
 
         searchType = getIntent().getStringExtra("TYPE");
+
         initListAndDialog();
 
         if(searchResults==null) searchResults = new ArrayList<>();
@@ -62,9 +62,7 @@ public class SearchActivity extends AppCompatActivity {
         adapter.searching = true;
         resultsView.setAdapter(adapter);
 
-        final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);
-        final Intent featIntent = new Intent(this, FeatOverviewActivity.class);
-        final Intent itemIntent = new Intent(this, ItemOverviewActivity.class);
+        final Intent overviewIntent = new Intent(this, SheetObjectOverviewActivity.class);
 
 
         resultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,20 +73,18 @@ public class SearchActivity extends AppCompatActivity {
                 // activity for result and the result should be a specific spell, feat or inventory.
                 switch (searchType) {
                     case "spell":
-                        spellIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
-                        spellIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(spellIntent);
+                        Log.i("RESULT", "Search activity, reordering the spelloverview activity to front");
+                        overviewIntent.putExtra("TYPE", "spell");
                         break;
                     case "feat":
-                        featIntent.putExtra("featName", searchResults.get(position).getName());
-                        featIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(featIntent);
+                        overviewIntent.putExtra("TYPE", "spell");
                         break;
                     case "item":
-                        itemIntent.putExtra("itemName", searchResults.get(position).getName());
-                        itemIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(itemIntent);
+                        overviewIntent.putExtra("TYPE", "spell");
                 }
+                overviewIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
+                overviewIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(overviewIntent);
             }
         });
     }
@@ -201,17 +197,10 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(SpellOverviewActivity.overviewActivity != null) {
-            SpellOverviewActivity.overviewActivity.setResult(0);
-            SpellOverviewActivity.overviewActivity.finish();
-        }
-        if(FeatOverviewActivity.overviewActivity != null) {
-            FeatOverviewActivity.overviewActivity.setResult(0);
-            FeatOverviewActivity.overviewActivity.finish();
-        }
-        if(ItemOverviewActivity.overviewActivity != null) {
-            ItemOverviewActivity.overviewActivity.setResult(0);
-            ItemOverviewActivity.overviewActivity.finish();
+
+        if(SheetObjectOverviewActivity.overviewActivity != null) {
+            SheetObjectOverviewActivity.overviewActivity.setResult(0);
+            SheetObjectOverviewActivity.overviewActivity.finish();
         }
         this.finish();
     }

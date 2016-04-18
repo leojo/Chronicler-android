@@ -96,16 +96,8 @@
         <activity android:name=".ui.ClassTableActivity" >
         </activity>
         <activity
-            android:name=".ui.SpellOverviewActivity"
+            android:name=".ui.SheetObjectOverviewActivity"
             android:label="@string/title_activity_spell_overview"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.FeatOverviewActivity"
-            android:label="@string/title_activity_feat_overview"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.ItemOverviewActivity"
-            android:label="@string/title_activity_item_overview"
             android:windowSoftInputMode="adjustPan" />
     </application>
 

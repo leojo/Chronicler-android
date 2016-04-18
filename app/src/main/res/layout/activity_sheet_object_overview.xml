@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Full Description"
-            android:id="@+id/spellDescr"/>
+            android:id="@+id/sheetObjectDescr"/>
     </ScrollView>
 
     <Button
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         style="@style/LoginButtonStyle"
         android:text="Add"
-        android:id="@+id/addSpellBtn"
+        android:id="@+id/addBtn"
         android:layout_gravity="center"/>
 </LinearLayout>

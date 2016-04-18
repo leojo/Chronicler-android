@@ -18,6 +18,18 @@ public class Weapon extends Equipment {
 
     //TODO: Finish implementing Weapon
 
+    @Override
+    public String longDescr() {
+        String customDetails = "<p><h3>"+getName()+"</h3></p>";
+        String fullText = "";
+        if(getDescription() != null && !getDescription().trim().equalsIgnoreCase("")) fullText = getDescription();
+        if(damage != null && !damage.trim().equalsIgnoreCase("")){
+            String weaponType = (twoHand?"Two Handed":(oneHand?"One Handed":(ranged?"Ranged":(thrown?"Thrown":(light?"Light":"Unknown")))));
+            customDetails += "Weapon Category: "+wepCat+"<br>Weapon Type: "+(type==null?weaponType:type)+"<br>Damage: "+damage+"<br>Critical: "+crit+"<br>Damage Type(s): "+damageTypes+(ranged||thrown?"<br>Range Increment: "+rangeIncr:"")+"<br>Weight: "+getWeight()+"<br>Cost: "+getCost();
+        }
+        else return super.longDescr();
+        return customDetails+"<br><div><p>"+fullText+"</p></div>";
+    }
 
     //<editor-fold desc="Getters and Setters">
     public boolean isTwoHand() {

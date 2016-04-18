@@ -22,6 +22,17 @@ public class Feat  implements Serializable, Comparable {
     private String reference;
     private String selectedChoice = "Please select";
 
+    public String shortDescription(){
+        String benefitRAW = getBenefit();
+        int from = 0;
+        int to = benefitRAW.length();
+
+        from = Math.min(Math.max(benefitRAW.indexOf("</b>")+4,from),to);
+        to = Math.max(Math.min(benefitRAW.indexOf("</p>")-1,to),from);
+
+        return benefitRAW.substring(from,to);
+    }
+
     //<editor-fold desc="Getters and Setters">
 
     public String getId() {

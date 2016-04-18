@@ -1,12 +1,9 @@
 package com.android.chronicler.ui.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.SheetObject;
-import com.android.chronicler.character.skill.Skills;
-import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.character.spell.SpellSlots;
 import com.android.chronicler.ui.SearchActivity;
-import com.android.chronicler.ui.SpellOverviewActivity;
-import com.android.chronicler.util.DataLoader;
+import com.android.chronicler.ui.SheetObjectOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
-import com.android.chronicler.util.SkillsAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 
@@ -80,8 +70,9 @@ public class SpellFragment extends SheetFragment {
                     // If we click the add-spell button, the SearchActivity will be
                     // started for result, which in turn will start a specific-spell overview
                     // activity for result and allow the user to select that spell.
-                    Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
-                    Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
+                    Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
+                    intent.putExtra("TYPE","spell");
+                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -135,7 +126,8 @@ public class SpellFragment extends SheetFragment {
                 switch ((String) item.getTitle()) {
                     case "Overview":
                         Log.d("SPELLS", "Should open overview for spell");
-                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
+                        intent.putExtra("TYPE","spell");
                         intent.putExtra("StartedForResult", false);
                         intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         startActivity(intent);
