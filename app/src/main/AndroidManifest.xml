@@ -88,11 +88,11 @@
         <activity
             android:name=".ui.CampaignNoteActivity"
             android:label="@string/title_activity_campaign_note"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.EditJournalActivity"
             android:label="@string/title_activity_edit_journal"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.ClassTableActivity" >
         </activity>
