@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
@@ -43,6 +44,10 @@ public class InvitesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         invites = intent.getStringArrayListExtra("INVITES");
 
+        if (invites.isEmpty()) {
+            TextView txt = (TextView)findViewById(R.id.no_invites_text);
+            txt.setVisibility(View.VISIBLE);
+        }
         Log.i("Invites", invites.toString());
 
         inviteListView = (ListView)findViewById(R.id.inviteListView);
@@ -97,6 +102,10 @@ public class InvitesActivity extends AppCompatActivity {
         String selectedCharacter = data.getStringExtra("CHARACTER_NAME");
         adapter.remove(selectedItem);
 
+        if (adapter.isEmpty()) {
+            TextView txt = (TextView)findViewById(R.id.no_invites_text);
+            txt.setVisibility(View.VISIBLE);
+        }
         DataLoader.respondToInvite(this, new Intent(this, CharactersActivity.class), selectedPosition, selectedCharacter);
 
         Intent intent = new Intent(this, CampaignActivity.class);

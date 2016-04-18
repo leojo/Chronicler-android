@@ -15,11 +15,19 @@
         android:id="@+id/campaign_name_field"
         android:hint="Campaign Name"
         android:layout_above="@+id/confirm_campaign_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="20sp"
+        android:layout_alignRight="@+id/confirm_campaign_button"
+        android:layout_alignEnd="@+id/confirm_campaign_button"
+        android:layout_alignLeft="@+id/confirm_campaign_button"
+        android:layout_alignStart="@+id/confirm_campaign_button"
+        android:textAlignment="center"
+        android:textSize="28sp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="221dp"
         android:layout_height="wrap_content"
+        style="@style/LoginButtonStyle"
         android:text="Confirm"
         android:id="@+id/confirm_campaign_button"
         android:layout_centerVertical="true"

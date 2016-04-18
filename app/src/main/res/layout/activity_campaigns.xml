@@ -15,7 +15,8 @@
             android:layout_alignParentTop="true"
             android:layout_alignRight="@+id/DMCampaignListView"
             android:layout_alignEnd="@+id/DMCampaignListView"
-            android:text="Campaigns I run" />
+            android:text="Campaigns I run"
+            android:textStyle="bold" />
 
 
         <ListView
@@ -38,7 +39,9 @@
             android:layout_alignRight="@+id/DMCampaignListView"
             android:layout_alignEnd="@+id/DMCampaignListView"
             android:layout_weight="0.1"
-            android:text="Campaigns I play" />
+            android:text="Campaigns I play"
+            android:textStyle="bold"
+            android:scrollIndicators="right" />
 
         <ListView
             android:layout_width="match_parent"

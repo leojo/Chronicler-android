@@ -331,12 +331,13 @@ public class DataLoader {
                 ObjectMapper mapper = new ObjectMapper();
                 ArrayList<Integer> ids = new ArrayList<Integer>();
                 try {
-                    switch (searchtype){
+                    switch (searchtype) {
                         case "spell":
                             // The JSONrespnse represents an Arraylist<Spell>
-                            ArrayList<Spell> spells = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Spell>>() { });
+                            ArrayList<Spell> spells = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Spell>>() {
+                            });
                             ArrayList<SpellSlot> spellSlots = new ArrayList<>();
-                            for(Spell s : spells){
+                            for (Spell s : spells) {
                                 SpellSlot ss = new SpellSlot();
                                 ss.setSpell(s);
                                 spellSlots.add(ss);
@@ -345,9 +346,10 @@ public class DataLoader {
                             break;
                         case "feat":
                             // The JSONrespnse represents an Arraylist<Feat>
-                            ArrayList<Feat> feats = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Feat>>() { });
+                            ArrayList<Feat> feats = mapper.readValue(JSONresponse, new TypeReference<ArrayList<Feat>>() {
+                            });
                             ArrayList<FeatSlot> featSlots = new ArrayList<>();
-                            for(Feat f : feats){
+                            for (Feat f : feats) {
                                 FeatSlot fs = new FeatSlot();
                                 fs.setFeat(f);
                                 featSlots.add(fs);
@@ -361,6 +363,7 @@ public class DataLoader {
                             break;
                         default:
                             Log.d("SEARCH", "Unrecognized search type "+searchtype);
+                            Log.d("ITEMSEARCH", JSONresponse);
                             SearchActivity.noResults();
                             break;
                     }
@@ -469,13 +472,14 @@ public class DataLoader {
 
 
     // Stores the specified campaign in the database and then opens the Campaign activity for it.
-    public static void postCampaignThenOpen(final Context context, final Intent intent, String campaignName) throws IOException {
+    public static void postCampaignThenOpen(final Context context, final Intent intent, final String campaignName) throws IOException {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
         cli.postUserData("/campaignData", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                intent.putExtra("CAMPAIGN_NAME", campaignName);
                 context.startActivity(intent);
                 Log.i("Campaign", new String(responseBody));
             }
