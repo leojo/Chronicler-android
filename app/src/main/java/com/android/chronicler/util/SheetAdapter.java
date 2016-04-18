@@ -64,7 +64,6 @@ public class SheetAdapter extends BaseAdapter {
         this.setValues();
     }
 
-
     public SheetAdapter(Context context , SpellSlots spells){
         this.sheetObjs = new ArrayList<>();
         this.sheetObjs.addAll(spells.getSpellSlots());
