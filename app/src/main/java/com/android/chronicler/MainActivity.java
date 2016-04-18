@@ -14,7 +14,6 @@ import com.android.chronicler.ui.CharactersActivity;
 import com.android.chronicler.ui.LoginActivity;
 import com.android.chronicler.ui.MyAccountActivity;
 import com.android.chronicler.util.DataLoader;
-import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.PersistentCookieStore;
 
 import java.util.List;
@@ -24,15 +23,12 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private UserLocalStore store;
     private static PersistentCookieStore cookieStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        store = new UserLocalStore(getApplicationContext());
         cookieStore = new PersistentCookieStore(this);
         boolean inSession = userInSession(cookieStore.getCookies());
         getSupportActionBar().hide();

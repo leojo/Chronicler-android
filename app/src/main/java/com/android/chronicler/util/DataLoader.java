@@ -396,7 +396,6 @@ public class DataLoader {
     // Fetches the list of campaigns for the current user and then starts the Campaigns activity.
     public static void readyCampaignlistThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
@@ -494,7 +493,6 @@ public class DataLoader {
 
     public static void deleteCampaign(final Context context, String campaignName) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
@@ -515,7 +513,6 @@ public class DataLoader {
 
     public static void getCampaignDetailsThenOpen(final Context context, final Intent intent, String campaignName) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.put("campaign_name", campaignName);
@@ -583,7 +580,6 @@ public class DataLoader {
 
     public static void storePublicNote(Context context, final int index, final String noteText, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("note", noteText);
@@ -605,7 +601,6 @@ public class DataLoader {
 
     public static void storePrivateNote(Context context, final int index, final String noteText, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("note", noteText);
@@ -626,7 +621,6 @@ public class DataLoader {
     }
     public static void storeJournalEntry(Context context, final String title, final String entry, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("title", title);
@@ -648,7 +642,6 @@ public class DataLoader {
 
     public static void deletePublicNote(Context context, final int index, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("index", String.valueOf(index));
@@ -669,7 +662,6 @@ public class DataLoader {
 
     public static void deletePrivateNote(Context context, final int index, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("index", String.valueOf(index));
@@ -690,7 +682,6 @@ public class DataLoader {
 
     public static void deleteJournalEntry(Context context, final int index, final String campaign) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.add("index", String.valueOf(index));
@@ -778,7 +769,7 @@ public class DataLoader {
     // Readies a list of all of active users' invites and then start the activity
     public static void readyInvitesThenStart(final Context context, final Intent intent) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
+
         cli.getUserData("/invites", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {
@@ -809,7 +800,6 @@ public class DataLoader {
 
     public static void respondToInvite(final Context context, final Intent intent, int index, String characterName) {
         ChroniclerRestClient cli = new ChroniclerRestClient(context);
-        UserLocalStore store = new UserLocalStore(context.getApplicationContext());
 
         RequestParams params = new RequestParams();
         params.put("Character", characterName);

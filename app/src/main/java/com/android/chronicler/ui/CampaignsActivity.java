@@ -17,7 +17,6 @@ import android.widget.PopupMenu;
 import com.android.chronicler.R;
 import com.android.chronicler.util.ChroniclerRestClient;
 import com.android.chronicler.util.DataLoader;
-import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -161,7 +160,6 @@ public class CampaignsActivity extends AppCompatActivity {
         super.onRestart();
 
         ChroniclerRestClient cli = new ChroniclerRestClient(this);
-        UserLocalStore store = new UserLocalStore(getApplicationContext());
         cli.getUserData("/campaignData", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray responseBody) {

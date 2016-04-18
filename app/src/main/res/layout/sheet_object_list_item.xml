@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:paddingLeft="10dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -10,7 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/name"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,5 +19,5 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Short Description"
         android:id="@+id/shortDescr"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_vertical"/>
 </LinearLayout>
