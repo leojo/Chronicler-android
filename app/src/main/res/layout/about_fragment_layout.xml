@@ -5,13 +5,26 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+    <com.android.chronicler.util.ContentView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.234"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        custom:editable="true"
+        custom:name="Name"
+        custom:id="name"
+        custom:value="Legolas"
+        custom:integerField="false"
+        android:id="@+id/charNameView"
+        android:background="@drawable/border_right_bottom"/>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:weightSum="1"
-            android:layout_weight="0.7"
+            android:layout_weight="0.466"
             android:id="@+id/topCombatLayout">
 
             <LinearLayout
@@ -24,26 +37,11 @@
                 android:id="@+id/allAcLayout">
 
 
-                <com.android.chronicler.util.ContentView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.33"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    custom:editable="true"
-                    custom:name="Name"
-                    custom:id="name"
-                    custom:value="Legolas"
-                    custom:integerField="false"
-                    android:id="@+id/charNameView"
-                    android:background="@drawable/border_right_bottom"/>
-
-
 
                 <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.33"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     custom:editable="true"
@@ -59,7 +57,7 @@
                 <com.android.chronicler.util.ContentView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.33"
+                    android:layout_weight="0.5"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     custom:editable="true"
@@ -83,7 +81,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.55"
+                    android:layout_weight="0.5"
                     android:gravity="bottom|center_horizontal"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Barbarian"
@@ -94,7 +92,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.45"
+                    android:layout_weight="0.5"
                     android:gravity="top|center_horizontal"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Level 5"
