@@ -19,6 +19,7 @@ public class MyAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
+        getSupportActionBar().hide();
     }
 
     // Opens the list of invites. For now it is a hard-coded test vector,

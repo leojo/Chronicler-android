@@ -42,7 +42,7 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:text="My account"
         android:id="@+id/button2"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
@@ -51,7 +51,7 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Something"
+        android:text="Settings"
         android:id="@+id/button3"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal" />
@@ -59,7 +59,7 @@
     <Button
         android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Something"
+        android:text="About"
         android:id="@+id/button4"
         style="@style/LoginButtonStyle"
         android:layout_gravity="center_horizontal"
