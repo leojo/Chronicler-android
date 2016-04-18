@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.android.chronicler.ui.CampaignsActivity;
 import com.android.chronicler.ui.CharactersActivity;
+import com.android.chronicler.ui.InvitesActivity;
 import com.android.chronicler.ui.LoginActivity;
-import com.android.chronicler.ui.MyAccountActivity;
 import com.android.chronicler.util.DataLoader;
-import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.PersistentCookieStore;
 
 import java.util.List;
@@ -25,14 +24,12 @@ import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UserLocalStore store;
     private static PersistentCookieStore cookieStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        store = new UserLocalStore(getApplicationContext());
         cookieStore = new PersistentCookieStore(this);
         boolean inSession = userInSession(cookieStore.getCookies());
         getSupportActionBar().hide();
@@ -94,11 +91,14 @@ public class MainActivity extends AppCompatActivity {
         DataLoader.readyCampaignlistThenStart(this, intent);
     }
 
-    // opens my account page
-    public void openMyAccount(View view) {
-        Intent intent = new Intent(this, MyAccountActivity.class);
-        startActivity(intent);
+
+    // Opens the list of invites. For now it is a hard-coded test vector,
+    // this will however use the dataloader to get the list of invites.
+    public void openInvites(View view) {
+        Intent intent = new Intent(this, InvitesActivity.class);
+        DataLoader.readyInvitesThenStart(this, intent);
     }
+
 
     // logout user: clear his session
     public void logout(View view) {

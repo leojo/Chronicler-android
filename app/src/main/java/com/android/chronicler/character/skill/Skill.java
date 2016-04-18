@@ -1,7 +1,5 @@
 package com.android.chronicler.character.skill;
 
-import android.util.Log;
-
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.AbilityID;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -29,7 +29,6 @@ import android.widget.TextView;
 import com.android.chronicler.MainActivity;
 import com.android.chronicler.R;
 import com.android.chronicler.util.ChroniclerRestClient;
-import com.android.chronicler.util.UserLocalStore;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 

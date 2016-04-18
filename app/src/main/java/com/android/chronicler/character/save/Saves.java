@@ -1,6 +1,5 @@
 package com.android.chronicler.character.save;
 
-import com.android.chronicler.character.ability.AbilityScore;
 import com.android.chronicler.character.ability.AbilityScores;
 import com.android.chronicler.character.enums.SavingThrowID;
 import com.fasterxml.jackson.annotation.JsonIgnore;

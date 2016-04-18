@@ -4,7 +4,6 @@ package com.android.chronicler.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +17,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
-import com.android.chronicler.ui.CampaignNoteActivity;
 import com.android.chronicler.ui.EditJournalActivity;
 import com.android.chronicler.util.DataLoader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

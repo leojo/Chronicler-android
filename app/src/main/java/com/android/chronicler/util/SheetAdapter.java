@@ -11,13 +11,8 @@ import android.widget.TextView;
 
 import com.android.chronicler.R;
 import com.android.chronicler.character.SheetObject;
-import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
-import com.android.chronicler.character.feat.FeatSlot;
-import com.android.chronicler.character.item.ArmorShield;
 import com.android.chronicler.character.item.Inventory;
-import com.android.chronicler.character.item.Item;
-import com.android.chronicler.character.spell.Spell;
 import com.android.chronicler.character.spell.SpellSlot;
 import com.android.chronicler.character.spell.SpellSlots;
 import com.android.chronicler.ui.SearchActivity;

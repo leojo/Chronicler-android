@@ -2,18 +2,13 @@ package com.android.chronicler.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -21,7 +16,6 @@ import android.widget.TextView;
 import com.android.chronicler.R;
 import com.android.chronicler.util.DataLoader;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 /**

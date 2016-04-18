@@ -1,17 +1,12 @@
 package com.android.chronicler.character.skill;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.util.Log;
 
 import com.android.chronicler.character.ability.AbilityScores;
-import com.android.chronicler.util.ChroniclerRestClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +15,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by leo on 8.2.2016.
