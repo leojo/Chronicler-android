@@ -164,6 +164,7 @@ public class PublicNotesFragment extends SheetFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("Notes", "Received text: " + data.getStringExtra("TEXT"));
         String newNote = data.getStringExtra("TEXT");
+        if (newNote.isEmpty()) return;
         if (requestCode < publicNotes.size()) {
             publicNotes.set(requestCode, newNote);
             shortNotes.set(requestCode, trimToLength(newNote));
