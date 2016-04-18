@@ -20,7 +20,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
 
     private Button addSpellBtn;
     public static SpellOverviewActivity overviewActivity;
-
+    private String type;
 
 
     @Override
@@ -29,13 +29,14 @@ public class SpellOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spell_overview);
         overviewActivity = this;
         addSpellBtn = (Button)findViewById(R.id.addSpellBtn);
+        type = getIntent().getStringExtra("TYPE");
 
         if(!getIntent().getBooleanExtra("StartedForResult", true)) {
             addSpellBtn.setVisibility(View.GONE);
             populate((SheetObject)getIntent().getSerializableExtra(SearchActivity.SHEET_OBJECT));
         } else {
             Intent intent2 = new Intent(this, SearchActivity.class);
-            intent2.putExtra("TYPE", "spell");
+            intent2.putExtra("TYPE", type);
             intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             this.startActivity(intent2);
         }
@@ -68,6 +69,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
         String html = spell.longDescr();
         Log.i("SPELL",html);
         TextView spellDescr = (TextView)findViewById(R.id.spellDescr);
+        if(html.indexOf("</div>") == -1) html = "<p><h3>"+spell.getName()+"</h3></p>"+html;
         spellDescr.setText(Html.fromHtml(html));
     }
 
@@ -78,7 +80,7 @@ public class SpellOverviewActivity extends AppCompatActivity {
             super.onBackPressed();
         } else {
             Intent intent2 = new Intent(this, SearchActivity.class);
-            intent2.putExtra("TYPE", "spell");
+            intent2.putExtra("TYPE", type);
             intent2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             this.startActivity(intent2);
         }

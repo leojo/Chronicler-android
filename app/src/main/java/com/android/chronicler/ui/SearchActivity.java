@@ -55,7 +55,7 @@ public class SearchActivity extends AppCompatActivity {
         searchMessage = (TextView)findViewById(R.id.searchMessage);
 
         searchType = getIntent().getStringExtra("TYPE");
-        Log.d("ITEMSEARCH","Search type is "+searchType);
+        Log.d("ITEMSEARCH", "Search type is " + searchType);
         initListAndDialog();
 
         if(searchResults==null) searchResults = new ArrayList<>();
@@ -63,9 +63,9 @@ public class SearchActivity extends AppCompatActivity {
         adapter.searching = true;
         resultsView.setAdapter(adapter);
 
-        final Intent spellIntent = new Intent(this, SpellOverviewActivity.class);
-        final Intent featIntent = new Intent(this, FeatOverviewActivity.class);
-        final Intent itemIntent = new Intent(this, ItemOverviewActivity.class);
+        final Intent overviewIntent = new Intent(this, SpellOverviewActivity.class);
+        //final Intent featIntent = new Intent(this, FeatOverviewActivity.class);
+        //final Intent itemIntent = new Intent(this, ItemOverviewActivity.class);
 
 
         resultsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,20 +77,17 @@ public class SearchActivity extends AppCompatActivity {
                 switch (searchType) {
                     case "spell":
                         Log.i("RESULT", "Search activity, reordering the spelloverview activity to front");
-                        spellIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
-                        spellIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(spellIntent);
+                        overviewIntent.putExtra("TYPE", "spell");
                         break;
                     case "feat":
-                        featIntent.putExtra("featName", searchResults.get(position).getName());
-                        featIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(featIntent);
+                        overviewIntent.putExtra("TYPE", "spell");
                         break;
                     case "item":
-                        itemIntent.putExtra("itemName", searchResults.get(position).getName());
-                        itemIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(itemIntent);
+                        overviewIntent.putExtra("TYPE", "spell");
                 }
+                overviewIntent.putExtra(SHEET_OBJECT, searchResults.get(position));
+                overviewIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(overviewIntent);
             }
         });
     }

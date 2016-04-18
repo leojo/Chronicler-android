@@ -20,6 +20,18 @@ public class FeatSlot extends SheetObject implements Serializable {
         this.type = slotDescriptor;
     }
 
+    @Override
+    public String longDescr() {
+        if(feat == null) return "Please Select a Feat for this Feat Slot";
+        return feat.getFullText();
+    }
+
+    @Override
+    public String shortDescr() {
+        if(feat == null) return "- Empty -";
+        return feat.shortDescription();
+    }
+
     // given a list of feats, returns a list of feats that can occupy this slot.
     public ArrayList<Feat> getPossibleFeats(ArrayList<Feat> featList){
         ArrayList<Feat> feats = new ArrayList<>();

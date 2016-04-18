@@ -360,54 +360,24 @@ public class DataLoader {
                             content.addAll(inv.getItems());
                             break;
                         default:
-                            Log.d("ITEMSEARCH",JSONresponse);
+                            Log.d("SEARCH", "Unrecognized search type "+searchtype);
                             SearchActivity.noResults();
                             break;
                     }
-                    /*JSONArray allResults = new JSONArray(JSONresponse);
-                    //Iterator<?> keys = allResults.keys(); // keys will be 0, 1, 2, 3...
-                    ObjectMapper mapper = new ObjectMapper();
-                    for (int i = 0; i < allResults.length(); i++) {
-                        //JSONObject result = allResults.getJSONObject(i);
-                        //content.add(result.get("name").toString());
-                        //ids.add(Integer.parseInt(key));
-                        String resultString = allResults.getString(i);
-                        SheetObject result;
-                        switch (searchtype){
-                            case "spell":
-                                result = new SpellSlot();
-                                ((SpellSlot)result).setSpell(mapper.readValue(resultString, Spell.class));
-                                content.add(result);
-                                break;
-                            case "feat":
-                                result = new FeatSlot();
-                                ((FeatSlot)result).setFeat(mapper.readValue(resultString, Feat.class));
-                                content.add(result);
-                                break;
-                            case "item":
-                                content.addAll(mapper.readValue(JSONresponse, Inventory.class).getItems());
-                                break;
-                            default:
-                                SearchActivity.noResults();
-                                return;
-                        }
-                    }*/
                     if (content.size() != 0) {
                         SearchActivity.adapter.clearAndAddAll(content);
                         SearchActivity.showResults();
                     } else {
                         SearchActivity.noResults();
                     }
-                //} catch (JSONException e) {
-                //    SearchActivity.noResults();
                 } catch (JsonMappingException e) {
-                    Log.d("ITEMSEARCH","JsonMappingException:",e);
+                    Log.e("SEARCH","JsonMappingException for String "+JSONresponse,e);
                     SearchActivity.noResults();
                 } catch (JsonParseException e) {
-                    Log.d("ITEMSEARCH","JsonParseException:",e);
+                    Log.e("SEARCH","JsonParseException for String "+JSONresponse,e);
                     SearchActivity.noResults();
                 } catch (IOException e) {
-                    Log.d("ITEMSEARCH","IOException:",e);
+                    Log.e("SEARCH","IOException: for String "+JSONresponse,e);
                     SearchActivity.noResults();
                 }
             }

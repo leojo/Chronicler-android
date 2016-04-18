@@ -1,6 +1,5 @@
 package com.android.chronicler.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,26 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import com.android.chronicler.R;
+import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.feat.Feat;
 import com.android.chronicler.character.feat.FeatList;
 import com.android.chronicler.character.feat.FeatSlot;
-import com.android.chronicler.character.skill.Skills;
-import com.android.chronicler.character.spell.Spell;
-import com.android.chronicler.character.spell.SpellSlot;
-import com.android.chronicler.character.spell.SpellSlots;
-import com.android.chronicler.ui.CharacterActivity;
-import com.android.chronicler.ui.FeatOverviewActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.SpellOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
-import com.android.chronicler.util.SkillsAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
 
 /**
  * Fragment for the CharacterActivity: This is the character's list of feats.
@@ -67,7 +55,8 @@ public class FeatFragment extends SheetFragment {
                                     int position, long id) {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
-                    Intent intent = new Intent(thisFragment.getContext(), FeatOverviewActivity.class);
+                    Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                    intent.putExtra("TYPE","feat");
                     Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
@@ -82,7 +71,7 @@ public class FeatFragment extends SheetFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Activate popup when an invite is clicked
-                showPopup(view);
+                showPopup(view,feats.getFeats().get(position),position);
 
                 return false;
             }
@@ -95,7 +84,7 @@ public class FeatFragment extends SheetFragment {
 
     // Pop-up for accepting or declining invites: Will later be replaced with buttons
     // nested inside the list elements for accepting and declining.
-    public void showPopup(View v) {
+    public void showPopup(View v, final SheetObject sheetObject, final int position) {
         final FeatFragment thisFragment = this;
         PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
         popup.inflate(R.menu.menu_feat_options);
@@ -106,12 +95,17 @@ public class FeatFragment extends SheetFragment {
                 switch ((String) item.getTitle()) {
                     case "Overview":
                         Log.d("FEATS", "Should open overview for spell");
-                        Intent intent = new Intent(thisFragment.getContext(), FeatOverviewActivity.class);
+                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        intent.putExtra("TYPE","feat");
+                        intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         intent.putExtra("StartedForResult", false);
                         startActivity(intent);
                         break;
                     case "Delete":
                         Log.d("FEATS", "Should delete this spell");
+                        adapter.remove(position);
+                        adapter.notifyDataSetChanged();
+                        feats.getFeats().remove(position);
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
@@ -128,10 +122,14 @@ public class FeatFragment extends SheetFragment {
 
         String featName = data.getStringExtra("toBeAdded");
 
-        FeatSlot newFeatSlot = new FeatSlot();
+        FeatSlot newFeatSlot = (FeatSlot)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
+        SheetAdapter.searching = false;
+
+        /*FeatSlot newFeatSlot = new FeatSlot();
         Feat newFeat = new Feat();
         newFeat.setName(featName);
-        newFeatSlot.setFeat(newFeat);
+        newFeatSlot.setFeat(newFeat); */
+
         feats.add(newFeatSlot);
         adapter.clearAndAddAll(feats);
         adapter.notifyDataSetChanged();
