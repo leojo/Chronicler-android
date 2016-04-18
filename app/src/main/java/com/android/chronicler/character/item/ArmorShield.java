@@ -15,6 +15,16 @@ public class ArmorShield extends Equipment {
     private String speed20, speed30;
     private String type;
 
+    @Override
+    public String longDescr() {
+        String customDetails = "<p><h3>"+getName()+"</h3></p>";
+        String fullText = "";
+        if(getDescription() != null && !getDescription().trim().equalsIgnoreCase("")) fullText = getDescription();
+        if(ACbonus != null && !ACbonus.trim().equalsIgnoreCase("")) customDetails += "Armor/Shield Bonus: "+ACbonus+"<br>Maximum Dex Bonus: "+maxDex+"<br>Armor Check Penalty: "+armorCheckPen+"<br>Arcane Spell Failure Chance: "+arcaneSpellFailure+"<br>Speed: "+speed30+" (30ft.), "+speed20+" (20ft.)<br>Weight: "+getWeight()+"<br>Cost: "+getCost();
+        else return super.longDescr();
+        return customDetails+"<br><div><p>"+fullText+"</p></div>";
+    }
+
     //<editor-fold desc="Getters and Setters">
     public String getACbonus() {
         return ACbonus;

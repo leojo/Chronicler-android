@@ -11,7 +11,7 @@ public class SheetObject implements Serializable {
     }
 
     public String shortDescr(){
-        return "";
+        return "No Short Description";
     }
 
     public String longDescr(){

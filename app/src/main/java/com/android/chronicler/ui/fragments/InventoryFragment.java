@@ -13,15 +13,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import com.android.chronicler.R;
-import com.android.chronicler.character.feat.FeatList;
-import com.android.chronicler.character.item.ArmorShield;
+import com.android.chronicler.character.SheetObject;
 import com.android.chronicler.character.item.Inventory;
 import com.android.chronicler.character.item.Item;
-import com.android.chronicler.character.spell.Spell;
-import com.android.chronicler.character.spell.SpellSlot;
-import com.android.chronicler.character.spell.SpellSlots;
-import com.android.chronicler.ui.FeatOverviewActivity;
-import com.android.chronicler.ui.ItemOverviewActivity;
 import com.android.chronicler.ui.SearchActivity;
 import com.android.chronicler.ui.SpellOverviewActivity;
 import com.android.chronicler.util.SheetAdapter;
@@ -63,7 +57,8 @@ public class InventoryFragment extends SheetFragment {
                                     int position, long id) {
                 Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
-                    Intent intent = new Intent(thisFragment.getContext(), ItemOverviewActivity.class);
+                    Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                    intent.putExtra("TYPE","item");
                     Log.i("RESULT", "SpellFragment is starting the SpellOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
@@ -79,7 +74,7 @@ public class InventoryFragment extends SheetFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Activate popup when an invite is clicked
-                showPopup(view);
+                showPopup(view,items.getItems().get(position),position);
 
                 return false;
             }
@@ -90,7 +85,7 @@ public class InventoryFragment extends SheetFragment {
 
     // Pop-up for accepting or declining invites: Will later be replaced with buttons
     // nested inside the list elements for accepting and declining.
-    public void showPopup(View v) {
+    public void showPopup(View v, final SheetObject sheetObject, final int position) {
         final InventoryFragment thisFragment = this;
         PopupMenu popup = new PopupMenu(thisFragment.getContext(), v);
         popup.inflate(R.menu.menu_feat_options);
@@ -101,12 +96,17 @@ public class InventoryFragment extends SheetFragment {
                 switch ((String) item.getTitle()) {
                     case "Overview":
                         Log.d("ITEMS", "Should open overview for spell");
-                        Intent intent = new Intent(thisFragment.getContext(), ItemOverviewActivity.class);
+                        Intent intent = new Intent(thisFragment.getContext(), SpellOverviewActivity.class);
+                        intent.putExtra("TYPE","item");
+                        intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
                         intent.putExtra("StartedForResult", false);
                         startActivity(intent);
                         break;
                     case "Delete":
                         Log.d("ITEMS", "Should delete this spell");
+                        adapter.remove(position);
+                        adapter.notifyDataSetChanged();
+                        items.getItems().remove(position);
                         break;
                     default:
                         Log.i("PopupMenu", "This is weird");
@@ -123,12 +123,20 @@ public class InventoryFragment extends SheetFragment {
 
         ArrayList<Item> p = (items.getItems());
 
+        Item newItem = (Item)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
+        SheetAdapter.searching = false;
+        items.add(newItem);
+        adapter.clearAndAddAll(items);
+        adapter.notifyDataSetChanged();
+
+        /*
         String itemName = data.getStringExtra("toBeAdded");
+
         Item newItem = new ArmorShield();
         newItem.setName(itemName);
         items.add(newItem);
         adapter.clearAndAddAll(items);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
     }
 
     // newInstance is called when the CharacterActivity is started and the fragments get

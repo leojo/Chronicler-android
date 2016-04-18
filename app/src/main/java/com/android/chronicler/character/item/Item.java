@@ -28,6 +28,16 @@ public abstract class Item  extends SheetObject implements Serializable, Compara
     private String cost;
     private String weight;
 
+    @Override
+    public String shortDescr() {
+        return "Weight: "+getWeight()+"    Cost: "+getCost();
+    }
+
+    @Override
+    public String longDescr() {
+        return super.longDescr();
+    }
+
     //<editor-fold desc="Getters and Setters">
     public String getName() {
         return name;

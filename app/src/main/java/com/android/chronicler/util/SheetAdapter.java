@@ -1,6 +1,7 @@
 package com.android.chronicler.util;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,7 +141,7 @@ public class SheetAdapter extends BaseAdapter {
         TextView nameView = (TextView)item.findViewById(R.id.name);
         nameView.setText(sheetObjs.get(position).getName());
         TextView descrView = (TextView)item.findViewById(R.id.shortDescr);
-        descrView.setText(sheetObjs.get(position).shortDescr());
+        descrView.setText(Html.fromHtml("<div>"+sheetObjs.get(position).shortDescr()+"</div>"));
 
         return item;
     }
