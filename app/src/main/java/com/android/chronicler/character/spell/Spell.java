@@ -75,15 +75,8 @@ public class Spell implements Serializable, Comparable {
     }
 
     public String getShortDescription() {
-        if(this.shortDescription != null) return shortDescription;
-        if(this.description == null) return "No description available";
-        //If we don't have a shortDescription, we just show the first part of the full description.
-        // The description is html formatted so we need to remove all the html tags and such.
-        String descr = this.description.trim().replaceAll("<*>","");
-        // Showing just the first few characters, because a 200 word short description isn't what we want.
-        int len = descr.length();
-        if(len<30) return descr;
-        return descr.substring(0,27)+"...";
+        if(this.shortDescription != null && !shortDescription.equalsIgnoreCase("none")) return shortDescription;
+        return "No description available";
     }
 
     public void setShortDescription(String shortDescription) {

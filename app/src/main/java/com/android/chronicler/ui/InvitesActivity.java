@@ -42,7 +42,6 @@ public class InvitesActivity extends AppCompatActivity {
             TextView txt = (TextView)findViewById(R.id.no_invites_text);
             txt.setVisibility(View.VISIBLE);
         }
-        Log.i("Invites", invites.toString());
 
         inviteListView = (ListView)findViewById(R.id.inviteListView);
 
@@ -81,7 +80,7 @@ public class InvitesActivity extends AppCompatActivity {
                         DataLoader.respondToInvite(thisActivity, intent, position, null);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This is weird");
                 }
                 return false;
             }

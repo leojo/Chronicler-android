@@ -87,7 +87,6 @@ public class CampaignPlayersFragment extends SheetFragment {
 
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_campaign_players, container, false);
 
-        Log.i("Campaign", playerList.toString());
         ListView playerListView = (ListView) rootView.findViewById(R.id.player_list);
         playerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
@@ -120,7 +119,7 @@ public class CampaignPlayersFragment extends SheetFragment {
                     dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.i("Invite", "Inviting player " + input.getText() + " to campaign " + campaignName);
+                            Log.d("Invite", "Inviting player " + input.getText() + " to campaign " + campaignName);
                             DataLoader.inviteToCampaign(getActivity(), campaignName, input.getText().toString());
                         }
                     });

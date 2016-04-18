@@ -87,7 +87,6 @@ public class PrivateNotesFragment extends SheetFragment {
         noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Adapter", String.valueOf(adapter.getCount()));
                 if (position == adapter.getCount()) {
                     openNote("", position);
                 } else {
@@ -133,7 +132,7 @@ public class PrivateNotesFragment extends SheetFragment {
                         adapter.notifyDataSetChanged();
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird. Got "+item.getTitle());
+                        Log.d("PopupMenu", "This is weird. Got "+item.getTitle());
                 }
                 return false;
             }
@@ -149,7 +148,6 @@ public class PrivateNotesFragment extends SheetFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("Notes", "Received text: " + data.getStringExtra("TEXT"));
         String newNote = data.getStringExtra("TEXT");
         if (newNote.isEmpty()) return;
         if (requestCode < privateNotes.size()) {

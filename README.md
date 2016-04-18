@@ -22,6 +22,8 @@ About this project:
 
 This app is a tool to play D&D with interactive character sheets, searchable database and other features that are supposed to replace the pen and paper aspect of D&D. We built this app as part of our project for a Software Development course and as such, it is still in the early stages of development and not at all finished. 
 
+More information in our slideshow: http://slides.com/andreab/deck-1#/
+
 // ----------------------
 // BUILDING INSTRUCTIONS
 // ----------------------
