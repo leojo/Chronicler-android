@@ -1,11 +1,13 @@
 package com.android.chronicler;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.chronicler.ui.CampaignsActivity;
 import com.android.chronicler.ui.CharactersActivity;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         if(!inSession) {
             redirectToLogin();
         }
+
+        TextView heading = (TextView) findViewById(R.id.Chronicler_heading);
+        Typeface font = Typeface.createFromAsset(getAssets(), "DroidSerif-Regular.ttf");
+        heading.setTypeface(font);
     }
 
     // Checks whether there is an unexpired cookie in the cookie store

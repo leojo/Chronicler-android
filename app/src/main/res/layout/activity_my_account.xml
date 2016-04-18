@@ -18,12 +18,12 @@
         android:layout_weight="0.36" />
 
     <TextView
+        android:text="@string/my_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My Account"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/my_account_heading"
+        style="@style/heading_style"
+        />
 
     <Space
         android:layout_width="351dp"
