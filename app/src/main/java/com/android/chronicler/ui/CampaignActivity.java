@@ -67,6 +67,7 @@ public class CampaignActivity extends FragmentActivity {
     private static final int INITIAL_PAGE = 0;
 
     private String campaignName;
+    private boolean readOnly;
     private ArrayList<String> campaignCharacters;
     private ArrayList<String> campaignCharacterIDs;
     private ArrayList<String> privateNotes;
@@ -80,32 +81,40 @@ public class CampaignActivity extends FragmentActivity {
         setContentView(R.layout.activity_character);
 
         Intent intent = getIntent();
+        readOnly = intent.getBooleanExtra("read_only", true);
         campaignName = intent.getStringExtra("CAMPAIGN_NAME");
         campaignCharacters = intent.getStringArrayListExtra("campaign_characters");
         if (intent.hasExtra("NEW_PLAYER") && !campaignCharacters.contains(intent.getStringExtra("NEW_PLAYER"))) {
             campaignCharacters.add(intent.getStringExtra("NEW_PLAYER"));
         }
         campaignCharacterIDs = intent.getStringArrayListExtra("campaign_character_ids");
-        privateNotes = intent.getStringArrayListExtra("campaign_private_notes");
+        if (!readOnly) privateNotes = intent.getStringArrayListExtra("campaign_private_notes");
         publicNotes = intent.getStringArrayListExtra("campaign_public_notes");
         journalNotes = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("campaign_journal_entries");
         // -------------------------------------------------------- FRAGMENT RELATED
 
         // Create the tab bar with - COMBAT SPELLS ABOUT FEATS
         final ViewPagerTabs pagerTabs = (ViewPagerTabs) findViewById(R.id.transactions_pager_tabs);
-        pagerTabs.addTabLabels(
-                R.string.campaign_player_list,
-                R.string.campaign_private_notes,
-                R.string.campaign_public_notes,
-                R.string.campaign_journal);
+        if (readOnly) {
+            pagerTabs.addTabLabels(
+                    R.string.campaign_player_list,
+                    R.string.campaign_public_notes,
+                    R.string.campaign_journal);
+        } else {
+            pagerTabs.addTabLabels(
+                    R.string.campaign_player_list,
+                    R.string.campaign_private_notes,
+                    R.string.campaign_public_notes,
+                    R.string.campaign_journal);
+        }
 
         // Fragments are added to a list of fragments that are later put into mPagerAdapter.
         final List<SheetFragment> fragments = new Vector<SheetFragment>();
         // Call new instance and include a string 'type' to identify each fragment
 
-        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs));
-        fragments.add(PrivateNotesFragment.newInstance(campaignName, privateNotes));
-        fragments.add(PublicNotesFragment.newInstance(campaignName, publicNotes));
+        fragments.add(CampaignPlayersFragment.newInstance(campaignName, campaignCharacters, campaignCharacterIDs, readOnly));
+        if (!readOnly) fragments.add(PrivateNotesFragment.newInstance(campaignName, privateNotes));
+        fragments.add(PublicNotesFragment.newInstance(campaignName, publicNotes, readOnly));
 
         fragments.add(JournalFragment.newInstance(campaignName, journalNotes));
 

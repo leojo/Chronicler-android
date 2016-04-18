@@ -82,6 +82,13 @@ public class CampaignsActivity extends AppCompatActivity {
             // --------------------------------------
         });
 
+        playerCampaignsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openCampaign(PCCampaigns.get(position));
+            }
+        });
+
         campaignListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -196,6 +203,7 @@ public class CampaignsActivity extends AppCompatActivity {
     public void openCampaign(String name) {
         Intent intent = new Intent(this, CampaignActivity.class);
         intent.putExtra("CAMPAIGN_NAME", name);
+        intent.putExtra("read_only", !DMCampaigns.contains(name));
         DataLoader.getCampaignDetailsThenOpen(this, intent, name);
     }
 

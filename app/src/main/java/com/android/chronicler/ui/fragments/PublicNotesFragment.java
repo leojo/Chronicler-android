@@ -31,23 +31,27 @@ import java.util.ArrayList;
 public class PublicNotesFragment extends SheetFragment {
     private static final String PUBLIC_NOTES = "PUBLIC_NOTES";
     private static final String CAMPAIGN_NAME = "CAMPAIGN_NAME";
+    private static final String READ_ONLY = "READ_ONLY";
 
     private static final int maxItemLength = 35;
     private String campaignName;
     private ArrayList<String> publicNotes;
     private ArrayList<String> shortNotes;
     private ArrayAdapter<String> adapter;
+    private boolean readOnly;
 
     public PublicNotesFragment() {
         // Required empty public constructor
     }
 
     public static PublicNotesFragment newInstance(String campaignName,
-                                                   ArrayList<String> notes) {
+                                                  ArrayList<String> notes,
+                                                  boolean readOnly) {
         PublicNotesFragment fragment = new PublicNotesFragment();
         Bundle args = new Bundle();
         args.putStringArrayList(PUBLIC_NOTES, notes);
         args.putString(CAMPAIGN_NAME, campaignName);
+        args.putBoolean(READ_ONLY, readOnly);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +62,7 @@ public class PublicNotesFragment extends SheetFragment {
         if (getArguments() != null) {
             publicNotes = getArguments().getStringArrayList(PUBLIC_NOTES);
             campaignName = getArguments().getString(CAMPAIGN_NAME);
+            readOnly = getArguments().getBoolean(READ_ONLY);
         }
     }
 
@@ -78,36 +83,40 @@ public class PublicNotesFragment extends SheetFragment {
                 android.R.layout.simple_expandable_list_item_1,
                 shortNotes);
 
+        if (!readOnly) {
+            // Set add button to footer
+            ImageView addButtonView = new ImageView(getActivity());
+            addButtonView.setPadding(20, 20, 20, 20);
+            addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
 
-        // Set add button to footer
-        ImageView addButtonView = new ImageView(getActivity());
-        addButtonView.setPadding(20, 20, 20, 20);
-        addButtonView.setImageResource(R.drawable.ic_add_circle_24dp);
+            noteListView.addFooterView(addButtonView);
+        }
 
-        noteListView.addFooterView(addButtonView);
         noteListView.setAdapter(adapter);
 
-        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("Adapter", String.valueOf(adapter.getCount()));
-                if (position == adapter.getCount()) {
-                    openNote("", position);
-                } else {
-                    openNote(publicNotes.get(position), position);
+        if (!readOnly) {
+            noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.i("Adapter", String.valueOf(adapter.getCount()));
+                    if (position == adapter.getCount()) {
+                        openNote("", position);
+                    } else {
+                        openNote(publicNotes.get(position), position);
+                    }
                 }
-            }
-        });
+            });
 
-        noteListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == adapter.getCount()) return false;
-                showPopup(view, position);
+            noteListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == adapter.getCount()) return false;
+                    showPopup(view, position);
 
-                return true;
-            }
-        });
+                    return true;
+                }
+            });
+        }
 
         return rootView;
     }
