@@ -65,14 +65,12 @@ public class SpellFragment extends SheetFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Log.i("Campaigns", "Position " + position + " of " + adapter.getCount());
                 if (position == adapter.getCount()) {
                     // If we click the add-spell button, the SearchActivity will be
                     // started for result, which in turn will start a specific-spell overview
                     // activity for result and allow the user to select that spell.
                     Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                     intent.putExtra("TYPE","spell");
-                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -104,7 +102,6 @@ public class SpellFragment extends SheetFragment {
             }
         });
 
-        Log.i("SPELLS","spellsView child count is "+spellsView.getChildCount());
         return rootView;
     }
 
@@ -125,7 +122,6 @@ public class SpellFragment extends SheetFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch ((String) item.getTitle()) {
                     case "Overview":
-                        Log.d("SPELLS", "Should open overview for spell");
                         Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                         intent.putExtra("TYPE","spell");
                         intent.putExtra("StartedForResult", false);
@@ -133,13 +129,12 @@ public class SpellFragment extends SheetFragment {
                         startActivity(intent);
                         break;
                     case "Delete":
-                        Log.d("SPELLS", "Should delete this spell");
                         adapter.remove(position);
                         adapter.notifyDataSetChanged();
                         spells.getSpellSlots().remove(position);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This should not happen");
                 }
                 return false;
             }
@@ -151,15 +146,9 @@ public class SpellFragment extends SheetFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == 0) return;
 
-        //super.onActivityResult(requestCode, resultCode, data);
-        Log.i("RESULT" ,"Fragment: result within the fragment");
-        Log.i("RESULT", "Fragment: IS the data null? "+(data==null));
-
         ArrayList<SpellSlot> p = (spells.getSpellSlots());
 
-        Log.i("RESULT", "Before result, our spells vector is "+p.toString());
         SpellSlot spellSlot = (SpellSlot)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
-        Log.i("RESULT", "We got our result! it's " + spellSlot.getName());
         spellAvailability.add(true);
         SheetAdapter.searching = false;
         spells.add(spellSlot);
@@ -167,8 +156,6 @@ public class SpellFragment extends SheetFragment {
         adapter.notifyDataSetChanged();
         ArrayList<SpellSlot> s = (spells.getSpellSlots());
 
-
-        Log.i("RESULT", "After result, our spells vector is "+s.toString());
     }
 
 

@@ -55,11 +55,9 @@ public class InventoryFragment extends SheetFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
                     Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                     intent.putExtra("TYPE","item");
-                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -95,7 +93,6 @@ public class InventoryFragment extends SheetFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch ((String) item.getTitle()) {
                     case "Overview":
-                        Log.d("ITEMS", "Should open overview for spell");
                         Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                         intent.putExtra("TYPE","item");
                         intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
@@ -103,13 +100,12 @@ public class InventoryFragment extends SheetFragment {
                         startActivity(intent);
                         break;
                     case "Delete":
-                        Log.d("ITEMS", "Should delete this spell");
                         adapter.remove(position);
                         adapter.notifyDataSetChanged();
                         items.getItems().remove(position);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This should not happen");
                 }
                 return false;
             }
@@ -129,14 +125,6 @@ public class InventoryFragment extends SheetFragment {
         adapter.clearAndAddAll(items);
         adapter.notifyDataSetChanged();
 
-        /*
-        String itemName = data.getStringExtra("toBeAdded");
-
-        Item newItem = new ArmorShield();
-        newItem.setName(itemName);
-        items.add(newItem);
-        adapter.clearAndAddAll(items);
-        adapter.notifyDataSetChanged();*/
     }
 
     // newInstance is called when the CharacterActivity is started and the fragments get

@@ -52,11 +52,9 @@ public class FeatFragment extends SheetFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Log.i("Campaigns", "Position "+position+" of "+adapter.getCount());
                 if (position == adapter.getCount()) {
                     Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                     intent.putExtra("TYPE","feat");
-                    Log.i("RESULT", "SpellFragment is starting the SheetObjectOverviewActivity for result");
                     thisFragment.startActivityForResult(intent, 1);
 
                 } else {
@@ -93,7 +91,6 @@ public class FeatFragment extends SheetFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch ((String) item.getTitle()) {
                     case "Overview":
-                        Log.d("FEATS", "Should open overview for spell");
                         Intent intent = new Intent(thisFragment.getContext(), SheetObjectOverviewActivity.class);
                         intent.putExtra("TYPE","feat");
                         intent.putExtra(SearchActivity.SHEET_OBJECT, sheetObject);
@@ -101,13 +98,12 @@ public class FeatFragment extends SheetFragment {
                         startActivity(intent);
                         break;
                     case "Delete":
-                        Log.d("FEATS", "Should delete this spell");
                         adapter.remove(position);
                         adapter.notifyDataSetChanged();
                         feats.getFeats().remove(position);
                         break;
                     default:
-                        Log.i("PopupMenu", "This is weird");
+                        Log.d("PopupMenu", "This should not happen.");
                 }
                 return false;
             }
@@ -123,11 +119,6 @@ public class FeatFragment extends SheetFragment {
 
         FeatSlot newFeatSlot = (FeatSlot)data.getSerializableExtra(SearchActivity.SHEET_OBJECT);
         SheetAdapter.searching = false;
-
-        /*FeatSlot newFeatSlot = new FeatSlot();
-        Feat newFeat = new Feat();
-        newFeat.setName(featName);
-        newFeatSlot.setFeat(newFeat); */
 
         feats.add(newFeatSlot);
         adapter.clearAndAddAll(feats);
